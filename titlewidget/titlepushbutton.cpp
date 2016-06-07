@@ -3,13 +3,13 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QDir>
-#include "helptools.hpp"
+#include "tools/helptools.hpp"
 
 titlepushbutton::titlepushbutton(const QString& img, const QString& title)
     : button_title(title) {
     QString path = directoryOf("resource").absoluteFilePath(img);
     button_img.load(path);
-    this->setObjectName("title_push_btn");
+//    this->setObjectName("title_push_btn);
     this->setUpSubviews();
 }
 
@@ -21,6 +21,7 @@ titlepushbutton::~titlepushbutton() {
 
 void titlepushbutton::setUpSubviews() {
     this->clearMask();
+    this->setCheckable(true);
 
     main_layout = new QVBoxLayout;
 
@@ -30,7 +31,7 @@ void titlepushbutton::setUpSubviews() {
 
     img_label = new QLabel;
     img_label->setObjectName(QStringLiteral("img_label"));
-    img_label->setPixmap(button_img.scaledToWidth(60));
+    img_label->setPixmap(button_img.scaledToWidth(35));
 
     line_one->addSpacerItem(line_one_left);
     line_one->addWidget(img_label);
@@ -46,8 +47,9 @@ void titlepushbutton::setUpSubviews() {
     QSpacerItem* line_two_right = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     title_label = new QLabel;
-    title_label->setObjectName(QStringLiteral("title_lable"));
+    title_label->setObjectName(QStringLiteral("title_label"));
     title_label->setText(button_title);
+    title_label->setContentsMargins(0, 0, 0, 0);
 
     line_two->addSpacerItem(line_two_left);
     line_two->addWidget(title_label);
@@ -57,22 +59,49 @@ void titlepushbutton::setUpSubviews() {
 
     this->setLayout(main_layout);
 
-    this->setStyleSheet("QPushButton#title_push_btn {"
+    QObject::connect(this, SIGNAL(clicked()), this, SLOT(btnClicked()));
+
+    this->setStyleSheet("QPushButton {"
                             "background-color: transparent;"
                             "border: none;"
                             "padding-left: 0px;"
                             "margin-left: 0px;"
                         "}"
-                        "QPushButton#title_push_btn:hover {"
-                            "background-color: red;"
+                        "QPushButton:hover {"
+                            "background-color: transparent;"
+                            "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                                                "stop: 0 rgba(255,255,255,0),"
+                                                "stop: 1.0 rgba(255, 255, 255, 120));"
                             "border: none;"
                         "}"
-                        "QPushButton#title_push_btn:pressed {"
-                            "background-color: yellow;"
+                        "QPushButton:pressed {"
+                            "background-color: transparent;"
+                            "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                                                "stop: 0 rgba(255,255,255,0),"
+                                                "stop: 1.0 rgba(255, 255, 255, 120));"
                             "border: none;"
+                        "}"
+                        "QPushButton:checked {"
+                            "background-color: transparent;"
+                            "background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,"
+                                                "stop: 0 rgba(255,255,255,0),"
+                                                "stop: 1.0 rgba(255, 255, 255, 120));"
+                            "border: none;"
+                        "}"
+                        "QLabel#title_label {"
+                            "color: #fff;"
+                            "font-size: 14px;"
                         "}");
 }
 
 QSize titlepushbutton::sizeHint() const {
-    return QSize(80, 100);
+    return QSize(80, 80);
+}
+
+void titlepushbutton::btnClicked() {
+    emit didSelectTitle(button_title);
+}
+
+const QString& titlepushbutton::getBtnTitle() const {
+    return button_title;
 }

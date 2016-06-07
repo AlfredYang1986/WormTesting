@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resource/menu_check.png</file>
+        <file>resource/menu1.png</file>
+        <file>resource/menu2.png</file>
+        <file>resource/menu3.png</file>
+        <file>resource/menu4.png</file>
+        <file>resource/menu5.png</file>
+        <file>resource/minus.png</file>
+        <file>resource/plus.png</file>
+        <file>resource/photo_preview.png</file>
+    </qresource>
+</RCC>
