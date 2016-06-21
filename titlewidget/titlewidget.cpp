@@ -78,6 +78,7 @@ void titlewidget::setUpSubViews() {
     menu_lst = vector<titlepushbutton*>();
 
     vector<std::pair<QString, QString> > tmp_lst;
+    tmp_lst.push_back(std::make_pair("menu1.png", "录入样本"));
     tmp_lst.push_back(std::make_pair("menu1.png", "开始检测"));
     tmp_lst.push_back(std::make_pair("menu2.png", "填写报告"));
     tmp_lst.push_back(std::make_pair("menu3.png", "报告列表"));

@@ -60,6 +60,7 @@ void sampledetailwidget::setUpSubviews() {
 
     std::for_each(vec.begin(), vec.end(), pred_row_creator(form_layout));
     main_layout->addLayout(form_layout);
+    main_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     this->setLayout(main_layout);
 

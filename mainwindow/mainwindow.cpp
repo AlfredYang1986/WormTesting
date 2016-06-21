@@ -3,6 +3,7 @@
 #include "starttesting/starttestingpage.h"
 #include "reporting/reportingcontainer.h"
 #include "reportlst/reportlstcontainer.h"
+#include "pushwidget/pushwidget.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -23,7 +24,7 @@ void MainWindow::setUpSubviews() {
     if (this->objectName().isEmpty())
         this->setObjectName(QStringLiteral("MainWindow"));
     this->setWindowTitle(QStringLiteral("虫卵检测系统V1.0"));
-    this->resize(900, 600);
+    this->setWindowState(Qt::WindowMaximized);
     center_widget = new QWidget;
     center_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     center_widget->setObjectName(QStringLiteral("center_widget"));
@@ -38,7 +39,8 @@ void MainWindow::setUpSubviews() {
     QObject::connect(title_widget, SIGNAL(changeContentPane(const QString&)), this, SLOT(changeMainContent(const QString&)));
 
     main_container->addWidget(title_widget);
-    this->createTestingWidget();
+//    this->createTestingWidget();
+    this->createPushWidget();
 
     center_widget->setLayout(main_container);
 }
@@ -50,10 +52,33 @@ void MainWindow::changeMainContent(const QString &title) {
         this->createReportWidget();
     } else if (title == "报告列表") {
         this->createReportLstWidget();
-    } else {
+    } else if (title == "录入样本") {
+        this->createPushWidget();
+    }else {
         this->createResourceWidget();
     }
 }
+
+ void MainWindow::createPushWidget() {
+     map<QString, QFrame*>::iterator iter = contents.begin();
+     for (; iter != contents.end(); ++iter) {
+         QFrame* tmp = (*iter).second;
+         tmp->hide();
+     }
+
+     QFrame* tmp = contents["录入样本"];
+     if (tmp == NULL) {
+         pushwidget* content_widget = new pushwidget;
+         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+         main_container->addWidget(content_widget);
+
+         contents[QStringLiteral("录入样本")] = content_widget;
+         tmp = content_widget;
+     }
+
+     tmp->show();
+ }
 
  void MainWindow::createTestingWidget() {
 

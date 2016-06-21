@@ -5,6 +5,7 @@
 #include "sampledetailwidget.h"
 #include "wormtreewidget.h"
 #include "imgcomparepane.h"
+#include "samplesearchingwidget.h"
 
 starttestingpage::starttestingpage() {
     this->setUpSubviews();
@@ -13,7 +14,8 @@ starttestingpage::starttestingpage() {
 starttestingpage::~starttestingpage() {
     main_layout->deleteLater();
     sample_detail->deleteLater();
-    worm_tree->deleteLater();
+//    worm_tree->deleteLater();
+    sample_searching_widget->deleteLater();
     img_pane->deleteLater();
 }
 
@@ -36,11 +38,17 @@ void starttestingpage::setUpSubviews() {
 //    sample_detail->setStyleSheet("QWidget#sample_detail { background-color: red; }");
     page_one_content_layout->addWidget(sample_detail);
 
-    worm_tree = new wormtreewidget;
-    worm_tree->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    worm_tree->setMinimumSize(QSize(200, 200));
-    worm_tree->setContentsMargins(0,0,0,0);
-    page_one_content_layout->addWidget(worm_tree);
+//    worm_tree = new wormtreewidget;
+//    worm_tree->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+//    worm_tree->setMinimumSize(QSize(200, 200));
+//    worm_tree->setContentsMargins(0,0,0,0);
+//    page_one_content_layout->addWidget(worm_tree);
+
+    sample_searching_widget = new samplesearchingwidget;
+    sample_searching_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    sample_searching_widget->setMinimumSize(QSize(300,300));
+    sample_searching_widget->setContentsMargins(0,0,0,0);
+    page_one_content_layout->addWidget(sample_searching_widget);
 
     img_pane = new imgcomparepane;
     img_pane->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);

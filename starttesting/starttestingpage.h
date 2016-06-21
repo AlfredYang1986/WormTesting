@@ -7,6 +7,7 @@ class QVBoxLayout;
 class sampledetailwidget;
 class wormtreewidget;
 class imgcomparepane;
+class samplesearchingwidget;
 
 class starttestingpage : public QFrame {
     Q_OBJECT
@@ -21,7 +22,8 @@ protected:
 private:
     QVBoxLayout* main_layout;
     sampledetailwidget* sample_detail;
-    wormtreewidget* worm_tree;
+//    wormtreewidget* worm_tree;
+    samplesearchingwidget* sample_searching_widget;
     imgcomparepane* img_pane;
 };
 

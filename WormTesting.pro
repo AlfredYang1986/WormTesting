@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+QT	 += network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,7 +29,14 @@ SOURCES += main.cpp\
     reportlst/reportlstcontainer.cpp \
     reportlst/searchtreewidget.cpp \
     reportlst/searchresulttablewidget.cpp \
-    sampleresource/sampleresourcecontainer.cpp
+    sampleresource/sampleresourcecontainer.cpp \
+    proxy/patientproxy.cpp \
+    proxy/sampleproxy.cpp \
+    proxy/wormproxy.cpp \
+    proxy/fileoptproxy.cpp \
+    proxy/proxymanager.cpp \
+    starttesting/samplesearchingwidget.cpp \
+    pushwidget/pushwidget.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -46,7 +54,14 @@ HEADERS  += mainwindow/mainwindow.h\
     reportlst/reportlstcontainer.h \
     reportlst/searchtreewidget.h \
     reportlst/searchresulttablewidget.h \
-    sampleresource/sampleresourcecontainer.h
+    sampleresource/sampleresourcecontainer.h \
+    proxy/patientproxy.h \
+    proxy/sampleproxy.h \
+    proxy/wormproxy.h \
+    proxy/fileoptproxy.h \
+    proxy/proxymanager.h \
+    starttesting/samplesearchingwidget.h \
+    pushwidget/pushwidget.h
 
 FORMS    +=
 

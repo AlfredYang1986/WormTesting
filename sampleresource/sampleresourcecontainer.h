@@ -1,7 +1,7 @@
 #ifndef SAMPLERESOURCECONTAINER_H
 #define SAMPLERESOURCECONTAINER_H
 
-#include <QWebView>
+//#include <QWebView>
 
 class sampleresourcecontainer
 {

@@ -24,6 +24,7 @@ public slots:
 protected:
     void setUpSubviews();
 
+    void createPushWidget();
     void createTestingWidget();
     void createReportWidget();
     void createReportLstWidget();
