@@ -103,4 +103,7 @@ void starttestingpage::setUpSubviews() {
                             "background-color: #1bd7ff;"
                             "border: 1px solid #1bd7ff;"
                         "}");
+
+    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
+                     sample_detail, SLOT(currentSample(const QJsonObject&)));
 }

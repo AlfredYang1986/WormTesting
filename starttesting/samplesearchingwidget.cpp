@@ -1,6 +1,7 @@
 #include "samplesearchingwidget.h"
 #include <QVBoxLayout>
 #include <QTableWidget>
+#include <QTableWidgetItem>
 #include "proxy/proxymanager.h"
 #include "proxy/sampleproxy.h"
 
@@ -44,6 +45,11 @@ void samplesearchingwidget::setUpSubviews() {
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(queryTestedSampleSuccess(const QJsonArray&)),
                      this, SLOT(queryTesetedSamples(const QJsonArray&)));
 
+    QObject::connect(not_test_sample, SIGNAL(clicked(const QModelIndex&)),
+                     this, SLOT(notTestWidgetClicked(const QModelIndex&)));
+    QObject::connect(tested_sample, SIGNAL(clicked(const QModelIndex&)),
+                     this, SLOT(testedWidgetClicked(const QModelIndex&)));
+
     proxymanager::instance()->getSampleProxy()->queryNotTestSample();
     proxymanager::instance()->getSampleProxy()->queryTestedSample();
 }
@@ -52,7 +58,6 @@ QSize samplesearchingwidget::sizeHit() const {
     return QSize(300, 300);
 }
 
-
 void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     not_test_sample->clear();
     QStringList header;
@@ -60,17 +65,20 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     not_test_sample->setColumnCount(header.count());
     not_test_sample->setHorizontalHeaderLabels(header);
 
+    not_test_sample->setRowCount(samples.count());
+
     QJsonArray::const_iterator iter = samples.begin();
     int index = 0;
     for(; iter != samples.end(); ++iter) {
         QJsonObject tmp = (*iter).toObject();
         not_test_sample->setItem(index, 0, new QTableWidgetItem(tmp["sample_id"].toString()));
         qlonglong timespan = tmp["date"].toVariant().toLongLong();
-        QTime t;
-        t = t.addMSecs(timespan);
+        QDateTime t;
+        t.setMSecsSinceEpoch(timespan);
         not_test_sample->setItem(index, 1, new QTableWidgetItem(t.toString()));
         ++index;
     }
+    vec_sample_not_test = samples;
 }
 
 void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
@@ -80,15 +88,28 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
     tested_sample->setColumnCount(header.count());
     tested_sample->setHorizontalHeaderLabels(header);
 
+    tested_sample->setRowCount(samples.count());
+
     QJsonArray::const_iterator iter = samples.begin();
     int index = 0;
     for(; iter != samples.end(); ++iter) {
         QJsonObject tmp = (*iter).toObject();
         tested_sample->setItem(index, 0, new QTableWidgetItem(tmp["sample_id"].toString()));
         qlonglong timespan = tmp["date"].toVariant().toLongLong();
-        QTime t;
-        t = t.addMSecs(timespan);
+        QDateTime t;
+        t.setMSecsSinceEpoch(timespan);
         tested_sample->setItem(index, 1, new QTableWidgetItem(t.toString()));
         ++index;
     }
+    vec_sample_tested = samples;
+}
+
+void samplesearchingwidget::notTestWidgetClicked(const QModelIndex& index) {
+    QJsonObject sample = vec_sample_not_test.at(index.row()).toObject();
+    emit currentSample(sample);
+}
+
+void samplesearchingwidget::testedWidgetClicked(const QModelIndex& index) {
+    QJsonObject sample = vec_sample_not_test.at(index.row()).toObject();
+    emit currentSample(sample);
 }

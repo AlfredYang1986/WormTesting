@@ -2,6 +2,7 @@
 #define STARTTESTINGPAGE_H
 
 #include <QFrame>
+#include <QJsonObject>
 
 class QVBoxLayout;
 class sampledetailwidget;

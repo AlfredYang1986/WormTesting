@@ -11,7 +11,8 @@ private:
     QNetworkAccessManager* http_connect;
 
 Q_SIGNALS:
-    void queryWormCatSuccess(int take, int skip, const QJsonArray& lst);
+    void queryWormCatSuccess(const QJsonObject&);
+    void queryWormSuccess(const QJsonObject&);
 
 public Q_SLOTS:
     void replayFinished(QNetworkReply*);
@@ -27,7 +28,7 @@ public:
 
     void pushWorm(const QString& worm_name, const QString& worm_cat_name);
     void popWorm(const QString& worm_name, const QString& worm_cat_name);
-    void queryWorm(const QString& worm_cat_name);
+    void queryWorm(const QString& worm_name, const QString& worm_cat_name);
 };
 
 #endif // WORMPROXY_H

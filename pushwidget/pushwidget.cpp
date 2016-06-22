@@ -5,6 +5,7 @@
 #include <QLineEdit>
 #include <QPushButton>
 #include <QMessageBox>
+#include <QComboBox>
 #include "proxy/proxymanager.h"
 #include "proxy/sampleproxy.h"
 #include "proxy/patientproxy.h"
@@ -24,7 +25,11 @@ void pushwidget::setUpSubviews() {
 
     patient_id_edit = new QLineEdit;
     patient_name_edit = new QLineEdit;
-    patient_gender_edit = new QLineEdit;
+
+    patient_gender_box = new QComboBox;
+    patient_gender_box->addItem(tr("男"));
+    patient_gender_box->addItem(tr("女"));
+
     patient_age_edit = new QLineEdit;
 
     main_layout = new QVBoxLayout;
@@ -49,7 +54,7 @@ void pushwidget::setUpSubviews() {
     QFormLayout* patient_layout = new QFormLayout;
     patient_layout->addRow("病人编号:", patient_id_edit);
     patient_layout->addRow("姓  名:", patient_name_edit);
-    patient_layout->addRow("性  别:", patient_gender_edit);
+    patient_layout->addRow("性  别:", patient_gender_box);
     patient_layout->addRow("年  龄:", patient_age_edit);
 
     QPushButton* patient_button = new QPushButton("录入病人");
@@ -67,6 +72,11 @@ void pushwidget::setUpSubviews() {
     main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     this->setLayout(main_layout);
+
+    QObject::connect(proxymanager::instance()->getPatientProxy(), SIGNAL(pushPatientSuccess(const QJsonObject&)),
+                     this, SLOT(pushPatientSuccess(const QJsonObject&)));
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(pushSampleSuccess(const QJsonObject&)),
+                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
 }
 
 QSize pushwidget::sizeHint() const {
@@ -78,12 +88,13 @@ void pushwidget::sampleBtnClick() {
     QString sample_resource = sample_resource_edit->text();
     QString sample_patient_id = sample_patient_id_edit->text();
 
-    if (sample_id.isEmpty() && sample_resource.isEmpty() && sample_patient_id.isEmpty()) {
+    if (sample_id.isEmpty() || sample_resource.isEmpty() || sample_patient_id.isEmpty()) {
         QMessageBox::information(this, "Error",
                 tr("填写所有选项"),
                 QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
     } else {
-
+        proxymanager::instance()->getSampleProxy()->
+                pushSample(sample_id, sample_patient_id, -1, sample_resource);
     }
 }
 
@@ -96,22 +107,40 @@ void pushwidget::sampleCancelBtnClick() {
 void pushwidget::patientBtnClick() {
     QString patient_id = patient_id_edit->text();
     QString patient_name = patient_name_edit->text();
-    QString patient_gender = patient_gender_edit->text();
-    QString patient_age = patient_age_edit->text();
+    int patient_gender = patient_gender_box->currentIndex();
+    int patient_age = patient_age_edit->text().toInt();
 
-    if (patient_id.isEmpty() && patient_name.isEmpty()
-            && patient_gender.isEmpty() && patient_age.isEmpty()) {
+    if (patient_id.isEmpty() || patient_name.isEmpty()
+            || patient_age < 0) {
         QMessageBox::information(this, "Error",
                 tr("填写所有选项"),
                 QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
     } else {
-
+        proxymanager::instance()->getPatientProxy()->
+                pushPatient(patient_id, patient_name,
+                            (patientproxy::PatientGender)patient_gender, patient_age);
     }
 }
 
 void pushwidget::patientCancelBtnClick() {
     patient_id_edit->clear();
     patient_name_edit->clear();
-    patient_gender_edit->clear();
+    patient_gender_box->clear();
     patient_age_edit->clear();
+}
+
+void pushwidget::pushSampleSuccess(const QJsonObject &) {
+    QMessageBox::information(this, "Success",
+                             tr("录入病人成功"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+
+    patientCancelBtnClick();
+}
+
+void pushwidget::pushPatientSuccess(const QJsonObject &) {
+    QMessageBox::information(this, "Success",
+                             tr("录入样本成功"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+
+    sampleCancelBtnClick();
 }

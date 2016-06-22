@@ -13,9 +13,8 @@ class sampleproxy : public QObject {
 
 Q_SIGNALS:
     void error(const QString& error_message);
-    void pushSampleSuccess(const QString& sample_id, const QJsonObject& data);
-    void updateSampleSuccess(const QString& sample_id, const QJsonObject& data);
-
+    void pushSampleSuccess(const QJsonObject& data);
+    void updateSampleSuccess(const QJsonObject& data);
     void queryNotTestSampleSuccess(const QJsonArray& samples);
     void queryTestedSampleSuccess(const QJsonArray& samples);
 

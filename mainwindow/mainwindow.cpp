@@ -4,6 +4,7 @@
 #include "reporting/reportingcontainer.h"
 #include "reportlst/reportlstcontainer.h"
 #include "pushwidget/pushwidget.h"
+#include "sampleresource/sampleresourcecontainer.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -54,8 +55,10 @@ void MainWindow::changeMainContent(const QString &title) {
         this->createReportLstWidget();
     } else if (title == "录入样本") {
         this->createPushWidget();
-    }else {
+    }else if (title == "样本资料") {
         this->createResourceWidget();
+    } else {
+        this->createCompareWidget();
     }
 }
 
@@ -153,7 +156,7 @@ void MainWindow::changeMainContent(const QString &title) {
 
      QFrame* tmp = contents["样本资料"];
      if (tmp == NULL) {
-         QFrame* content_widget = new QFrame;
+         QFrame* content_widget = new sampleresourcecontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);

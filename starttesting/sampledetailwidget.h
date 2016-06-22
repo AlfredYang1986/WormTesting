@@ -2,12 +2,19 @@
 #define SAMPLEDETAILWIDGET_H
 
 #include <QFrame>
+#include <QVector>
+#include <QWidget>
 
 class QFormLayout;
 class QVBoxLayout;
 
 class sampledetailwidget : public QFrame {
     Q_OBJECT
+
+Q_SIGNALS:
+
+public Q_SLOTS:
+    void currentSample(const QJsonObject&);
 
 public:
     sampledetailwidget();
@@ -20,6 +27,7 @@ protected:
 private:
 //    QFormLayout* main_layout;
     QVBoxLayout* main_layout;
+    QVector<QWidget*> inputs;
 };
 
 #endif // SAMPLEDETAILWIDGET_H

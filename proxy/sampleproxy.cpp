@@ -3,6 +3,7 @@
 #include "proxymanager.h"
 #include <iostream>
 #include <QtGui>
+#include <QMessageBox>
 using namespace std;
 
 static const QString MethodKey_pushSample = "pushSample";
@@ -19,8 +20,8 @@ sampleproxy::~sampleproxy() {
     http_connect->deleteLater();
 }
 
-void pushSample(const QString& sample_id, const QString& patient_id = "",
-                    const int status = -1, const QString& resource = "") {
+void sampleproxy::pushSample(const QString& sample_id, const QString& patient_id,
+                    const int status, const QString& resource) {
     QUrl url = QString("http://localhost:9000/sample/push");
 
     QNetworkRequest request( url );
@@ -109,7 +110,7 @@ void sampleproxy::selectSampleImage(const QString& sample_id, const QString& ima
 void sampleproxy::queryNotTestSample() {
     QUrl url = QString("http://localhost:9000/sample/query/nt");
 
-    QNetworkRequest request( url );
+    QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
@@ -129,7 +130,7 @@ void sampleproxy::queryNotTestSample() {
 void sampleproxy::queryTestedSample() {
     QUrl url = QString("http://localhost:9000/sample/query/at");
 
-    QNetworkRequest request( url );
+    QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
@@ -162,12 +163,25 @@ void sampleproxy::replayFinished(QNetworkReply* result) {
                 } else if (method_name == "queryTestedSample") {
                     QJsonArray arr = obj["result"].toArray();
                     emit queryTestedSampleSuccess(arr);
+                } else if (method_name == "pushSample") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    emit pushSampleSuccess(tmp);
+                } else if (method_name == "updateSample") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    emit updateSampleSuccess(tmp);
                 }
              }
          }
+    } else {
+        QMessageBox::warning(NULL, "Error",
+                             tr("访问数据库操作失败"),
+                             QMessageBox::Ok, QMessageBox::Ok);
     }
 }
 
 void sampleproxy::networkError(QNetworkReply::NetworkError error) {
     qDebug() << error;
+    QMessageBox::warning(NULL, "Error",
+                         tr("访问数据库操作失败"),
+                         QMessageBox::Ok, QMessageBox::Ok);
 }

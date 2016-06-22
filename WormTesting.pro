@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     proxy/fileoptproxy.cpp \
     proxy/proxymanager.cpp \
     starttesting/samplesearchingwidget.cpp \
-    pushwidget/pushwidget.cpp
+    pushwidget/pushwidget.cpp \
+    sampleresource/resourcetreewidget.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -61,7 +62,8 @@ HEADERS  += mainwindow/mainwindow.h\
     proxy/fileoptproxy.h \
     proxy/proxymanager.h \
     starttesting/samplesearchingwidget.h \
-    pushwidget/pushwidget.h
+    pushwidget/pushwidget.h \
+    sampleresource/resourcetreewidget.h
 
 FORMS    +=
 

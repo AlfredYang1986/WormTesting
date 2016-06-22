@@ -48,14 +48,14 @@ void wormproxy::popWormCat(const QString &worm_cat_name) {
 }
 
 void wormproxy::queryWormCat(int take, int skip) {
-    QUrl url = QString("http://localhost:9000/worm/categories/query");
+    QUrl url = QString("http://localhost:9000/worm/categoies/query");
 
     QNetworkRequest request( url );
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-    json.insert("take", take);
-    json.insert("skip", skip);
+//    json.insert("take", take);
+//    json.insert("skip", skip);
 
     QJsonDocument document;
     document.setObject(json);
@@ -107,13 +107,14 @@ void wormproxy::popWorm(const QString& worm_name, const QString& worm_cat_name) 
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
-void wormproxy::queryWorm(const QString& worm_cat_name) {
+void wormproxy::queryWorm(const QString& worm_name, const QString& worm_cat_name) {
     QUrl url = QString("http://localhost:9000/worm/query");
 
     QNetworkRequest request( url );
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
+    json.insert("name", worm_name);
     json.insert("cat", worm_cat_name);
 
     QJsonDocument document;
@@ -130,6 +131,21 @@ void wormproxy::replayFinished(QNetworkReply* result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
         qDebug() << QString(data) << endl;
+
+        QJsonDocument json = QJsonDocument::fromJson(data);
+        if(json.isObject()) {
+            QJsonObject obj = json.object();
+            if (obj.contains("method")) {
+                QString method_name = obj["method"].toString();
+                if (method_name == "wormCategories") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    emit queryWormCatSuccess(tmp);
+                } else if (method_name == "queryWorm") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    emit queryWormSuccess(tmp);
+                }
+             }
+         }
     }
 }
 

@@ -5,6 +5,7 @@
 
 class QVBoxLayout;
 class QLineEdit;
+class QComboBox;
 
 class pushwidget : public QFrame {
     Q_OBJECT
@@ -17,6 +18,9 @@ protected Q_SLOTS:
     void patientBtnClick();
     void patientCancelBtnClick();
 
+    void pushPatientSuccess(const QJsonObject& patient);
+    void pushSampleSuccess(const QJsonObject& Sample);
+
 private:
     QVBoxLayout* main_layout;
 
@@ -26,7 +30,8 @@ private:
 
     QLineEdit* patient_id_edit;
     QLineEdit* patient_name_edit;
-    QLineEdit* patient_gender_edit;
+//    QLineEdit* patient_gender_edit;
+    QComboBox *patient_gender_box;
     QLineEdit* patient_age_edit;
 
 public:
