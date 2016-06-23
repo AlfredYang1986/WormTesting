@@ -13,6 +13,7 @@ private:
 
 Q_SIGNALS:
     void uploadSampleImageSuccess(const QString& sample_id, const QString& image_name);
+    void downloadFileSuccess(const QByteArray&);
 
 protected Q_SLOTS:
     void replayFinished(QNetworkReply*);
@@ -23,6 +24,7 @@ public:
     ~fileoptproxy();
 
     void uploadSampleImage(const QString& sample_id, const QImage& image);
+    void downloadFile(const QString& name);
 };
 
 #endif // FILEOPTPROXY_H

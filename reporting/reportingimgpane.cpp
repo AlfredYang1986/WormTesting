@@ -4,6 +4,11 @@
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <QDebug>
+#include "proxy/proxymanager.h"
+#include "proxy/fileoptproxy.h"
 
 reportingimgpane::reportingimgpane() {
     this->setUpSubviews();
@@ -16,12 +21,12 @@ reportingimgpane::~reportingimgpane() {
 void reportingimgpane::setUpSubviews() {
     main_layout = new QVBoxLayout;
 
-    QLabel* large_img = new QLabel;
+    large_img = new QLabel;
     large_img->setAutoFillBackground(true);
 
-    QPixmap m;
-    m.load(":/resource/photo_preview.png");
-    large_img->setPixmap(m);
+//    QPixmap m;
+//    m.load(":/resource/photo_preview.png");
+//    large_img->setPixmap(m);
     large_img->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     main_layout->addWidget(large_img);
 
@@ -65,8 +70,24 @@ void reportingimgpane::setUpSubviews() {
                             "margin: 0px;"
                             "border: none;"
                         "}");
+
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
 }
 
 QSize reportingimgpane::sizeHint() const {
     return QSize(350, 280);
+}
+
+void reportingimgpane::fillImages(const QJsonObject& sample) {
+    QJsonArray arr = sample["images"].toArray();
+    QString name = arr.first().toString();
+    proxymanager::instance()->getFileProxy()->downloadFile(name);
+}
+
+void reportingimgpane::downloadFileSuccess(const QByteArray& arr) {
+    QPixmap m;
+    m.loadFromData(arr);
+    m = m.scaled(this->width(), this->height() - 100);
+    large_img->setPixmap(m);
 }

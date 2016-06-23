@@ -50,6 +50,25 @@ void fileoptproxy::uploadSampleImage(const QString &sample_id, const QImage &ima
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void fileoptproxy::downloadFile(const QString &name) {
+    QUrl url = QString("http://localhost:9000/images/") + name;
+
+    QNetworkRequest request(url);
+//    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+//    QJsonObject json;
+//    json.insert("cat", worm_cat_name);
+
+//    QJsonDocument document;
+//    document.setObject(json);
+//    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->get(request);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
 void fileoptproxy::replayFinished(QNetworkReply* result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -66,7 +85,9 @@ void fileoptproxy::replayFinished(QNetworkReply* result) {
                     emit uploadSampleImageSuccess(sample_id, image_name);
                 }
              }
-         }
+         } else {
+            emit downloadFileSuccess(data);
+        }
     }
 }
 

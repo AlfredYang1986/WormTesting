@@ -10,6 +10,11 @@ class reportingimgpane;
 class reportingcontainer : public QFrame {
     Q_OBJECT
 
+Q_SIGNALS:
+
+protected Q_SLOTS:
+    void currentSampleChange(const QJsonObject&);
+
 public:
     reportingcontainer();
     ~reportingcontainer();

@@ -147,6 +147,25 @@ void sampleproxy::queryTestedSample() {
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void sampleproxy::querySampleWithID(const QString &sample_id) {
+    QUrl url = QString("http://localhost:9000/sample/query/id");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("sample_id", sample_id);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
 void sampleproxy::replayFinished(QNetworkReply* result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -169,6 +188,9 @@ void sampleproxy::replayFinished(QNetworkReply* result) {
                 } else if (method_name == "updateSample") {
                     QJsonObject tmp = obj["result"].toObject();
                     emit updateSampleSuccess(tmp);
+                } else if (method_name == "querySampleWithID") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    emit querySampleWithIDSuccess(tmp);
                 }
              }
          }

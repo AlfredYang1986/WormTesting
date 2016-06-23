@@ -17,6 +17,7 @@ Q_SIGNALS:
     void updateSampleSuccess(const QJsonObject& data);
     void queryNotTestSampleSuccess(const QJsonArray& samples);
     void queryTestedSampleSuccess(const QJsonArray& samples);
+    void querySampleWithIDSuccess(const QJsonObject& samples);
 
 protected Q_SLOTS:
     void pushSampleImage(const QString& sample_id, const QString& image_name);
@@ -42,6 +43,7 @@ public:
 
     void queryNotTestSample();
     void queryTestedSample();
+    void querySampleWithID(const QString& sample_id);
 };
 
 #endif // SAMPLEMODULE_H

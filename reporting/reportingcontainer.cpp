@@ -29,10 +29,16 @@ void reportingcontainer::setUpSubviews() {
     reporting_img->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     main_layout->addWidget(reporting_img);
 
-
     this->setLayout(main_layout);
+
+    QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
+                     this, SLOT(currentSampleChange(const QJsonObject&)));
 }
 
 QSize reportingcontainer::sizeHint() const {
     return QSize(100, 100);
+}
+
+void reportingcontainer::currentSampleChange(const QJsonObject& sample) {
+    reporting_img->fillImages(sample);
 }

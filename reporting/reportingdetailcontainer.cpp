@@ -9,6 +9,9 @@
 #include "reportingdetailcontainer.h"
 #include "detailpane.h"
 #include "samplereportingpane.h"
+#include <proxy/proxymanager.h>
+#include <proxy/wormproxy.h>
+#include <proxy/sampleproxy.h>
 
 reportingdetailcontainer::reportingdetailcontainer() {
     this->setUpSubviews();
@@ -22,6 +25,10 @@ reportingdetailcontainer::~reportingdetailcontainer() {
 void reportingdetailcontainer::setUpSubviews() {
     main_layout = new QVBoxLayout;
     main_layout->setContentsMargins(0,0,0,0);
+
+    sample_pane = new samplereportingpane;
+    sample_pane->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    main_layout->addWidget(sample_pane);
 
     QHBoxLayout* group_layout = new QHBoxLayout;
 
@@ -71,15 +78,14 @@ void reportingdetailcontainer::setUpSubviews() {
     QSpacerItem* spacer_bottom = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     main_layout->addSpacerItem(spacer_bottom);
 
-    samplereportingpane* sample_pane = new samplereportingpane;
-    sample_pane->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-    main_layout->addWidget(sample_pane);
-
     this->setLayout(main_layout);
 
     this->setStyleSheet("QWidget {"
                             "font-size: 12px;"
                         "}");
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(const QJsonObject&)),
+                     this, SLOT(querySampleWithIDSuccess(const QJsonObject&)));
 }
 
 QSize reportingdetailcontainer::sizeHint() const {
@@ -102,4 +108,10 @@ void reportingdetailcontainer::checkBtnClicked() {
             if (tmp) tmp->show();
         }
     }
+}
+
+void reportingdetailcontainer::querySampleWithIDSuccess(const QJsonObject& sample) {
+    current_sample = sample;
+    sample_pane->fillInputs(sample);
+    emit changeCurrentSample(sample);
 }
