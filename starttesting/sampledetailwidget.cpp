@@ -129,4 +129,10 @@ void sampledetailwidget::currentSample(const QJsonObject& sample) {
                                                         pred_find_widget("sample_resource"));
         ((QLineEdit*)(*iter))->setText(sample_resource);
     }
+
+    current_sample = sample;
+}
+
+const QJsonObject& sampledetailwidget::queryCurrentObject() const {
+    return current_sample;
 }

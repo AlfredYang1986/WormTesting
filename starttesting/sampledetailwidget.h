@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QVector>
 #include <QWidget>
+#include <QJsonObject>
 
 class QFormLayout;
 class QVBoxLayout;
@@ -21,6 +22,8 @@ public:
     ~sampledetailwidget();
 
     virtual QSize sizeHint() const;
+
+    const QJsonObject& queryCurrentObject() const;
 protected:
     void setUpSubviews();
 
@@ -28,6 +31,8 @@ private:
 //    QFormLayout* main_layout;
     QVBoxLayout* main_layout;
     QVector<QWidget*> inputs;
+
+    QJsonObject current_sample;
 };
 
 #endif // SAMPLEDETAILWIDGET_H

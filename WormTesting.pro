@@ -37,7 +37,8 @@ SOURCES += main.cpp\
     proxy/proxymanager.cpp \
     starttesting/samplesearchingwidget.cpp \
     pushwidget/pushwidget.cpp \
-    sampleresource/resourcetreewidget.cpp
+    commonwidget/resourcetreewidget.cpp \
+    camera/cameraproxy.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -63,9 +64,17 @@ HEADERS  += mainwindow/mainwindow.h\
     proxy/proxymanager.h \
     starttesting/samplesearchingwidget.h \
     pushwidget/pushwidget.h \
-    sampleresource/resourcetreewidget.h
+    commonwidget/resourcetreewidget.h \
+    camera/cameraproxy.h \
+    camera/qtipl.hpp
 
 FORMS    +=
 
 RESOURCES += \
     res.qrc
+
+INCLUDEPATH += /usr/local/opt/include
+
+LIBS += /usr/local/lib/libopencv_core.dylib \
+        /usr/local/lib/libopencv_highgui.dylib \
+        /usr/local/lib/libopencv_imgproc.dylib

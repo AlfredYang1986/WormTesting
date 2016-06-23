@@ -1,5 +1,5 @@
 #include "sampleresourcecontainer.h"
-#include "resourcetreewidget.h"
+#include "commonwidget/resourcetreewidget.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <proxy/proxymanager.h>
