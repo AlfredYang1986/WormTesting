@@ -1,7 +1,8 @@
 #include "reportlstcontainer.h"
 
 #include <QHBoxLayout>
-#include "searchtreewidget.h"
+//#include "searchtreewidget.h"
+#include "commonwidget/resourcetreewidget.h"
 #include "searchresulttablewidget.h"
 
 reportlstcontainer::reportlstcontainer() {
@@ -15,7 +16,7 @@ reportlstcontainer::~reportlstcontainer() {
 void reportlstcontainer::setUpSubviews() {
     main_layout = new QHBoxLayout;
 
-    searchtreewidget* search_tree = new searchtreewidget;
+    search_tree = new resourcetreewidget;
     search_tree->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     search_tree->setMinimumSize(QSize(200, 200));
     search_tree->setContentsMargins(0,0,0,0);

@@ -42,23 +42,25 @@ QSize resourcetreewidget::sizeHint() const {
 }
 
 void resourcetreewidget::queryWormCatSuccess(const QJsonObject& cat) {
-    QStringList keys = cat.keys();
-    QStringList::const_iterator key = keys.begin();
-    for(; key != keys.end(); ++key) {
-        qDebug() << (*key) << endl;
-        QTreeWidgetItem* tmp = new QTreeWidgetItem(this,QStringList((*key)));
+    if (categories.isEmpty()) {
+        QStringList keys = cat.keys();
+        QStringList::const_iterator key = keys.begin();
+        for(; key != keys.end(); ++key) {
+            qDebug() << (*key) << endl;
+            QTreeWidgetItem* tmp = new QTreeWidgetItem(this,QStringList((*key)));
 
-        QJsonArray names = cat[(*key)].toArray();
-        QJsonArray::const_iterator iter = names.begin();
-        for (; iter != names.end(); ++iter) {
-            QJsonObject obj = (*iter).toObject();
-            QString name = obj["name"].toString();
-            QTreeWidgetItem * sub_tmp =
-                    new QTreeWidgetItem(tmp ,QStringList(name)); //子节点1
-            tmp->addChild(sub_tmp);
+            QJsonArray names = cat[(*key)].toArray();
+            QJsonArray::const_iterator iter = names.begin();
+            for (; iter != names.end(); ++iter) {
+                QJsonObject obj = (*iter).toObject();
+                QString name = obj["name"].toString();
+                QTreeWidgetItem * sub_tmp =
+                        new QTreeWidgetItem(tmp ,QStringList(name));
+                tmp->addChild(sub_tmp);
+            }
         }
+        categories = cat;
     }
-    categories = cat;
 }
 
 void resourcetreewidget::currentWormSlot(const QModelIndex& index) {

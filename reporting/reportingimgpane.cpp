@@ -24,9 +24,6 @@ void reportingimgpane::setUpSubviews() {
     large_img = new QLabel;
     large_img->setAutoFillBackground(true);
 
-//    QPixmap m;
-//    m.load(":/resource/photo_preview.png");
-//    large_img->setPixmap(m);
     large_img->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     main_layout->addWidget(large_img);
 
@@ -81,7 +78,7 @@ QSize reportingimgpane::sizeHint() const {
 
 void reportingimgpane::fillImages(const QJsonObject& sample) {
     QJsonArray arr = sample["images"].toArray();
-    QString name = arr.first().toString();
+    QString name = arr.last().toString();
     proxymanager::instance()->getFileProxy()->downloadFile(name);
 }
 

@@ -4,6 +4,7 @@
 #include <QFrame>
 
 class QHBoxLayout;
+class resourcetreewidget;
 
 class reportlstcontainer : public QFrame {
 public:
@@ -16,6 +17,8 @@ protected:
 
 private:
     QHBoxLayout* main_layout;
+
+    resourcetreewidget* search_tree;
 };
 
 #endif // REPORTLSTCONTAINER_H
