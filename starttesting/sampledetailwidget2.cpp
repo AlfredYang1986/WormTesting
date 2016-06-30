@@ -1,4 +1,4 @@
-#include "sampledetailwidget.h"
+#include "sampledetailwidget2.h"
 #include <QFormLayout>
 #include <QLineEdit>
 #include <QLabel>
@@ -36,19 +36,19 @@ protected:
     QString _right;
 };
 
-sampledetailwidget::sampledetailwidget() {
+sampledetailwidget2::sampledetailwidget2() {
     this->setUpSubviews();
 }
 
-sampledetailwidget::~sampledetailwidget() {
+sampledetailwidget2::~sampledetailwidget2() {
     main_layout->deleteLater();
 }
 
-QSize sampledetailwidget::sizeHint() const {
+QSize sampledetailwidget2::sizeHint() const {
     return QSize(200, 440);
 }
 
-void sampledetailwidget::setUpSubviews() {
+void sampledetailwidget2::setUpSubviews() {
     this->setObjectName("sample_detail_page_one");
 //    this->setStyleSheet("QWidget#sample_detail_page_one { background-color: red; }");
 
@@ -92,7 +92,7 @@ void sampledetailwidget::setUpSubviews() {
 }
 
 
-void sampledetailwidget::currentSample(const QJsonObject& sample) {
+void sampledetailwidget2::currentSample(const QJsonObject& sample) {
     {
         QString sample_id = sample["sample_id"].toString();
         QVector<QWidget*>::iterator iter = std::find_if(inputs.begin(), inputs.end(),
@@ -133,6 +133,6 @@ void sampledetailwidget::currentSample(const QJsonObject& sample) {
     current_sample = sample;
 }
 
-const QJsonObject& sampledetailwidget::queryCurrentObject() const {
+const QJsonObject& sampledetailwidget2::queryCurrentObject() const {
     return current_sample;
 }

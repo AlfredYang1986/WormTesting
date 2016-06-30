@@ -49,7 +49,6 @@ void sampleproxy::pushSample(const QString& sample_id, const QString& patient_id
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
-
 void sampleproxy::updateSample(const QString& sample_id, const QString& patient_id,
                   const int status, const QString& resource) {
     QUrl url = QString("http://localhost:9000/sample/update");
@@ -71,6 +70,22 @@ void sampleproxy::updateSample(const QString& sample_id, const QString& patient_
 
     QJsonDocument document;
     document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
+void sampleproxy::pushOrUpdateSample(const QJsonObject& sample) {
+    QUrl url = QString("http://localhost:9000/sample/update");
+
+    QNetworkRequest request( url );
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonDocument document;
+    document.setObject(sample);
     QByteArray arr = document.toJson(QJsonDocument::Compact);
 
     QNetworkReply* http_replay = http_connect->post(request , arr);

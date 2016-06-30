@@ -6,10 +6,9 @@
 
 class QVBoxLayout;
 class QPushButton;
-class sampledetailwidget;
-class wormtreewidget;
+class sampledetailwidget2;
 class imgcomparepane;
-class samplesearchingwidget;
+//class samplesearchingwidget;
 class QImage;
 
 class starttestingpage : public QFrame {
@@ -40,8 +39,8 @@ protected:
 
 private:
     QVBoxLayout* main_layout;
-    sampledetailwidget* sample_detail;
-    samplesearchingwidget* sample_searching_widget;
+    sampledetailwidget2* sample_detail;
+//    samplesearchingwidget* sample_searching_widget;
     imgcomparepane* img_pane;
 
     TestStauts status;

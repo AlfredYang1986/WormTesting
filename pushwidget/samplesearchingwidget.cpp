@@ -113,3 +113,8 @@ void samplesearchingwidget::testedWidgetClicked(const QModelIndex& index) {
     QJsonObject sample = vec_sample_not_test.at(index.row()).toObject();
     emit currentSample(sample);
 }
+
+void samplesearchingwidget::reloadData() {
+    proxymanager::instance()->getSampleProxy()->queryNotTestSample();
+    proxymanager::instance()->getSampleProxy()->queryTestedSample();
+}

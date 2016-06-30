@@ -5,7 +5,10 @@
 
 class QVBoxLayout;
 class QLineEdit;
+class QTextEdit;
 class QComboBox;
+class samplesearchingwidget;
+class sampledetailwidget;
 
 class pushwidget : public QFrame {
     Q_OBJECT
@@ -13,27 +16,18 @@ class pushwidget : public QFrame {
 Q_SIGNALS:
 
 protected Q_SLOTS:
-    void sampleBtnClick();
-    void sampleCancelBtnClick();
-    void patientBtnClick();
-    void patientCancelBtnClick();
+    void didFinishEditPatientId(const QString& patient_id);
+    void didFinishEditSampleId(const QString& sample_id);
+    void queryPatientSuccess(const QJsonObject&);
+    void querySampleSuccess(const QJsonObject&);
 
-    void pushPatientSuccess(const QJsonObject& patient);
     void pushSampleSuccess(const QJsonObject& Sample);
 
 private:
     QVBoxLayout* main_layout;
 
-    QLineEdit* sample_id_edit;
-    QLineEdit* sample_resource_edit;
-    QLineEdit* sample_patient_id_edit;
-
-    QLineEdit* patient_id_edit;
-    QLineEdit* patient_name_edit;
-//    QLineEdit* patient_gender_edit;
-    QComboBox *patient_gender_box;
-    QLineEdit* patient_age_edit;
-
+    sampledetailwidget* sample_detail_widget;
+    samplesearchingwidget* sample_searching_widget;
 public:
     pushwidget();
     ~pushwidget();

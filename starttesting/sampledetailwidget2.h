@@ -9,7 +9,7 @@
 class QFormLayout;
 class QVBoxLayout;
 
-class sampledetailwidget : public QFrame {
+class sampledetailwidget2 : public QFrame {
     Q_OBJECT
 
 Q_SIGNALS:
@@ -18,8 +18,8 @@ public Q_SLOTS:
     void currentSample(const QJsonObject&);
 
 public:
-    sampledetailwidget();
-    ~sampledetailwidget();
+    sampledetailwidget2();
+    ~sampledetailwidget2();
 
     virtual QSize sizeHint() const;
 

@@ -32,6 +32,7 @@ public:
     ~samplesearchingwidget();
 
     void setUpSubviews();
+    void reloadData();
 
 protected:
     virtual QSize sizeHit() const;

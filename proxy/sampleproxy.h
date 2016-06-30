@@ -34,6 +34,8 @@ public:
     sampleproxy();
     ~sampleproxy();
 
+    void pushOrUpdateSample(const QJsonObject& sample);
+
     void pushSample(const QString& sample_id, const QString& patient_id = "",
                     const int status = -1, const QString& resource = "");
     void updateSample(const QString& sample_id, const QString& patient = "",

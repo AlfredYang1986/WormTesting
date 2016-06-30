@@ -4,9 +4,7 @@
 #include <QPushButton>
 #include <QMessageBox>
 #include "sampledetailwidget.h"
-#include "wormtreewidget.h"
 #include "imgcomparepane.h"
-#include "samplesearchingwidget.h"
 #include "camera/cameraproxy.h"
 #include "proxy/proxymanager.h"
 #include "proxy/sampleproxy.h"
@@ -18,7 +16,7 @@ starttestingpage::starttestingpage() {
 starttestingpage::~starttestingpage() {
     main_layout->deleteLater();
     sample_detail->deleteLater();
-    sample_searching_widget->deleteLater();
+//    sample_searching_widget->deleteLater();
     img_pane->deleteLater();
 }
 
@@ -34,16 +32,16 @@ void starttestingpage::setUpSubviews() {
 
     QHBoxLayout* page_one_content_layout = new QHBoxLayout;
     page_one_content_layout->setContentsMargins(8,0,0,0);
-    sample_detail = new sampledetailwidget;
+    sample_detail = new sampledetailwidget2;
     sample_detail->setObjectName(QStringLiteral("sample_detail"));
     sample_detail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     page_one_content_layout->addWidget(sample_detail);
 
-    sample_searching_widget = new samplesearchingwidget;
-    sample_searching_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    sample_searching_widget->setMinimumSize(QSize(300,300));
-    sample_searching_widget->setContentsMargins(0,0,0,0);
-    page_one_content_layout->addWidget(sample_searching_widget);
+//    sample_searching_widget = new samplesearchingwidget;
+//    sample_searching_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+//    sample_searching_widget->setMinimumSize(QSize(300,300));
+//    sample_searching_widget->setContentsMargins(0,0,0,0);
+//    page_one_content_layout->addWidget(sample_searching_widget);
 
     img_pane = new imgcomparepane;
     img_pane->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -102,8 +100,8 @@ void starttestingpage::setUpSubviews() {
                             "border: 1px solid #1bd7ff;"
                         "}");
 
-    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
-                     sample_detail, SLOT(currentSample(const QJsonObject&)));
+//    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
+//                     sample_detail, SLOT(currentSample(const QJsonObject&)));
     QObject::connect(cameraproxy::instance(), SIGNAL(stream(const QImage&)),
                      img_pane, SLOT(imageStream(const QImage&)));
     QObject::connect(img_pane, SIGNAL(takeImageSuccess(const QImage&)),

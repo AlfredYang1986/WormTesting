@@ -18,8 +18,7 @@ SOURCES += main.cpp\
         titlewidget/titlewidget.cpp \
         titlewidget/titlepushbutton.cpp \
         starttesting/starttestingpage.cpp \
-    starttesting/sampledetailwidget.cpp \
-    starttesting/wormtreewidget.cpp \
+    starttesting/sampledetailwidget2.cpp \
     starttesting/imgcomparepane.cpp \
     reporting/reportingcontainer.cpp \
     reporting/reportingdetailcontainer.cpp \
@@ -35,18 +34,17 @@ SOURCES += main.cpp\
     proxy/wormproxy.cpp \
     proxy/fileoptproxy.cpp \
     proxy/proxymanager.cpp \
-    starttesting/samplesearchingwidget.cpp \
     pushwidget/pushwidget.cpp \
     commonwidget/resourcetreewidget.cpp \
-    camera/cameraproxy.cpp
+    camera/cameraproxy.cpp \
+    pushwidget/samplesearchingwidget.cpp \
+    commonwidget/sampledetailwidget.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
         titlewidget/titlepushbutton.h \
         tools/helptools.hpp \
         starttesting/starttestingpage.h \
-    starttesting/sampledetailwidget.h \
-    starttesting/wormtreewidget.h \
     starttesting/imgcomparepane.h \
     reporting/reportingcontainer.h \
     reporting/reportingdetailcontainer.h \
@@ -62,11 +60,13 @@ HEADERS  += mainwindow/mainwindow.h\
     proxy/wormproxy.h \
     proxy/fileoptproxy.h \
     proxy/proxymanager.h \
-    starttesting/samplesearchingwidget.h \
     pushwidget/pushwidget.h \
     commonwidget/resourcetreewidget.h \
     camera/cameraproxy.h \
-    camera/qtipl.hpp
+    camera/qtipl.hpp \
+    pushwidget/samplesearchingwidget.h \
+    starttesting/sampledetailwidget2.h \
+    commonwidget/sampledetailwidget.h
 
 FORMS    +=
 
