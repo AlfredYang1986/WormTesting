@@ -14,6 +14,8 @@ class pushwidget : public QFrame {
     Q_OBJECT
 
 Q_SIGNALS:
+    void startTesting(const QJsonObject&);
+    void startReporting(const QJsonObject&);
 
 protected Q_SLOTS:
     void didFinishEditPatientId(const QString& patient_id);
@@ -21,7 +23,9 @@ protected Q_SLOTS:
     void queryPatientSuccess(const QJsonObject&);
     void querySampleSuccess(const QJsonObject&);
 
-    void pushSampleSuccess(const QJsonObject& Sample);
+    void pushSampleSuccess(const QJsonObject& sample);
+
+    void doubleSelectSample(const QJsonObject& sample);
 
 private:
     QVBoxLayout* main_layout;

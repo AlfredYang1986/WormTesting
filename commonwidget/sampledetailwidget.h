@@ -31,6 +31,8 @@ public:
 
     void queryPatientSuccess(const QJsonObject& patitent);
     void querySampleSuccess(const QJsonObject& sample);
+
+    QString queryCurrentSampleId() const;
 private:
     QLineEdit* sample_id_edit;
     QLineEdit* sample_resource_edit;

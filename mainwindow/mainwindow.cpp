@@ -5,6 +5,7 @@
 #include "reportlst/reportlstcontainer.h"
 #include "pushwidget/pushwidget.h"
 #include "sampleresource/sampleresourcecontainer.h"
+#include "settingwiget/settingmainwidget.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -55,8 +56,10 @@ void MainWindow::changeMainContent(const QString &title) {
         this->createReportLstWidget();
     } else if (title == "录入样本") {
         this->createPushWidget();
-    }else if (title == "样本资料") {
+    } else if (title == "样本资料") {
         this->createResourceWidget();
+    } else if (title == "系统设置") {
+        this->createSettingWidget();
     } else {
         this->createCompareWidget();
     }
@@ -77,6 +80,10 @@ void MainWindow::changeMainContent(const QString &title) {
          main_container->addWidget(content_widget);
 
          contents[QStringLiteral("录入样本")] = content_widget;
+
+         QObject::connect(content_widget, SIGNAL(startTesting(const QJsonObject&)),
+                          this, SLOT(startTest(const QJsonObject&)));
+
          tmp = content_widget;
      }
 
@@ -99,6 +106,12 @@ void MainWindow::changeMainContent(const QString &title) {
          main_container->addWidget(content_widget);
 
          contents[QStringLiteral("开始检测")] = content_widget;
+
+         QObject::connect(content_widget, SIGNAL(startReporting(const QString&)),
+                          this, SLOT(startReport(const QString&)));
+         QObject::connect(content_widget, SIGNAL(startComparing(const QString&)),
+                          this, SLOT(startCompare(const QString&)));
+
          tmp = content_widget;
      }
 
@@ -189,3 +202,64 @@ void MainWindow::changeMainContent(const QString &title) {
      tmp->show();
  }
 
+void MainWindow::createSettingWidget() {
+    map<QString, QFrame*>::iterator iter = contents.begin();
+    for (; iter != contents.end(); ++iter) {
+        QFrame* tmp = (*iter).second;
+        tmp->hide();
+    }
+
+    QFrame* tmp = contents["系统设置"];
+    if (tmp == NULL) {
+        QFrame* content_widget = new settingmainwidget;
+        content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        main_container->addWidget(content_widget);
+
+        contents[QStringLiteral("系统设置")] = content_widget;
+        tmp = content_widget;
+    }
+
+    tmp->show();
+}
+
+void MainWindow::createAboutWidget() {
+    map<QString, QFrame*>::iterator iter = contents.begin();
+    for (; iter != contents.end(); ++iter) {
+        QFrame* tmp = (*iter).second;
+        tmp->hide();
+    }
+
+    QFrame* tmp = contents["关于系统"];
+    if (tmp == NULL) {
+        QFrame* content_widget = new QFrame;
+        content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+
+        main_container->addWidget(content_widget);
+
+        contents[QStringLiteral("关于系统")] = content_widget;
+        tmp = content_widget;
+    }
+
+    tmp->show();
+}
+
+ void MainWindow::startTest(const QJsonObject & sample) {
+    this->createTestingWidget();
+    starttestingpage* p = (starttestingpage*)contents["开始检测"];
+    p->setCurrentTestingSample(sample);
+ }
+
+ void MainWindow::startReport(const QJsonObject & sample) {
+
+ }
+
+void MainWindow::startReport(const QString& sample_id) {
+    this->createReportWidget();
+    reportingcontainer* p = (reportingcontainer*)contents["填写报告"];
+    p->setCurrentReportingSampleId(sample_id);
+}
+
+void MainWindow::startCompare(const QString& sample_id) {
+
+}

@@ -13,12 +13,15 @@ class samplesearchingwidget : public QFrame {
 
 Q_SIGNALS:
     void currentSample(const QJsonObject&);
+    void doubleSelectSample(const QJsonObject&);
 
 protected Q_SLOTS:
     void queryNotTestSamples(const QJsonArray&);
     void queryTesetedSamples(const QJsonArray&);
     void notTestWidgetClicked(const QModelIndex&);
     void testedWidgetClicked(const QModelIndex&);
+    void notTestWidgetDoubleClicked(const QModelIndex&);
+    void testedWidgetDoubleClicked(const QModelIndex&);
 
 private:
     QVBoxLayout*  main_layout;

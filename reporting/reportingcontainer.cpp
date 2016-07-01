@@ -1,7 +1,11 @@
 #include "reportingcontainer.h"
-#include "reportingdetailcontainer.h"
+#include "commonwidget/sampledetailwidget.h"
+#include "commonwidget/commonimglstwidget.h"
 #include "reportingimgpane.h"
 #include <QHBoxLayout>
+#include "proxy/proxymanager.h"
+#include "proxy/sampleproxy.h"
+#include "proxy/patientproxy.h"
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -9,7 +13,7 @@ reportingcontainer::reportingcontainer() {
 
 reportingcontainer::~reportingcontainer() {
     main_layout->deleteLater();
-    reporting_detail->deleteLater();
+    sample_detail->deleteLater();
     reporting_img->deleteLater();
 }
 
@@ -21,18 +25,32 @@ void reportingcontainer::setUpSubviews() {
     main_layout = new QHBoxLayout;
     main_layout->setContentsMargins(8,0,0,0);
 
-    reporting_detail = new reportingdetailcontainer;
-    reporting_detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    main_layout->addWidget(reporting_detail);
+    sample_detail = new sampledetailwidget;
+    sample_detail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    main_layout->addWidget(sample_detail);
+
+    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     reporting_img = new reportingimgpane;
     reporting_img->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
     main_layout->addWidget(reporting_img);
 
+    img_lst = new commonimglstwidget;
+    img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    main_layout->addWidget(img_lst);
+
     this->setLayout(main_layout);
 
-    QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
-                     this, SLOT(currentSampleChange(const QJsonObject&)));
+//    QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
+//                     this, SLOT(currentSampleChange(const QJsonObject&)));
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+
+    QObject::connect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::connect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
 }
 
 QSize reportingcontainer::sizeHint() const {
@@ -41,4 +59,38 @@ QSize reportingcontainer::sizeHint() const {
 
 void reportingcontainer::currentSampleChange(const QJsonObject& sample) {
     reporting_img->fillImages(sample);
+}
+
+void reportingcontainer::setCurrentReportingSampleId(const QString& sample_id) {
+    proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
+}
+
+void reportingcontainer::querySampleWithIDSuccess(const QJsonObject & sample) {
+    sample_detail->querySampleSuccess(sample);
+    QJsonObject patient = sample["patient"].toObject();
+    sample_detail->queryPatientSuccess(patient);
+    img_lst->changeCurrentSample(sample);
+}
+
+void reportingcontainer::didFinishEditPatientId(const QString& patient_id) {
+    if (!patient_id.isEmpty()) {
+        proxymanager::instance()->getPatientProxy()->queryPatiendWithId(patient_id);
+    }
+}
+
+void reportingcontainer::didFinishEditSampleId(const QString& sample_id) {
+    if (!sample_id.isEmpty()) {
+        proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
+    }
+}
+
+void reportingcontainer::queryPatientSuccess(const QJsonObject & patient) {
+    sample_detail->queryPatientSuccess(patient);
+}
+
+void reportingcontainer::querySampleSuccess(const QJsonObject& sample) {
+    sample_detail->querySampleSuccess(sample);
+    QJsonObject patient = sample["patient"].toObject();
+    sample_detail->queryPatientSuccess(patient);
+    img_lst->changeCurrentSample(sample);
 }

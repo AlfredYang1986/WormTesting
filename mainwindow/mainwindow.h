@@ -21,6 +21,11 @@ public:
 public slots:
     void changeMainContent(const QString& title);
 
+    void startTest(const QJsonObject&);
+    void startReport(const QJsonObject&);
+    void startReport(const QString&);
+    void startCompare(const QString&);
+
 protected:
     void setUpSubviews();
 
@@ -30,6 +35,8 @@ protected:
     void createReportLstWidget();
     void createResourceWidget();
     void createCompareWidget();
+    void createSettingWidget();
+    void createAboutWidget();
 
 private:
     QWidget* center_widget;

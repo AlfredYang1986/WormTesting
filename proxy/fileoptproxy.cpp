@@ -35,7 +35,7 @@ void fileoptproxy::uploadSampleImage(const QString &sample_id, const QImage &ima
     data.append(bytes);
     data.append(end.toUtf8());
 
-    qDebug() << data << endl;
+//    qDebug() << data << endl;
 
     //设置HTTPHeader中Content-Type的值
     //设置HTTPHeader

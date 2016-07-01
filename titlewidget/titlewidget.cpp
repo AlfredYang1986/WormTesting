@@ -84,6 +84,8 @@ void titlewidget::setUpSubViews() {
     tmp_lst.push_back(std::make_pair("menu3.png", "报告列表"));
     tmp_lst.push_back(std::make_pair("menu4.png", "样本资料"));
     tmp_lst.push_back(std::make_pair("menu5.png", "对比结果"));
+    tmp_lst.push_back(std::make_pair("menu5.png", "系统设置"));
+    tmp_lst.push_back(std::make_pair("menu5.png", "关于系统"));
 
     std::for_each(tmp_lst.begin(), tmp_lst.end(), pred_btn_creator(&menu_lst));
     std::for_each(menu_lst.begin(), menu_lst.end(), pred_push_layout(main_layout));

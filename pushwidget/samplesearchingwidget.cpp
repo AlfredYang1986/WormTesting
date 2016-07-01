@@ -19,6 +19,7 @@ void samplesearchingwidget::setUpSubviews() {
     main_layout = new QVBoxLayout;
 
     not_test_sample = new QTableWidget;
+    not_test_sample->setEditTriggers(QAbstractItemView::NoEditTriggers);
     not_test_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
@@ -29,6 +30,7 @@ void samplesearchingwidget::setUpSubviews() {
     main_layout->addWidget(not_test_sample);
 
     tested_sample = new QTableWidget;
+    not_test_sample->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tested_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
@@ -49,6 +51,11 @@ void samplesearchingwidget::setUpSubviews() {
                      this, SLOT(notTestWidgetClicked(const QModelIndex&)));
     QObject::connect(tested_sample, SIGNAL(clicked(const QModelIndex&)),
                      this, SLOT(testedWidgetClicked(const QModelIndex&)));
+
+    QObject::connect(not_test_sample, SIGNAL(doubleClicked(const QModelIndex&)),
+                     this, SLOT(notTestWidgetDoubleClicked(const QModelIndex&)));
+    QObject::connect(tested_sample, SIGNAL(doubleClicked(const QModelIndex&)),
+                     this, SLOT(testedWidgetDoubleClicked(const QModelIndex&)));
 
     proxymanager::instance()->getSampleProxy()->queryNotTestSample();
     proxymanager::instance()->getSampleProxy()->queryTestedSample();
@@ -94,11 +101,22 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
     int index = 0;
     for(; iter != samples.end(); ++iter) {
         QJsonObject tmp = (*iter).toObject();
-        tested_sample->setItem(index, 0, new QTableWidgetItem(tmp["sample_id"].toString()));
+        QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
+        if (tmp["status"].toInt() == 1)
+            item1->setForeground(QBrush(QColor(255, 0, 0)));
+        else
+            item1->setForeground(QBrush(QColor(0, 0, 255)));
+        tested_sample->setItem(index, 0, item1);
+
         qlonglong timespan = tmp["date"].toVariant().toLongLong();
         QDateTime t;
         t.setMSecsSinceEpoch(timespan);
-        tested_sample->setItem(index, 1, new QTableWidgetItem(t.toString()));
+        QTableWidgetItem* item2 = new QTableWidgetItem(t.toString());
+        if (tmp["status"].toInt() == 1)
+            item2->setForeground(QBrush(QColor(255, 0, 0)));
+        else
+            item2->setForeground(QBrush(QColor(0, 0, 255)));
+        tested_sample->setItem(index, 1, item2);
         ++index;
     }
     vec_sample_tested = samples;
@@ -110,8 +128,18 @@ void samplesearchingwidget::notTestWidgetClicked(const QModelIndex& index) {
 }
 
 void samplesearchingwidget::testedWidgetClicked(const QModelIndex& index) {
-    QJsonObject sample = vec_sample_not_test.at(index.row()).toObject();
+    QJsonObject sample = vec_sample_tested.at(index.row()).toObject();
     emit currentSample(sample);
+}
+
+void samplesearchingwidget::notTestWidgetDoubleClicked(const QModelIndex & index) {
+    QJsonObject sample = vec_sample_not_test.at(index.row()).toObject();
+    emit doubleSelectSample(sample);
+}
+
+void samplesearchingwidget::testedWidgetDoubleClicked(const QModelIndex & index) {
+    QJsonObject sample = vec_sample_tested.at(index.row()).toObject();
+    emit doubleSelectSample(sample);
 }
 
 void samplesearchingwidget::reloadData() {

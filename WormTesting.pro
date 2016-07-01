@@ -18,10 +18,8 @@ SOURCES += main.cpp\
         titlewidget/titlewidget.cpp \
         titlewidget/titlepushbutton.cpp \
         starttesting/starttestingpage.cpp \
-    starttesting/sampledetailwidget2.cpp \
     starttesting/imgcomparepane.cpp \
     reporting/reportingcontainer.cpp \
-    reporting/reportingdetailcontainer.cpp \
     reporting/detailpane.cpp \
     reporting/samplereportingpane.cpp \
     reporting/reportingimgpane.cpp \
@@ -38,7 +36,15 @@ SOURCES += main.cpp\
     commonwidget/resourcetreewidget.cpp \
     camera/cameraproxy.cpp \
     pushwidget/samplesearchingwidget.cpp \
-    commonwidget/sampledetailwidget.cpp
+    commonwidget/sampledetailwidget.cpp \
+    commonwidget/commonimglstwidget.cpp \
+    settingwiget/settingmainwidget.cpp \
+    settingwiget/reportingdialog.cpp \
+    settingwiget/addwormcatdialog.cpp \
+    settingwiget/deletewwormcatdialog.cpp \
+    settingwiget/addwormdialog.cpp \
+    settingwiget/deletewormdialog.cpp \
+    settingwiget/addsampleresourcedialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -47,7 +53,6 @@ HEADERS  += mainwindow/mainwindow.h\
         starttesting/starttestingpage.h \
     starttesting/imgcomparepane.h \
     reporting/reportingcontainer.h \
-    reporting/reportingdetailcontainer.h \
     reporting/detailpane.h \
     reporting/samplereportingpane.h \
     reporting/reportingimgpane.h \
@@ -65,8 +70,15 @@ HEADERS  += mainwindow/mainwindow.h\
     camera/cameraproxy.h \
     camera/qtipl.hpp \
     pushwidget/samplesearchingwidget.h \
-    starttesting/sampledetailwidget2.h \
-    commonwidget/sampledetailwidget.h
+    commonwidget/sampledetailwidget.h \
+    commonwidget/commonimglstwidget.h \
+    settingwiget/settingmainwidget.h \
+    settingwiget/reportingdialog.h \
+    settingwiget/addwormcatdialog.h \
+    settingwiget/deletewwormcatdialog.h \
+    settingwiget/addwormdialog.h \
+    settingwiget/deletewormdialog.h \
+    settingwiget/addsampleresourcedialog.h
 
 FORMS    +=
 

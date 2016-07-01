@@ -62,3 +62,7 @@ void imgcomparepane::takeImage() {
     if (pImg)
         emit takeImageSuccess(*pImg);
 }
+
+void imgcomparepane::clearPane() {
+    photo_preview->clear();
+}

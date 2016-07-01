@@ -265,3 +265,7 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
         qDebug() << "query patient empty" << endl;
     }
 }
+
+QString sampledetailwidget::queryCurrentSampleId() const {
+    return sample_id_edit->text();
+}

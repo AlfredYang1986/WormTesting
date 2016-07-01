@@ -34,13 +34,19 @@ void pushwidget::setUpSubviews() {
     sample_detail_widget = new sampledetailwidget();
     left_layout->addWidget(sample_detail_widget);
 
-    QPushButton* sample_button = new QPushButton("录入样本");
-    QObject::connect(sample_button, SIGNAL(released()), sample_detail_widget, SLOT(sampleBtnClick()));
-    left_layout->addWidget(sample_button);
-    QPushButton* sample_cancel = new QPushButton("取消样本");
-    QObject::connect(sample_cancel, SIGNAL(released()), sample_detail_widget, SLOT(sampleCancelBtnClick()));
-    left_layout->addWidget(sample_cancel);
+    QHBoxLayout* bottom_layout = new QHBoxLayout;
 
+    QPushButton* sample_button = new QPushButton("录入样本");
+    sample_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(sample_button, SIGNAL(released()), sample_detail_widget, SLOT(sampleBtnClick()));
+    bottom_layout->addWidget(sample_button);
+    QPushButton* sample_cancel = new QPushButton("取消样本");
+    sample_cancel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(sample_cancel, SIGNAL(released()), sample_detail_widget, SLOT(sampleCancelBtnClick()));
+    bottom_layout->addWidget(sample_cancel);
+
+    left_layout->addLayout(bottom_layout);
+    left_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     content_layout->addLayout(left_layout);
 
     sample_searching_widget = new samplesearchingwidget;
@@ -76,6 +82,12 @@ void pushwidget::setUpSubviews() {
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(const QJsonObject&)),
                      this, SLOT(querySampleSuccess(const QJsonObject&)));
 
+    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
+                     this, SLOT(querySampleSuccess(const QJsonObject&)));
+
+    QObject::connect(sample_searching_widget, SIGNAL(doubleSelectSample(const QJsonObject&)),
+                     this, SLOT(doubleSelectSample(const QJsonObject&)));
+
 }
 
 QSize pushwidget::sizeHint() const {
@@ -106,4 +118,12 @@ void pushwidget::querySampleSuccess(const QJsonObject& sample) {
     sample_detail_widget->querySampleSuccess(sample);
     QJsonObject patient = sample["patient"].toObject();
     sample_detail_widget->queryPatientSuccess(patient);
+}
+
+void pushwidget::doubleSelectSample(const QJsonObject &sample) {
+    if (sample["status"].toInt() == 0) {
+        emit startTesting(sample);
+    } else {
+        emit startReporting(sample);
+    }
 }

@@ -21,6 +21,8 @@ public:
     ~imgcomparepane();
 
     virtual QSize sizeHint() const;
+
+    void clearPane();
 protected:
     void setUpSubviews();
 
