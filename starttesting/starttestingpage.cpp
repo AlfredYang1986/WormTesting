@@ -119,20 +119,7 @@ void starttestingpage::setUpSubviews() {
 
 //    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
 //                     sample_detail, SLOT(currentSample(const QJsonObject&)));
-    QObject::connect(cameraproxy::instance(), SIGNAL(stream(const QImage&)),
-                     img_pane, SLOT(imageStream(const QImage&)));
-    QObject::connect(img_pane, SIGNAL(takeImageSuccess(const QImage&)),
-                     this, SLOT(takeImageSuccess(const QImage&)));
 
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
-                     this, SLOT(uploadSampleImageSuccess(QString,QString)));
-
-    QObject::connect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
-                     this, SLOT(didFinishEditPatientId(const QString&)));
-    QObject::connect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
-                     this, SLOT(didFinishEditSampleId(const QString&)));
-    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
-                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }
 
 void starttestingpage::startTestingBtnClicked() {
@@ -220,4 +207,38 @@ void starttestingpage::querySampleSuccess(const QJsonObject& sample) {
     sample_detail->querySampleSuccess(sample);
     QJsonObject patient = sample["patient"].toObject();
     sample_detail->queryPatientSuccess(patient);
+}
+
+void starttestingpage::showEvent(QShowEvent *) {
+    QObject::connect(cameraproxy::instance(), SIGNAL(stream(const QImage&)),
+                     img_pane, SLOT(imageStream(const QImage&)));
+    QObject::connect(img_pane, SIGNAL(takeImageSuccess(const QImage&)),
+                     this, SLOT(takeImageSuccess(const QImage&)));
+
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
+                     this, SLOT(uploadSampleImageSuccess(QString,QString)));
+
+    QObject::connect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::connect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+}
+
+void starttestingpage::hideEvent(QHideEvent *) {
+    QObject::disconnect(cameraproxy::instance(), SIGNAL(stream(const QImage&)),
+                     img_pane, SLOT(imageStream(const QImage&)));
+    QObject::disconnect(img_pane, SIGNAL(takeImageSuccess(const QImage&)),
+                     this, SLOT(takeImageSuccess(const QImage&)));
+
+    QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
+                     this, SLOT(uploadSampleImageSuccess(QString,QString)));
+
+    QObject::disconnect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::disconnect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }

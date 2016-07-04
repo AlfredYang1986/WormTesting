@@ -44,13 +44,7 @@ void reportingcontainer::setUpSubviews() {
 //    QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
 //                     this, SLOT(currentSampleChange(const QJsonObject&)));
 
-    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
-                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 
-    QObject::connect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
-                     this, SLOT(didFinishEditPatientId(const QString&)));
-    QObject::connect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
-                     this, SLOT(didFinishEditSampleId(const QString&)));
 }
 
 QSize reportingcontainer::sizeHint() const {
@@ -93,4 +87,24 @@ void reportingcontainer::querySampleSuccess(const QJsonObject& sample) {
     QJsonObject patient = sample["patient"].toObject();
     sample_detail->queryPatientSuccess(patient);
     img_lst->changeCurrentSample(sample);
+}
+
+void reportingcontainer::showEvent(QShowEvent *) {
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+
+    QObject::connect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::connect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
+}
+
+void reportingcontainer::hideEvent(QHideEvent *) {
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+
+    QObject::disconnect(sample_detail, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::disconnect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
 }

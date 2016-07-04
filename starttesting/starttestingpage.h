@@ -35,6 +35,10 @@ protected Q_SLOTS:
 
     void querySampleWithIDSuccess(const QJsonObject&);
 
+protected:
+    virtual void showEvent (QShowEvent* event);
+    virtual void hideEvent(QHideEvent *event);
+
 public:
     enum TestStauts {
         TestStatus_not_ready,

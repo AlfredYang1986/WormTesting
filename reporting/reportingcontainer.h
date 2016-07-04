@@ -22,6 +22,10 @@ protected Q_SLOTS:
     void currentSampleChange(const QJsonObject&);
     void querySampleWithIDSuccess(const QJsonObject&);
 
+protected:
+    virtual void showEvent(QShowEvent *);
+    virtual void hideEvent(QHideEvent *);
+
 public:
     reportingcontainer();
     ~reportingcontainer();

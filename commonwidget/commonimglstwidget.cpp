@@ -41,11 +41,7 @@ void commonimglstwidget::setUpSubviews() {
     main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
 
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
 }
-
-
 
 void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
     QVector<QLabel*>::iterator iter_label = img_lst.begin();
@@ -112,4 +108,14 @@ void commonimglstwidget::moveToNextImage() {
 
     if (!current_download_name.isEmpty())
         proxymanager::instance()->getFileProxy()->downloadFile(current_download_name);
+}
+
+void commonimglstwidget::showEvent(QShowEvent *) {
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+}
+
+void commonimglstwidget::hideEvent(QHideEvent *) {
+    QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
 }

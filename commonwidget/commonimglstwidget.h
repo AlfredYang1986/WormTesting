@@ -13,6 +13,10 @@ class commonimglstwidget : public QFrame {
 protected Q_SLOTS:
     void downloadFileSuccess(const QByteArray&);
 
+protected:
+    virtual void showEvent (QShowEvent* event);
+    virtual void hideEvent(QHideEvent *event);
+
 private:
     QVBoxLayout* main_layout;
 
