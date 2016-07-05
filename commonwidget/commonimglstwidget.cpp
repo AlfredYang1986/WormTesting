@@ -8,6 +8,8 @@
 #include <QSpacerItem>
 #include "proxy/proxymanager.h"
 #include "proxy/fileoptproxy.h"
+#include "proxy/sampleproxy.h"
+#include "commonwidget/imglstitem.h"
 
 class pred_find_current_download_filename {
 public:
@@ -44,11 +46,7 @@ void commonimglstwidget::setUpSubviews() {
 }
 
 void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
-    QVector<QLabel*>::iterator iter_label = img_lst.begin();
-    for(; iter_label != img_lst.end(); ++iter_label) {
-        main_layout->removeWidget(*iter_label);
-    }
-    img_lst.clear();
+    this->clearLabels();
     img_name_lst.clear();
 
     sample_id = sample["sample_id"].toString();
@@ -73,14 +71,18 @@ void commonimglstwidget::pushImageName(const QString& name) {
 }
 
 void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {
-    QLabel* tmp = new QLabel;
+    imglstitem* tmp = new imglstitem;
+    tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
     tmp->setMaximumSize(QSize(300, 200));
     tmp->setMinimumSize(QSize(300, 200));
     QPixmap m;
     m.loadFromData(data);
-    m = m.scaledToWidth(250);
+    m = m.scaled(300, 200);
     tmp->setPixmap(m);
+
+    QObject::connect(tmp, SIGNAL(delectBtnSelected(QString)),
+                     this, SLOT(deleteImageStart(QString)));
 
     main_layout->insertWidget(0, tmp);
     img_lst.push_back(tmp);
@@ -113,9 +115,45 @@ void commonimglstwidget::moveToNextImage() {
 void commonimglstwidget::showEvent(QShowEvent *) {
     QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
                      this, SLOT(downloadFileSuccess(const QByteArray&)));
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
+                     this, SLOT(deleteImageSuccess(QString,QString)));
 }
 
 void commonimglstwidget::hideEvent(QHideEvent *) {
     QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
                      this, SLOT(downloadFileSuccess(const QByteArray&)));
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
+                     this, SLOT(deleteImageSuccess(QString,QString)));
+}
+
+void commonimglstwidget::deleteImageStart(const QString & name) {
+    QVector<QString>::iterator iter = std::find_if(img_name_lst.begin(), img_name_lst.end(),
+                                                   pred_find_current_download_filename(name));
+    if (iter != img_name_lst.end()) {
+        proxymanager::instance()->getSampleProxy()->popSampleImage(sample_id, name);
+    }
+}
+
+void commonimglstwidget::deleteImageSuccess(const QString & sample_id_arg, const QString & image) {
+
+    if (sample_id_arg != sample_id)
+        return;
+
+    this->clearLabels();
+
+    img_name_lst.erase(std::remove_if(img_name_lst.begin(), img_name_lst.end(),
+                                      pred_find_current_download_filename(image)), img_name_lst.end());
+
+    current_download_name = "";
+    this->moveToNextImage();
+}
+
+void commonimglstwidget::clearLabels() {
+    QVector<QLabel*>::iterator iter_label = img_lst.begin();
+    for(; iter_label != img_lst.end(); ++iter_label) {
+        main_layout->removeWidget(*iter_label);
+        QLabel* b = (*iter_label);
+        b->deleteLater();
+    }
+    img_lst.clear();
 }

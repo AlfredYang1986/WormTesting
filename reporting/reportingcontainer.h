@@ -7,6 +7,7 @@ class QHBoxLayout;
 class sampledetailwidget;
 class reportingimgpane;
 class commonimglstwidget;
+class reportingdetailwidget;
 
 class reportingcontainer : public QFrame {
     Q_OBJECT
@@ -22,6 +23,7 @@ protected Q_SLOTS:
     void currentSampleChange(const QJsonObject&);
     void querySampleWithIDSuccess(const QJsonObject&);
 
+    void saveTestResult();
 protected:
     virtual void showEvent(QShowEvent *);
     virtual void hideEvent(QHideEvent *);
@@ -42,6 +44,7 @@ private:
     sampledetailwidget* sample_detail;
     reportingimgpane* reporting_img;
     commonimglstwidget* img_lst;
+    reportingdetailwidget* reporting_detail;
 };
 
 #endif // REPORTINGCONTAINER_H

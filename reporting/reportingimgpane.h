@@ -11,10 +11,14 @@ class reportingimgpane : public QFrame {
     Q_OBJECT
 
 Q_SIGNALS:
+    void saveReportTestResult();
 
 protected Q_SLOTS:
     void downloadFileSuccess(const QByteArray&);
 
+    void saveBtnClicked();
+    void previewBtnClicked();
+    void printBtnClicked();
 public:
     reportingimgpane();
     ~reportingimgpane();

@@ -40,18 +40,20 @@ protected:
     virtual void hideEvent(QHideEvent *event);
 
 public:
-    enum TestStauts {
+    enum TestStatus {
         TestStatus_not_ready,
         TestStatus_ready,
         TestStatus_testing
     };
-    Q_ENUM(TestStauts);
+    Q_ENUM(TestStatus);
 
 public:
     starttestingpage();
     ~starttestingpage();
 
     void setCurrentTestingSample(const QJsonObject& sample);
+
+    TestStatus currentStatus() const;
 protected:
     void setUpSubviews();
 
@@ -61,7 +63,7 @@ private:
     imgcomparepane* img_pane;
     commonimglstwidget* img_lst_pane;
 
-    TestStauts status;
+    TestStatus status;
     QPushButton* control_start_btn;
     QPushButton* control_end_btn;
     QPushButton* control_report_btn;

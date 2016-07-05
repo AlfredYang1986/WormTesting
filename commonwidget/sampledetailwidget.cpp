@@ -23,7 +23,8 @@ void sampledetailwidget::setUpSubviews() {
     sample_id_edit = new QLineEdit;
     QObject::connect(sample_id_edit, SIGNAL(editingFinished()), this, SLOT(didFinishEditSampleID_slot()));
 
-    sample_resource_edit = new QLineEdit;
+    sample_resource_box = new QComboBox;
+
     sample_index_edit = new QLineEdit;
     sample_section_edit = new QLineEdit;
     sample_query_doctor_edit = new QLineEdit;
@@ -41,6 +42,8 @@ void sampledetailwidget::setUpSubviews() {
 
     patient_name_edit = new QLineEdit;
 
+    patient_type = new QComboBox;
+
     patient_gender_box = new QComboBox;
     patient_gender_box->addItem(tr("男"));
     patient_gender_box->addItem(tr("女"));
@@ -55,6 +58,7 @@ void sampledetailwidget::setUpSubviews() {
 
     QFormLayout* sample_layout = new QFormLayout;
     sample_layout->addRow("病人编号:", patient_id_edit);
+    sample_layout->addRow("病人类型:", patient_type);
     sample_layout->addRow("姓  名:", patient_name_edit);
     sample_layout->addRow("性  别:", patient_gender_box);
     sample_layout->addRow("年  龄:", patient_age_edit);
@@ -66,7 +70,7 @@ void sampledetailwidget::setUpSubviews() {
 
     sample_layout->addRow("样本编号:", sample_id_edit);
     sample_layout->addRow("检验序号:", sample_index_edit);
-    sample_layout->addRow("样本类型:", sample_resource_edit);
+    sample_layout->addRow("样本类型:", sample_resource_box);
 
     sample_layout->addRow("开单科室:", sample_section_edit);
     sample_layout->addRow("开单医生:", sample_query_doctor_edit);
@@ -101,7 +105,7 @@ void sampledetailwidget::didFinishEditSampleID_slot() {
 
 void sampledetailwidget::sampleBtnClick() {
     QString sample_id = sample_id_edit->text();
-    QString sample_resource = sample_resource_edit->text();
+    QString sample_resource = sample_resource_box->currentText();
     QString sample_patient_id = patient_id_edit->text();
 
     if (sample_id.isEmpty() || sample_resource.isEmpty() || sample_patient_id.isEmpty()) {
@@ -110,8 +114,8 @@ void sampledetailwidget::sampleBtnClick() {
                 QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
     } else {
         QJsonObject json;
-        json.insert("sample_id", sample_id_edit->text());
-        json.insert("resource", sample_resource_edit->text());
+        json.insert("sample_id", sample_id);
+        json.insert("resource", sample_resource);
 
         json.insert("query_doctor", sample_query_doctor_edit->text());
         json.insert("pre_test_doctor", sample_pre_test_doctor_edit->text());
@@ -179,7 +183,7 @@ void sampledetailwidget::sampleBtnClick() {
 
 void sampledetailwidget::sampleCancelBtnClick() {
     sample_id_edit->clear();
-    sample_resource_edit->clear();
+//    sample_resource_box->clear();
     sample_index_edit->clear();
     sample_section_edit->clear();
     sample_query_doctor_edit->clear();
@@ -193,7 +197,7 @@ void sampledetailwidget::sampleCancelBtnClick() {
 
     patient_id_edit->clear();
     patient_name_edit->clear();
-    patient_gender_box->clear();
+//    patient_gender_box->clear();
     patient_age_edit->clear();
     patient_section_edit->clear();
     patient_section_id_edit->clear();
@@ -219,7 +223,7 @@ void sampledetailwidget::queryPatientSuccess(const QJsonObject & patient) {
 void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
     if (!sample.isEmpty()) {
         sample_id_edit->setText(sample["sample_id"].toString());
-        sample_resource_edit->setText(sample["resource"].toString());
+        sample_resource_box->setCurrentText(sample["resource"].toString());
 
         sample_query_doctor_edit->setText(sample["query_doctor"].toString());
         sample_pre_test_doctor_edit->setText(sample["pre_test_doctor"].toString());

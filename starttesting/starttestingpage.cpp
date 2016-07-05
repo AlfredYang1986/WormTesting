@@ -12,7 +12,7 @@
 #include "proxy/fileoptproxy.h"
 #include "proxy/patientproxy.h"
 
-starttestingpage::starttestingpage() {
+starttestingpage::starttestingpage() : status(TestStatus_ready) {
     this->setUpSubviews();
 }
 
@@ -125,6 +125,7 @@ void starttestingpage::setUpSubviews() {
 void starttestingpage::startTestingBtnClicked() {
     QString sample_id = sample_detail->queryCurrentSampleId();
     if (!sample_id.isEmpty()) {
+        status = TestStatus_testing;
         sample_detail->setEnabled(false);
         cameraproxy::instance()->startTesting();
     } else {
@@ -135,6 +136,9 @@ void starttestingpage::startTestingBtnClicked() {
 }
 
 void starttestingpage::endTestingBtnClicked() {
+    status = TestStatus_ready;
+    QString sample_id = sample_detail->queryCurrentSampleId();
+    proxymanager::instance()->getSampleProxy()->sampleTestComplished(sample_id);
     cameraproxy::instance()->endTesting();
     sample_detail->setEnabled(true);
     img_pane->clearPane();
@@ -241,4 +245,8 @@ void starttestingpage::hideEvent(QHideEvent *) {
                      this, SLOT(didFinishEditSampleId(const QString&)));
     QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+}
+
+starttestingpage::TestStatus starttestingpage::currentStatus() const {
+    return status;
 }

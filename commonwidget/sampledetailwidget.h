@@ -35,7 +35,7 @@ public:
     QString queryCurrentSampleId() const;
 private:
     QLineEdit* sample_id_edit;
-    QLineEdit* sample_resource_edit;
+    QComboBox* sample_resource_box;
     QLineEdit* sample_index_edit;
     QLineEdit* sample_section_edit;
     QLineEdit* sample_query_doctor_edit;
@@ -51,6 +51,7 @@ private:
     QLineEdit* patient_id_edit;
     QLineEdit* patient_name_edit;
     QComboBox* patient_gender_box;
+    QComboBox* patient_type;
     QLineEdit* patient_age_edit;
     QLineEdit* patient_section_edit;
     QLineEdit* patient_section_id_edit;

@@ -181,6 +181,51 @@ void sampleproxy::querySampleWithID(const QString &sample_id) {
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void sampleproxy::sampleTestComplished(const QString &sample_id) {
+    QUrl url = QString("http://localhost:9000/sample/complish");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("sample_id", sample_id);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
+void sampleproxy::pushReportingTestResult(const QString& sample_id, const QVector<QString>& result) {
+    QJsonArray reVal;
+    QVector<QString>::const_iterator iter = result.begin();
+    for (; iter != result.end(); ++iter) {
+        reVal.append(*iter);
+    }
+
+    QUrl url = QString("http://localhost:9000/sample/result/push");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("sample_id", sample_id);
+    json.insert("result", reVal);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
 void sampleproxy::replayFinished(QNetworkReply* result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -206,6 +251,11 @@ void sampleproxy::replayFinished(QNetworkReply* result) {
                 } else if (method_name == "querySampleWithID") {
                     QJsonObject tmp = obj["result"].toObject();
                     emit querySampleWithIDSuccess(tmp);
+                } else if (method_name == "popSampleImage") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    QString sample_id = tmp["sample_id"].toString();
+                    QString image = tmp["image"].toString();
+                    emit popSampleImageSuccess(sample_id, image);
                 }
              }
          }
@@ -221,4 +271,25 @@ void sampleproxy::networkError(QNetworkReply::NetworkError error) {
     QMessageBox::warning(NULL, "Error",
                          tr("访问数据库操作失败"),
                          QMessageBox::Ok, QMessageBox::Ok);
+    QObject::sender()->deleteLater();
+}
+
+void sampleproxy::popSampleImage(const QString& sample_id, const QString& img_name) {
+    QUrl url = QString("http://localhost:9000/sample/image/pop");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("sample_id", sample_id);
+    json.insert("image", img_name);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
 }

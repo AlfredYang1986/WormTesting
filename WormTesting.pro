@@ -20,7 +20,6 @@ SOURCES += main.cpp\
         starttesting/starttestingpage.cpp \
     starttesting/imgcomparepane.cpp \
     reporting/reportingcontainer.cpp \
-    reporting/detailpane.cpp \
     reporting/samplereportingpane.cpp \
     reporting/reportingimgpane.cpp \
     reportlst/reportlstcontainer.cpp \
@@ -44,7 +43,10 @@ SOURCES += main.cpp\
     settingwiget/deletewwormcatdialog.cpp \
     settingwiget/addwormdialog.cpp \
     settingwiget/deletewormdialog.cpp \
-    settingwiget/addsampleresourcedialog.cpp
+    settingwiget/addsampleresourcedialog.cpp \
+    commonwidget/imglstitem.cpp \
+    reporting/reportingdetailwidget.cpp \
+    reporting/reportingdetailitem.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -53,7 +55,6 @@ HEADERS  += mainwindow/mainwindow.h\
         starttesting/starttestingpage.h \
     starttesting/imgcomparepane.h \
     reporting/reportingcontainer.h \
-    reporting/detailpane.h \
     reporting/samplereportingpane.h \
     reporting/reportingimgpane.h \
     reportlst/reportlstcontainer.h \
@@ -78,7 +79,10 @@ HEADERS  += mainwindow/mainwindow.h\
     settingwiget/deletewwormcatdialog.h \
     settingwiget/addwormdialog.h \
     settingwiget/deletewormdialog.h \
-    settingwiget/addsampleresourcedialog.h
+    settingwiget/addsampleresourcedialog.h \
+    commonwidget/imglstitem.h \
+    reporting/reportingdetailwidget.h \
+    reporting/reportingdetailitem.h
 
 FORMS    +=
 

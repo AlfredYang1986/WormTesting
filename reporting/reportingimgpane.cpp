@@ -33,6 +33,7 @@ void reportingimgpane::setUpSubviews() {
     btn_line_one->addSpacerItem(new QSpacerItem(0,0,QSizePolicy::Expanding, QSizePolicy::Minimum));
     QPushButton* save_btn = new QPushButton(tr("保存"));
     save_btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+    QObject::connect(save_btn, SIGNAL(released()), this, SLOT(saveBtnClicked()));
     btn_line_one->addWidget(save_btn);
     btn_line_one->addSpacerItem(new QSpacerItem(10,0,QSizePolicy::Fixed, QSizePolicy::Minimum));
     QPushButton* preview_btn = new QPushButton(tr("预览"));
@@ -87,4 +88,16 @@ void reportingimgpane::downloadFileSuccess(const QByteArray& arr) {
     m.loadFromData(arr);
     m = m.scaled(this->width(), this->height() - 100);
     large_img->setPixmap(m);
+}
+
+void reportingimgpane::saveBtnClicked() {
+    emit saveReportTestResult();
+}
+
+void reportingimgpane::previewBtnClicked() {
+
+}
+
+void reportingimgpane::printBtnClicked() {
+
 }

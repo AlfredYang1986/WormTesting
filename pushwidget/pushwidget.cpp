@@ -32,6 +32,7 @@ void pushwidget::setUpSubviews() {
 
     QVBoxLayout* left_layout = new QVBoxLayout;
     sample_detail_widget = new sampledetailwidget();
+    sample_detail_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     left_layout->addWidget(sample_detail_widget);
 
     QHBoxLayout* bottom_layout = new QHBoxLayout;

@@ -6,6 +6,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/sampleproxy.h"
 #include "proxy/patientproxy.h"
+#include "reportingdetailwidget.h"
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -29,7 +30,10 @@ void reportingcontainer::setUpSubviews() {
     sample_detail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     main_layout->addWidget(sample_detail);
 
-    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+//    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    reporting_detail = new reportingdetailwidget;
+    reporting_detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    main_layout->addWidget(reporting_detail);
 
     reporting_img = new reportingimgpane;
     reporting_img->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
@@ -44,7 +48,8 @@ void reportingcontainer::setUpSubviews() {
 //    QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
 //                     this, SLOT(currentSampleChange(const QJsonObject&)));
 
-
+    QObject::connect(reporting_img, SIGNAL(saveReportTestResult()),
+                     this, SLOT(saveTestResult()));
 }
 
 QSize reportingcontainer::sizeHint() const {
@@ -64,6 +69,7 @@ void reportingcontainer::querySampleWithIDSuccess(const QJsonObject & sample) {
     QJsonObject patient = sample["patient"].toObject();
     sample_detail->queryPatientSuccess(patient);
     img_lst->changeCurrentSample(sample);
+    reporting_detail->setSampleDefaultResult(sample);
 }
 
 void reportingcontainer::didFinishEditPatientId(const QString& patient_id) {
@@ -107,4 +113,10 @@ void reportingcontainer::hideEvent(QHideEvent *) {
                      this, SLOT(didFinishEditPatientId(const QString&)));
     QObject::disconnect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
                      this, SLOT(didFinishEditSampleId(const QString&)));
+}
+
+void reportingcontainer::saveTestResult() {
+    QString sample_id = sample_detail->queryCurrentSampleId();
+    QVector<QString> result = reporting_detail->getTestItemResults();
+    proxymanager::instance()->getSampleProxy()->pushReportingTestResult(sample_id, result);
 }

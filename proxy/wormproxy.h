@@ -20,6 +20,8 @@ Q_SIGNALS:
     void popWormSuccess();
     void onlyWormCatSuccess(const QJsonArray&);
 
+    void queryReportingWormSuccess(const QJsonObject&);
+
 public Q_SLOTS:
     void replayFinished(QNetworkReply*);
     void networkError(QNetworkReply::NetworkError);
@@ -38,6 +40,8 @@ public:
     void queryWorm(const QString& worm_name, const QString& worm_cat_name);
 
     void changeSetting(const QString& worm, const QString& worm_cat, bool b);
+
+    void queryReportingWorm();
 };
 
 #endif // WORMPROXY_H

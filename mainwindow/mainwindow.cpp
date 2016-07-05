@@ -6,6 +6,7 @@
 #include "pushwidget/pushwidget.h"
 #include "sampleresource/sampleresourcecontainer.h"
 #include "settingwiget/settingmainwidget.h"
+#include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -48,20 +49,22 @@ void MainWindow::setUpSubviews() {
 }
 
 void MainWindow::changeMainContent(const QString &title) {
-    if (title == "开始检测") {
-        this->createTestingWidget();
-    } else if (title == "填写报告") {
-        this->createReportWidget();
-    } else if (title == "报告列表") {
-        this->createReportLstWidget();
-    } else if (title == "录入样本") {
-        this->createPushWidget();
-    } else if (title == "样本资料") {
-        this->createResourceWidget();
-    } else if (title == "系统设置") {
-        this->createSettingWidget();
-    } else {
-        this->createCompareWidget();
+    if (this->isReadyToChangeMainWidget()) {
+        if (title == "开始检测") {
+            this->createTestingWidget();
+        } else if (title == "填写报告") {
+            this->createReportWidget();
+        } else if (title == "报告列表") {
+            this->createReportLstWidget();
+        } else if (title == "录入样本") {
+            this->createPushWidget();
+        } else if (title == "样本资料") {
+            this->createResourceWidget();
+        } else if (title == "系统设置") {
+            this->createSettingWidget();
+        } else {
+            this->createCompareWidget();
+        }
     }
 }
 
@@ -69,7 +72,8 @@ void MainWindow::changeMainContent(const QString &title) {
      map<QString, QFrame*>::iterator iter = contents.begin();
      for (; iter != contents.end(); ++iter) {
          QFrame* tmp = (*iter).second;
-         tmp->hide();
+         if (tmp)
+            tmp->hide();
      }
 
      QFrame* tmp = contents["录入样本"];
@@ -95,7 +99,8 @@ void MainWindow::changeMainContent(const QString &title) {
      map<QString, QFrame*>::iterator iter = contents.begin();
      for (; iter != contents.end(); ++iter) {
          QFrame* tmp = (*iter).second;
-         tmp->hide();
+         if (tmp)
+            tmp->hide();
      }
 
      QFrame* tmp = contents["开始检测"];
@@ -122,7 +127,8 @@ void MainWindow::changeMainContent(const QString &title) {
      map<QString, QFrame*>::iterator iter = contents.begin();
      for (; iter != contents.end(); ++iter) {
          QFrame* tmp = (*iter).second;
-         tmp->hide();
+         if (tmp)
+             tmp->hide();
      }
 
      QFrame* tmp = contents["填写报告"];
@@ -143,7 +149,8 @@ void MainWindow::changeMainContent(const QString &title) {
      map<QString, QFrame*>::iterator iter = contents.begin();
      for (; iter != contents.end(); ++iter) {
          QFrame* tmp = (*iter).second;
-         tmp->hide();
+         if (tmp)
+            tmp->hide();
      }
 
      QFrame* tmp = contents["报告列表"];
@@ -164,7 +171,8 @@ void MainWindow::changeMainContent(const QString &title) {
      map<QString, QFrame*>::iterator iter = contents.begin();
      for (; iter != contents.end(); ++iter) {
          QFrame* tmp = (*iter).second;
-         tmp->hide();
+         if (tmp)
+            tmp->hide();
      }
 
      QFrame* tmp = contents["样本资料"];
@@ -185,7 +193,8 @@ void MainWindow::changeMainContent(const QString &title) {
      map<QString, QFrame*>::iterator iter = contents.begin();
      for (; iter != contents.end(); ++iter) {
          QFrame* tmp = (*iter).second;
-         tmp->hide();
+         if (tmp)
+            tmp->hide();
      }
 
      QFrame* tmp = contents["对比结果"];
@@ -206,7 +215,8 @@ void MainWindow::createSettingWidget() {
     map<QString, QFrame*>::iterator iter = contents.begin();
     for (; iter != contents.end(); ++iter) {
         QFrame* tmp = (*iter).second;
-        tmp->hide();
+        if (tmp)
+            tmp->hide();
     }
 
     QFrame* tmp = contents["系统设置"];
@@ -227,7 +237,8 @@ void MainWindow::createAboutWidget() {
     map<QString, QFrame*>::iterator iter = contents.begin();
     for (; iter != contents.end(); ++iter) {
         QFrame* tmp = (*iter).second;
-        tmp->hide();
+        if (tmp)
+            tmp->hide();
     }
 
     QFrame* tmp = contents["关于系统"];
@@ -262,4 +273,16 @@ void MainWindow::startReport(const QString& sample_id) {
 
 void MainWindow::startCompare(const QString& sample_id) {
 
+}
+
+bool MainWindow::isReadyToChangeMainWidget() {
+    starttestingpage* tmp = (starttestingpage*)contents["开始检测"];
+    if (tmp && tmp->currentStatus() == starttestingpage::TestStatus_testing) {
+        QMessageBox::information(this, "error",
+                                 tr("请先完成测试在切换界面"),
+                                 QMessageBox::Ok, QMessageBox::Ok);
+        return false;
+    } else {
+        return true;
+    }
 }

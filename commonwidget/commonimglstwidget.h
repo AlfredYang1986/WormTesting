@@ -13,6 +13,9 @@ class commonimglstwidget : public QFrame {
 protected Q_SLOTS:
     void downloadFileSuccess(const QByteArray&);
 
+    void deleteImageStart(const QString&);
+    void deleteImageSuccess(const QString &, const QString &);
+
 protected:
     virtual void showEvent (QShowEvent* event);
     virtual void hideEvent(QHideEvent *event);
@@ -27,6 +30,7 @@ private:
     QString current_download_name;
 
     void moveToNextImage();
+    void clearLabels();
 public:
     commonimglstwidget();
     ~commonimglstwidget();

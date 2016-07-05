@@ -38,6 +38,7 @@ protected:
     void createSettingWidget();
     void createAboutWidget();
 
+    bool isReadyToChangeMainWidget();
 private:
     QWidget* center_widget;
     QVBoxLayout* main_container;
