@@ -157,3 +157,10 @@ void commonimglstwidget::clearLabels() {
     }
     img_lst.clear();
 }
+
+void commonimglstwidget::changeShowingImgLst(const QVector<QString> &name_lst) {
+    this->clearLabels();
+    img_name_lst = name_lst;
+
+    this->moveToNextImage();
+}

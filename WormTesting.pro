@@ -46,7 +46,13 @@ SOURCES += main.cpp\
     settingwiget/addsampleresourcedialog.cpp \
     commonwidget/imglstitem.cpp \
     reporting/reportingdetailwidget.cpp \
-    reporting/reportingdetailitem.cpp
+    reporting/reportingdetailitem.cpp \
+    proxy/configproxy.cpp \
+    settingwiget/deletesampleresourcedialog.cpp \
+    settingwiget/addpatienttypedialog.cpp \
+    settingwiget/deletepatienttypedialog.cpp \
+    settingwiget/updatewormdesdialog.cpp \
+    settingwiget/uploadwormimgdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -82,7 +88,13 @@ HEADERS  += mainwindow/mainwindow.h\
     settingwiget/addsampleresourcedialog.h \
     commonwidget/imglstitem.h \
     reporting/reportingdetailwidget.h \
-    reporting/reportingdetailitem.h
+    reporting/reportingdetailitem.h \
+    proxy/configproxy.h \
+    settingwiget/deletesampleresourcedialog.h \
+    settingwiget/addpatienttypedialog.h \
+    settingwiget/deletepatienttypedialog.h \
+    settingwiget/updatewormdesdialog.h \
+    settingwiget/uploadwormimgdialog.h
 
 FORMS    +=
 

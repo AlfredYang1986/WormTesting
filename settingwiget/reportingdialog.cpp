@@ -18,6 +18,8 @@ reportingdialog::reportingdialog() {
 
 reportingdialog::~reportingdialog() {
     main_layout->deleteLater();
+    QObject::disconnect(proxymanager::instance()->getWormProxy(), SIGNAL(queryWormCatSuccess(const QJsonObject&)),
+                     this, SLOT(queryWormCatSuccess(const QJsonObject&)));
 }
 
 QSize reportingdialog::sizeHint() const {
@@ -70,10 +72,10 @@ void reportingdialog::setUpSubviews() {
     main_layout->addLayout(btns_layout);
     this->setLayout(main_layout);
 
-    proxymanager::instance()->getWormProxy()->queryWormCat();
-
     QObject::connect(proxymanager::instance()->getWormProxy(), SIGNAL(queryWormCatSuccess(const QJsonObject&)),
                      this, SLOT(queryWormCatSuccess(const QJsonObject&)));
+
+    proxymanager::instance()->getWormProxy()->queryWormCat();
 }
 
 void reportingdialog::reloadData() {

@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <proxy/proxymanager.h>
 #include <proxy/wormproxy.h>
+#include <commonwidget/commonimglstwidget.h>
 
 sampleresourcecontainer::sampleresourcecontainer() {
     this->setUpSubviews();
@@ -21,14 +22,18 @@ void sampleresourcecontainer::setUpSubviews() {
     tree->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     main_layout->addWidget(tree);
 
-    QVBoxLayout* content_layout = new QVBoxLayout;
+    QHBoxLayout* content_layout = new QHBoxLayout;
 
-    html = new QLabel("<h2>test</h2>");
-    html->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    html = new QLabel;
+    html->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     content_layout->addWidget(html);
-    content_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
-    main_layout->addLayout(content_layout);
+//    content_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
+    img_lst = new commonimglstwidget;
+    img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    content_layout->addWidget(img_lst);
+
+    main_layout->addLayout(content_layout);
     this->setLayout(main_layout);
 
     QObject::connect(tree, SIGNAL(currentWormSignal(const QString&, const QString&)),
@@ -64,4 +69,12 @@ void sampleresourcecontainer::queryWormDetailSuccess(const QJsonObject& detail) 
     tmp += "</p>";
 
     html->setText(tmp);
+
+    QVector<QVariant> images_var = detail["img_lst"].toArray().toVariantList().toVector();
+    QVector<QString> images;
+    QVector<QVariant>::iterator iter = images_var.begin();
+    for (; iter != images_var.end(); ++iter) {
+        images.push_back((*iter).toString());
+    }
+    img_lst->changeShowingImgLst(images);
 }

@@ -42,6 +42,9 @@ public:
     void changeCurrentSample(const QJsonObject& sample);
     bool prePushImage();
     void pushImageName(const QString& name);
+
+    // only for sample pic
+    void changeShowingImgLst(const QVector<QString>& name_lst);
 };
 
 #endif // COMMONIMGLSTWIDGET_H

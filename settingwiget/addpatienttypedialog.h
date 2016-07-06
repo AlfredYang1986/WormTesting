@@ -1,11 +1,11 @@
-#ifndef ADDSAMPLERESOURCEDIALOG_H
-#define ADDSAMPLERESOURCEDIALOG_H
+#ifndef ADDPATIENTTYPEDIALOG_H
+#define ADDPATIENTTYPEDIALOG_H
 
 #include <QDialog>
 class QVBoxLayout;
 class QLineEdit;
 
-class addsampleresourcedialog : public QDialog {
+class addpatienttypedialog : public QDialog {
     Q_OBJECT
 
 Q_SIGNALS:
@@ -16,15 +16,14 @@ protected Q_SLOTS:
 
 private:
     QVBoxLayout* main_layout;
-
-    QLineEdit* resource_edit;
+    QLineEdit* patient_edit;
 
 public:
-    addsampleresourcedialog();
-    ~addsampleresourcedialog();
+    addpatienttypedialog();
+    ~addpatienttypedialog();
 
     virtual QSize sizeHint() const;
     void setUpSubviews();
 };
 
-#endif // ADDSAMPLERESOURCEDIALOG_H
+#endif // ADDPATIENTTYPEDIALOG_H

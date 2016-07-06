@@ -3,12 +3,14 @@
 #include "sampleproxy.h"
 #include "wormproxy.h"
 #include "patientproxy.h"
+#include "configproxy.h"
 
 proxymanager* proxymanager::_instance;
 
 proxymanager::proxymanager()
     : file_proxy(0), patient_proxy(0)
-    , sample_proxy(0), worm_proxy(0) {
+    , sample_proxy(0), worm_proxy(0)
+    , config_proxy(0) {
 
 }
 
@@ -17,6 +19,7 @@ proxymanager::~proxymanager() {
     if (patient_proxy) patient_proxy->deleteLater();
     if (sample_proxy) sample_proxy->deleteLater();
     if (worm_proxy) worm_proxy->deleteLater();
+    if (config_proxy) config_proxy->deleteLater();
 }
 
 proxymanager* proxymanager::instance() {
@@ -48,4 +51,10 @@ wormproxy* proxymanager::getWormProxy() {
     if (!worm_proxy)
         worm_proxy = new wormproxy;
     return worm_proxy;
+}
+
+configproxy* proxymanager::getConfigProxy() {
+    if (!config_proxy)
+        config_proxy = new configproxy;
+    return config_proxy;
 }

@@ -189,6 +189,66 @@ void wormproxy::queryReportingWorm() {
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void wormproxy::changeWromdescription(const QString &worm_name, const QString &des) {
+    QUrl url = QString("http://localhost:9000/worm/description/update");
+
+    QNetworkRequest request( url );
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("name", worm_name);
+    json.insert("description", des);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
+void wormproxy::pushWormImage(const QString &worm_name, const QString &image_name) {
+    QUrl url = QString("http://localhost:9000/worm/images/push");
+
+    QNetworkRequest request( url );
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("name", worm_name);
+    json.insert("image", image_name);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
+void wormproxy::popWormImage(const QString &worm_name, const QString &image_name) {
+    QUrl url = QString("http://localhost:9000/worm/images/pop");
+
+    QNetworkRequest request( url );
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+    json.insert("name", worm_name);
+    json.insert("image", image_name);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
 void wormproxy::replayFinished(QNetworkReply* result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -219,6 +279,14 @@ void wormproxy::replayFinished(QNetworkReply* result) {
                 } else if (method_name == "wormSettingQuery") {
                     QJsonObject tmp = obj["result"].toObject();
                     emit queryReportingWormSuccess(tmp);
+                } else if (method_name == "pushWormImage") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    QString name = tmp["name"].toString();
+                    emit pushWormImageSuccess(name);
+                } else if (method_name == "popWormImage") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    QString name = tmp["name"].toString();
+                    emit popWormImageSuccess(name);
                 }
              }
          }

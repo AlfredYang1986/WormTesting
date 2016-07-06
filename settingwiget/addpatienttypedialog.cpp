@@ -1,4 +1,4 @@
-#include "addsampleresourcedialog.h"
+#include "addpatienttypedialog.h"
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QLineEdit>
@@ -6,25 +6,25 @@
 #include <proxy/proxymanager.h>
 #include <proxy/configproxy.h>
 
-addsampleresourcedialog::addsampleresourcedialog() {
+addpatienttypedialog::addpatienttypedialog() {
     this->setUpSubviews();
 }
 
-addsampleresourcedialog::~addsampleresourcedialog() {
+addpatienttypedialog::~addpatienttypedialog() {
     main_layout->deleteLater();
 }
 
-QSize addsampleresourcedialog::sizeHint() const {
+QSize addpatienttypedialog::sizeHint() const {
     return QSize(500, 300);
 }
 
-void addsampleresourcedialog::setUpSubviews() {
+void addpatienttypedialog::setUpSubviews() {
     main_layout = new QVBoxLayout;
 
-    resource_edit = new QLineEdit;
+    patient_edit = new QLineEdit;
 
     QFormLayout* content_layout = new QFormLayout;
-    content_layout->addRow("添加样本来源", resource_edit);
+    content_layout->addRow("添加样本来源", patient_edit);
 
     QHBoxLayout* btns_layout = new QHBoxLayout;
     btns_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -45,14 +45,14 @@ void addsampleresourcedialog::setUpSubviews() {
     this->setLayout(main_layout);
 }
 
-void addsampleresourcedialog::savaBtnClicked() {
-    QString resource = resource_edit->text();
-    if (!resource.isEmpty())
-        proxymanager::instance()->getConfigProxy()->addSampleResourceType(resource);
+void addpatienttypedialog::savaBtnClicked() {
+    QString patient = patient_edit->text();
+    if (!patient.isEmpty())
+        proxymanager::instance()->getConfigProxy()->addPatientType(patient);
 
     this->close();
 }
 
-void addsampleresourcedialog::cancelBtnClicked() {
+void addpatienttypedialog::cancelBtnClicked() {
     this->close();
 }

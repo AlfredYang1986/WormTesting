@@ -6,6 +6,7 @@
 
 class QHBoxLayout;
 class QLabel;
+class commonimglstwidget;
 
 class sampleresourcecontainer : public QFrame {
     Q_OBJECT
@@ -19,6 +20,7 @@ public Q_SLOTS:
 private:
     QHBoxLayout* main_layout;
     QLabel* html;
+    commonimglstwidget* img_lst;
 
 public:
     sampleresourcecontainer();

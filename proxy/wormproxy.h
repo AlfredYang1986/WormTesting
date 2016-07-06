@@ -22,6 +22,9 @@ Q_SIGNALS:
 
     void queryReportingWormSuccess(const QJsonObject&);
 
+    void pushWormImageSuccess(const QString& worm_name);
+    void popWormImageSuccess(const QString& worm_name);
+
 public Q_SLOTS:
     void replayFinished(QNetworkReply*);
     void networkError(QNetworkReply::NetworkError);
@@ -42,6 +45,11 @@ public:
     void changeSetting(const QString& worm, const QString& worm_cat, bool b);
 
     void queryReportingWorm();
+
+    void changeWromdescription(const QString& worm_name, const QString& des);
+
+    void pushWormImage(const QString& worm_name, const QString& image_name);
+    void popWormImage(const QString& worm_name, const QString& image_name);
 };
 
 #endif // WORMPROXY_H
