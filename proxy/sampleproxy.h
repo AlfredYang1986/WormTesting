@@ -19,6 +19,8 @@ Q_SIGNALS:
     void queryTestedSampleSuccess(const QJsonArray& samples);
     void querySampleWithIDSuccess(const QJsonObject& samples);
 
+    void sampleConditionSearchSuccess(const QJsonArray&);
+
     void popSampleImageSuccess(const QString &, const QString &);
 
 protected Q_SLOTS:
@@ -54,6 +56,8 @@ public:
     void sampleTestComplished(const QString& sample_id);
 
     void pushReportingTestResult(const QString& sample_id, const QVector<QString>& result);
+
+    void searchSamplesWithConditions(const QJsonObject& conditions);
 };
 
 #endif // SAMPLEMODULE_H

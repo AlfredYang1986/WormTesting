@@ -30,7 +30,7 @@ void samplesearchingwidget::setUpSubviews() {
     main_layout->addWidget(not_test_sample);
 
     tested_sample = new QTableWidget;
-    not_test_sample->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    tested_sample->setEditTriggers(QAbstractItemView::NoEditTriggers);
     tested_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;

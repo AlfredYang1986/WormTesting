@@ -226,6 +226,25 @@ void sampleproxy::pushReportingTestResult(const QString& sample_id, const QVecto
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void sampleproxy::searchSamplesWithConditions(const QJsonObject& conditions) {
+    QUrl url = QString("http://localhost:9000/sample/search");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+//    QJsonObject json;
+//    json.insert("sample_id", sample_id);
+
+    QJsonDocument document;
+    document.setObject(conditions);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
 void sampleproxy::replayFinished(QNetworkReply* result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -256,6 +275,9 @@ void sampleproxy::replayFinished(QNetworkReply* result) {
                     QString sample_id = tmp["sample_id"].toString();
                     QString image = tmp["image"].toString();
                     emit popSampleImageSuccess(sample_id, image);
+                } else if (method_name == "sampleConditionSearch") {
+                    QJsonArray arr = obj["result"].toArray();
+                    emit sampleConditionSearchSuccess(arr);
                 }
              }
          }

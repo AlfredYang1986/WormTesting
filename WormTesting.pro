@@ -23,8 +23,6 @@ SOURCES += main.cpp\
     reporting/samplereportingpane.cpp \
     reporting/reportingimgpane.cpp \
     reportlst/reportlstcontainer.cpp \
-    reportlst/searchtreewidget.cpp \
-    reportlst/searchresulttablewidget.cpp \
     sampleresource/sampleresourcecontainer.cpp \
     proxy/patientproxy.cpp \
     proxy/sampleproxy.cpp \
@@ -53,7 +51,9 @@ SOURCES += main.cpp\
     settingwiget/deletepatienttypedialog.cpp \
     settingwiget/updatewormdesdialog.cpp \
     settingwiget/uploadwormimgdialog.cpp \
-    imgcomparewidget/imagecomparewidget.cpp
+    imgcomparewidget/imagecomparewidget.cpp \
+    reportlst/reportsearchconditionwidget.cpp \
+    reportlst/searchresulttablewidget.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -65,8 +65,6 @@ HEADERS  += mainwindow/mainwindow.h\
     reporting/samplereportingpane.h \
     reporting/reportingimgpane.h \
     reportlst/reportlstcontainer.h \
-    reportlst/searchtreewidget.h \
-    reportlst/searchresulttablewidget.h \
     sampleresource/sampleresourcecontainer.h \
     proxy/patientproxy.h \
     proxy/sampleproxy.h \
@@ -96,7 +94,9 @@ HEADERS  += mainwindow/mainwindow.h\
     settingwiget/deletepatienttypedialog.h \
     settingwiget/updatewormdesdialog.h \
     settingwiget/uploadwormimgdialog.h \
-    imgcomparewidget/imagecomparewidget.h
+    imgcomparewidget/imagecomparewidget.h \
+    reportlst/reportsearchconditionwidget.h \
+    reportlst/searchresulttablewidget.h
 
 FORMS    +=
 

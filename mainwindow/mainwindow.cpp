@@ -159,12 +159,16 @@ void MainWindow::changeMainContent(const QString &title) {
 
      QFrame* tmp = contents["报告列表"];
      if (tmp == NULL) {
-         QFrame* content_widget = new reportlstcontainer;
+         reportlstcontainer* content_widget = new reportlstcontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
 
          contents[QStringLiteral("报告列表")] = content_widget;
+
+         QObject::connect(content_widget, SIGNAL(startReporting(QString)),
+                          this, SLOT(startReport(const QString&)));
+
          tmp = content_widget;
      }
 
