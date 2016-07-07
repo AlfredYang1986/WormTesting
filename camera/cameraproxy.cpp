@@ -27,16 +27,25 @@ cameraproxy* cameraproxy::instance() {
 }
 
 cameraproxy::cameraproxy()
-    : canTakePic(false) {
-    this->setUpCamera();
+    : p(NULL), canTakePic(false) {
+//    this->setUpCamera();
 }
 
 cameraproxy::~cameraproxy() {
-
+    if (p) {
+        this->releaseCamera();
+        timer->deleteLater();
+    }
 }
 
-void cameraproxy::setUpCamera() {
-    p = cvCaptureFromCAM(0);
+void cameraproxy::setUpCamera(int index) {
+
+    if (p) {
+        this->releaseCamera();
+        timer->deleteLater();
+    }
+
+    p = cvCaptureFromCAM(index);
     timer   = new QTimer(this);
 
     connect(timer, SIGNAL(timeout()), this, SLOT(readFarme()));
@@ -47,6 +56,11 @@ void cameraproxy::setUpCamera() {
       std::cerr << "Conldn't GrabFrame" << std::endl;
       exit(EXIT_FAILURE);
     }
+}
+
+void cameraproxy::releaseCamera() {
+    cvReleaseCapture(&p);
+    p = NULL;
 }
 
 void cameraproxy::readFarme() {
@@ -67,6 +81,10 @@ QImage* cameraproxy::takeImage() {
 }
 
 void cameraproxy::startTesting() {
+
+    if (!p)
+        this->setUpCamera();
+
     timer->start(33);
     canTakePic = true;
 }

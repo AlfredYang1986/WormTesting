@@ -40,7 +40,6 @@ protected:
 
     bool isReadyToChangeMainWidget();
 
-    void keyPressEvent(QKeyEvent *);
 private:
     QWidget* center_widget;
     QVBoxLayout* main_container;

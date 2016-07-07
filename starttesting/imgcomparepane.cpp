@@ -2,8 +2,11 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QPushButton>
+#include <QComboBox>
 #include "camera/cameraproxy.h"
 #include <QDebug>
+#include <QCamera>
+#include <QCameraInfo>
 
 imgcomparepane::imgcomparepane() {
     this->setUpSubviews();
@@ -24,6 +27,16 @@ void imgcomparepane::setUpSubviews() {
     title_layout->addWidget(title_label);
     QSpacerItem* title_spacer_mid = new QSpacerItem(40, 0, QSizePolicy::Fixed, QSizePolicy::Minimum);
     title_layout->addSpacerItem(title_spacer_mid);
+
+    box = new QComboBox;
+    QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
+    foreach (const QCameraInfo &cameraInfo, cameras) {
+        box->addItem(cameraInfo.deviceName());
+    }
+    QObject::connect(box, SIGNAL(currentIndexChanged(int)),
+                     this, SLOT(changeCurrentCamera(int)));
+    title_layout->addWidget(box);
+
     QPushButton* title_take_photo = new QPushButton(tr("抓图"));
     QObject::connect(title_take_photo, SIGNAL(released()), this, SLOT(takeImage()));
     title_take_photo->setObjectName("title_take_photo");
@@ -65,4 +78,8 @@ void imgcomparepane::takeImage() {
 
 void imgcomparepane::clearPane() {
     photo_preview->clear();
+}
+
+void imgcomparepane::changeCurrentCamera(int index) {
+    cameraproxy::instance()->setUpCamera(index);
 }

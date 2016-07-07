@@ -69,6 +69,8 @@ void commonimglstwidget::pushImageName(const QString& name) {
 
     current_download_name = name;
     proxymanager::instance()->getFileProxy()->downloadFile(current_download_name);
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
 }
 
 void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {

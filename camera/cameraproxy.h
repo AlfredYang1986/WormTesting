@@ -26,9 +26,10 @@ public:
     static cameraproxy* instance();
     ~cameraproxy();
 
-    void setUpCamera();
+    void setUpCamera(int index = 0);
     void startTesting();
     void endTesting();
+    void releaseCamera();
 
     QImage* takeImage();
 };

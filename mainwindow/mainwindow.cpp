@@ -295,10 +295,3 @@ bool MainWindow::isReadyToChangeMainWidget() {
         return true;
     }
 }
-
-void MainWindow::keyPressEvent(QKeyEvent * kv) {
-    if(kv->key() == 16777220)
-        str.clear();
-    else
-        str += kv->text();
-}
