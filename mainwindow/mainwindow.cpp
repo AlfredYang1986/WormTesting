@@ -8,6 +8,7 @@
 #include "settingwiget/settingmainwidget.h"
 #include "imgcomparewidget/imagecomparewidget.h"
 #include <QMessageBox>
+#include <QKeyEvent>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -293,4 +294,11 @@ bool MainWindow::isReadyToChangeMainWidget() {
     } else {
         return true;
     }
+}
+
+void MainWindow::keyPressEvent(QKeyEvent * kv) {
+    if(kv->key() == 16777220)
+        str.clear();
+    else
+        str += kv->text();
 }
