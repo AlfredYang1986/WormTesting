@@ -21,6 +21,9 @@ protected Q_SLOTS:
     void sampleBtnClick();
     void sampleCancelBtnClick();
 
+    void queryPatientTypeSuccess(const QJsonArray&);
+    void querySampleResourceTypeSuccess(const QJsonArray&);
+
 public:
     sampledetailwidget();
     ~sampledetailwidget();

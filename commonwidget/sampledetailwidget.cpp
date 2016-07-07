@@ -10,6 +10,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/patientproxy.h"
 #include "proxy/sampleproxy.h"
+#include "proxy/configproxy.h"
 
 sampledetailwidget::sampledetailwidget() {
     this->setUpSubviews();
@@ -86,6 +87,14 @@ void sampledetailwidget::setUpSubviews() {
 
     this->setLayout(sample_layout);
     main_layout=sample_layout;
+
+    proxymanager::instance()->getConfigProxy()->querySampleResourceType();
+    proxymanager::instance()->getConfigProxy()->queryPatientType();
+
+    QObject::connect(proxymanager::instance()->getConfigProxy(), SIGNAL(queryPatientTypeSuccess(QJsonArray)),
+                     this, SLOT(queryPatientTypeSuccess(QJsonArray)));
+    QObject::connect(proxymanager::instance()->getConfigProxy(), SIGNAL(querySampleResourceTypeSuccess(QJsonArray)),
+                     this, SLOT(querySampleResourceTypeSuccess(QJsonArray)));
 }
 
 QSize sampledetailwidget::sizeHint() const {
@@ -272,4 +281,20 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
 
 QString sampledetailwidget::queryCurrentSampleId() const {
     return sample_id_edit->text();
+}
+
+void sampledetailwidget::queryPatientTypeSuccess(const QJsonArray & result) {
+    QJsonArray::const_iterator iter = result.begin();
+    for(; iter != result.end(); ++iter) {
+        QString tmp = (*iter).toString();
+        patient_type->addItem(tmp);
+    }
+}
+
+void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & result) {
+    QJsonArray::const_iterator iter = result.begin();
+    for(; iter != result.end(); ++iter) {
+        QString tmp = (*iter).toString();
+        sample_resource_box->addItem(tmp);
+    }
 }

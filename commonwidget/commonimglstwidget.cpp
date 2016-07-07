@@ -11,6 +11,8 @@
 #include "proxy/sampleproxy.h"
 #include "commonwidget/imglstitem.h"
 
+static bool current_runnning = false;
+
 class pred_find_current_download_filename {
 public:
     pred_find_current_download_filename(const QString& cur)
@@ -24,7 +26,7 @@ private:
     QString _cur;
 };
 
-commonimglstwidget::commonimglstwidget() {
+commonimglstwidget::commonimglstwidget(bool w) : isWormSample(w) {
     this->setUpSubviews();
 }
 
@@ -42,7 +44,6 @@ void commonimglstwidget::setUpSubviews() {
 
     main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
-
 }
 
 void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
@@ -71,7 +72,7 @@ void commonimglstwidget::pushImageName(const QString& name) {
 }
 
 void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {
-    imglstitem* tmp = new imglstitem;
+    imglstitem* tmp = new imglstitem(isWormSample);
     tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
     tmp->setMaximumSize(QSize(300, 200));
@@ -81,6 +82,8 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {
     m = m.scaled(300, 200);
     tmp->setPixmap(m);
 
+    QObject::connect(tmp, SIGNAL(imageSelected(const QPixmap*)),
+                     this, SLOT(changeCurrentImage(const QPixmap*)));
     QObject::connect(tmp, SIGNAL(delectBtnSelected(QString)),
                      this, SLOT(deleteImageStart(QString)));
 
@@ -97,12 +100,24 @@ void commonimglstwidget::moveToNextImage() {
     }
 
     if (current_download_name.isEmpty()) {
+
+        if (current_runnning)
+            return;
+
+        current_runnning = true;
         current_download_name = img_name_lst.first();
+        QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+
     } else {
         QVector<QString>::iterator iter = std::find_if(img_name_lst.begin(), img_name_lst.end(),
                                                        pred_find_current_download_filename(current_download_name));
         if (iter == img_name_lst.end() || (++iter) == img_name_lst.end()) {
+            current_runnning = false;
             current_download_name = "";
+            QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+
         } else {
             current_download_name = *iter;
         }
@@ -113,8 +128,8 @@ void commonimglstwidget::moveToNextImage() {
 }
 
 void commonimglstwidget::showEvent(QShowEvent *) {
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+//    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+//                     this, SLOT(downloadFileSuccess(const QByteArray&)));
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
                      this, SLOT(deleteImageSuccess(QString,QString)));
 }
@@ -152,8 +167,13 @@ void commonimglstwidget::clearLabels() {
     QVector<QLabel*>::iterator iter_label = img_lst.begin();
     for(; iter_label != img_lst.end(); ++iter_label) {
         main_layout->removeWidget(*iter_label);
-        QLabel* b = (*iter_label);
+        imglstitem* b = (imglstitem*)(*iter_label);
         b->deleteLater();
+        QObject::disconnect(b, SIGNAL(imageSelected(const QPixmap*)),
+                     this, SLOT(changeCurrentImage(const QPixmap*)));
+        QObject::disconnect(b, SIGNAL(delectBtnSelected(QString)),
+                     this, SLOT(deleteImageStart(QString)));
+
     }
     img_lst.clear();
 }
@@ -163,4 +183,13 @@ void commonimglstwidget::changeShowingImgLst(const QVector<QString> &name_lst) {
     img_name_lst = name_lst;
 
     this->moveToNextImage();
+}
+
+bool commonimglstwidget::showOptBtns() const {
+    return !isWormSample;
+}
+
+
+void commonimglstwidget::changeCurrentImage(const QPixmap* p) {
+    emit changeCurrentImageSignal(*p);
 }

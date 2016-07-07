@@ -22,18 +22,18 @@ void sampleresourcecontainer::setUpSubviews() {
     tree->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     main_layout->addWidget(tree);
 
-    QHBoxLayout* content_layout = new QHBoxLayout;
+    QVBoxLayout* content_layout = new QVBoxLayout;
 
     html = new QLabel;
     html->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     content_layout->addWidget(html);
-//    content_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    content_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-    img_lst = new commonimglstwidget;
+    img_lst = new commonimglstwidget(true);
     img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    content_layout->addWidget(img_lst);
 
     main_layout->addLayout(content_layout);
+    main_layout->addWidget(img_lst);
     this->setLayout(main_layout);
 
     QObject::connect(tree, SIGNAL(currentWormSignal(const QString&, const QString&)),

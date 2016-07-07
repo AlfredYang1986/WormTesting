@@ -6,6 +6,7 @@
 #include "pushwidget/pushwidget.h"
 #include "sampleresource/sampleresourcecontainer.h"
 #include "settingwiget/settingmainwidget.h"
+#include "imgcomparewidget/imagecomparewidget.h"
 #include <QMessageBox>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -62,9 +63,12 @@ void MainWindow::changeMainContent(const QString &title) {
             this->createResourceWidget();
         } else if (title == "系统设置") {
             this->createSettingWidget();
-        } else {
+        } else if (title == "对比结果") {
             this->createCompareWidget();
         }
+//        else {
+//            this->createCompareWidget();
+//        }
     }
 }
 
@@ -199,7 +203,7 @@ void MainWindow::changeMainContent(const QString &title) {
 
      QFrame* tmp = contents["对比结果"];
      if (tmp == NULL) {
-         QFrame* content_widget = new QFrame;
+         QFrame* content_widget = new imagecomparewidget;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);

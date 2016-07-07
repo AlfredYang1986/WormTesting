@@ -10,11 +10,16 @@ class QLabel;
 class commonimglstwidget : public QFrame {
     Q_OBJECT
 
+Q_SIGNALS:
+    void changeCurrentImageSignal(const QPixmap&);
+
 protected Q_SLOTS:
     void downloadFileSuccess(const QByteArray&);
 
     void deleteImageStart(const QString&);
     void deleteImageSuccess(const QString &, const QString &);
+
+    void changeCurrentImage(const QPixmap*);
 
 protected:
     virtual void showEvent (QShowEvent* event);
@@ -29,10 +34,12 @@ private:
 
     QString current_download_name;
 
+    const bool isWormSample;
+
     void moveToNextImage();
     void clearLabels();
 public:
-    commonimglstwidget();
+    commonimglstwidget(bool w = false);
     ~commonimglstwidget();
 
     void setUpSubviews();
@@ -45,6 +52,8 @@ public:
 
     // only for sample pic
     void changeShowingImgLst(const QVector<QString>& name_lst);
+
+    bool showOptBtns() const;
 };
 
 #endif // COMMONIMGLSTWIDGET_H
