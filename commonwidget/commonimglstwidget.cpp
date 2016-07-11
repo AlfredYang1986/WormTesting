@@ -28,7 +28,7 @@ private:
 
 commonimglstwidget::commonimglstwidget(bool w, bool v)
     : isWormSample(w), isVer(v) {
-    this->setUpSubviews();
+        this->setUpSubviews();
 }
 
 commonimglstwidget::~commonimglstwidget() {
@@ -36,15 +36,29 @@ commonimglstwidget::~commonimglstwidget() {
 }
 
 QSize commonimglstwidget::sizeHint() const {
-    return QSize(250, 200);
+    return QSize(280, 200);
 }
+
+//void commonimglstwidget::setUpSubviews2() {
+//    main_layout = new QHBoxLayout;
+
+//    main_layout->setContentsMargins(0,0,0,0);
+
+//    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+//    this->setLayout(main_layout);
+//}
 
 void commonimglstwidget::setUpSubviews() {
     main_layout = new QVBoxLayout;
+
     main_layout->setContentsMargins(0,0,0,0);
 
     main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
+
+    this->setStyleSheet("QWidget {"
+                            "background-color: red;"
+                        "}");
 }
 
 void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
@@ -78,10 +92,10 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {
     imglstitem* tmp = new imglstitem(isWormSample);
     tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
-    tmp->setFixedSize(QSize(250, 200));
+    tmp->setFixedSize(QSize(280, 200));
     QPixmap m;
     m.loadFromData(data);
-    m = m.scaled(200, 200);
+    m = m.scaled(280, 200);
     tmp->setPixmap(m);
 
     QObject::connect(tmp, SIGNAL(imageSelected(const QPixmap*)),
@@ -130,8 +144,8 @@ void commonimglstwidget::moveToNextImage() {
 }
 
 void commonimglstwidget::showEvent(QShowEvent *) {
-//    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-//                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&)));
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
                      this, SLOT(deleteImageSuccess(QString,QString)));
 }

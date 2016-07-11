@@ -1,12 +1,12 @@
 #ifndef IMGLSTITEM_H
 #define IMGLSTITEM_H
 
-#include <QFrame>
+#include <QLabel>
 class QPushButton;
 class QPixmap;
 class QLabel;
 
-class imglstitem : public QFrame {
+class imglstitem : public QLabel {
     Q_OBJECT
 
 Q_SIGNALS:
@@ -25,7 +25,7 @@ private:
     QPushButton* delect_btn;
     QPushButton* save_as_btn;
 
-    QLabel* pic_preview;
+    //QLabel* pic_preview;
 
     const bool isWormImgItem;
     const bool isVer;
@@ -39,7 +39,7 @@ public:
 
     bool isShowOptBtns() const;
 
-    void setPixmap(const QPixmap&);
+    //void setPixmap(const QPixmap&);
 };
 
 #endif // IMGLSTITEM_H

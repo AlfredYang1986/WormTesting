@@ -14,7 +14,7 @@ imglstitem::~imglstitem() {
 }
 
 QSize imglstitem::sizeHint() const {
-    return QSize(200, 200);
+    return QSize(280, 200);
 }
 
 void imglstitem::setUpSubviews() {
@@ -43,15 +43,15 @@ void imglstitem::setUpSubviews() {
         save_as_btn->setIconSize(QSize(50, 30));
     }
 
-    pic_preview = new QLabel;
+    //pic_preview = new QLabel;
 
-    delect_btn->setGeometry(200, 0, 50, 30);
-    save_as_btn->setGeometry(200, 35, 50, 30);
-    pic_preview->setGeometry(0, 0, 200, 200);
+    //pic_preview->setGeometry(0, 0, 280, 200);
+    delect_btn->setGeometry(0, 0, 50, 30);
+    save_as_btn->setGeometry(0, 35, 50, 30);
 
     delect_btn->setParent(this);
     save_as_btn->setParent(this);
-    pic_preview->setParent(this);
+    //pic_preview->setParent(this);
 
     if (isWormImgItem) {
         delect_btn->hide();
@@ -68,7 +68,7 @@ void imglstitem::setUpSubviews() {
 }
 
 void imglstitem::saveAsBtnSelected() {
-    const QPixmap* m = pic_preview->pixmap();
+    const QPixmap* m = this->pixmap();
     m->save(this->objectName(), "JPG");
 }
 
@@ -81,9 +81,9 @@ bool imglstitem::isShowOptBtns() const {
 }
 
 void imglstitem::mousePressEvent(QMouseEvent *) {
-    emit imageSelected(pic_preview->pixmap());
+    emit imageSelected(this->pixmap());
 }
 
-void imglstitem::setPixmap(const QPixmap & m) {
-    pic_preview->setPixmap(m);
-}
+//void imglstitem::setPixmap(const QPixmap & m) {
+//    pic_preview->setPixmap(m);
+//}

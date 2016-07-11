@@ -4,6 +4,7 @@
 #include <QFrame>
 #include <QVector>
 
+class QBoxLayout;
 class QVBoxLayout;
 class QLabel;
 class imglstitem;
@@ -45,6 +46,7 @@ public:
     ~commonimglstwidget();
 
     void setUpSubviews();
+    void setUpSubviews2();
 
     virtual QSize sizeHint() const;
 
