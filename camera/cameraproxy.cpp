@@ -66,8 +66,10 @@ void cameraproxy::releaseCamera() {
 void cameraproxy::readFarme() {
     IplImage* frame = cvQueryFrame(p);
     uchar *data;
-    QImage qImage = *(IplImageToQImage(frame, &data));
-    emit stream(qImage);
+	if (frame) {
+		QImage qImage = *(IplImageToQImage(frame, &data));
+	    emit stream(qImage);
+	}
 }
 
 QImage* cameraproxy::takeImage() {
@@ -92,4 +94,5 @@ void cameraproxy::startTesting() {
 void cameraproxy::endTesting() {
     timer->stop();
     canTakePic = false;
+    this->releaseCamera();
 }

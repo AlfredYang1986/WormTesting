@@ -56,6 +56,16 @@ void pushwidget::setUpSubviews() {
     sample_searching_widget->setContentsMargins(0,0,0,0);
     content_layout->addWidget(sample_searching_widget);
 
+    this->setStyleSheet("QPushButton {"
+                            "width: 80px;"
+                            "height: 30px;"
+                            "color: white;"
+                            "font-size: 14px;"
+                            "background-color: #1bd7ff;"
+                            "border: 1px solid #1bd7ff;"
+                        "}");
+
+
 //    content_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     main_layout->addLayout(content_layout);

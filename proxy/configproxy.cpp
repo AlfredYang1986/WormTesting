@@ -1,4 +1,4 @@
-#include "configproxy.h"
+﻿#include "configproxy.h"
 #include <QtNetwork>
 #include <QDebug>
 #include <QMessageBox>

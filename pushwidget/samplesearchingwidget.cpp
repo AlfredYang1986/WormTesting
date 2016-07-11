@@ -23,7 +23,7 @@ void samplesearchingwidget::setUpSubviews() {
     not_test_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
-        header<<"样本编号"<< "导入日期";
+        header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
         not_test_sample->setColumnCount(header.count());
         not_test_sample->setHorizontalHeaderLabels(header);
     }
@@ -34,7 +34,7 @@ void samplesearchingwidget::setUpSubviews() {
     tested_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
-        header<<"样本编号"<< "导入日期";
+        header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
         tested_sample->setColumnCount(header.count());
         tested_sample->setHorizontalHeaderLabels(header);
     }
@@ -68,7 +68,7 @@ QSize samplesearchingwidget::sizeHit() const {
 void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     not_test_sample->clear();
     QStringList header;
-    header<<"样本编号"<< "导入日期";
+    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
     not_test_sample->setColumnCount(header.count());
     not_test_sample->setHorizontalHeaderLabels(header);
 
@@ -78,11 +78,19 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     int index = 0;
     for(; iter != samples.end(); ++iter) {
         QJsonObject tmp = (*iter).toObject();
+        QJsonObject patient = tmp["patient"].toObject();
         not_test_sample->setItem(index, 0, new QTableWidgetItem(tmp["sample_id"].toString()));
+        not_test_sample->setItem(index, 1, new QTableWidgetItem(patient["patient_name"].toString()));
+        not_test_sample->setItem(index, 2, new QTableWidgetItem(QString("%1").arg(patient["patient_age"].toInt())));
+        not_test_sample->setItem(index, 3, new QTableWidgetItem(tmp["resource"].toString()));
+        not_test_sample->setItem(index, 4, new QTableWidgetItem(""));
+        not_test_sample->setItem(index, 5, new QTableWidgetItem(tmp["testing_doctor"].toString()));
+        not_test_sample->setItem(index, 6, new QTableWidgetItem(tmp["testing_doctor"].toString()));
+
         qlonglong timespan = tmp["date"].toVariant().toLongLong();
         QDateTime t;
         t.setMSecsSinceEpoch(timespan);
-        not_test_sample->setItem(index, 1, new QTableWidgetItem(t.toString()));
+        not_test_sample->setItem(index, 7, new QTableWidgetItem(t.toString()));
         ++index;
     }
     vec_sample_not_test = samples;
@@ -91,7 +99,7 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
 void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
     tested_sample->clear();
     QStringList header;
-    header<<"样本编号"<< "导入日期";
+    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
     tested_sample->setColumnCount(header.count());
     tested_sample->setHorizontalHeaderLabels(header);
 
@@ -101,22 +109,82 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
     int index = 0;
     for(; iter != samples.end(); ++iter) {
         QJsonObject tmp = (*iter).toObject();
-        QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
-        if (tmp["status"].toInt() == 1)
-            item1->setForeground(QBrush(QColor(255, 0, 0)));
-        else
-            item1->setForeground(QBrush(QColor(0, 0, 255)));
-        tested_sample->setItem(index, 0, item1);
+        QJsonObject patient = tmp["patient"].toObject();
 
-        qlonglong timespan = tmp["date"].toVariant().toLongLong();
-        QDateTime t;
-        t.setMSecsSinceEpoch(timespan);
-        QTableWidgetItem* item2 = new QTableWidgetItem(t.toString());
-        if (tmp["status"].toInt() == 1)
-            item2->setForeground(QBrush(QColor(255, 0, 0)));
-        else
-            item2->setForeground(QBrush(QColor(0, 0, 255)));
-        tested_sample->setItem(index, 1, item2);
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 0, item1);
+        }
+
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_name"].toString());
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 1, item1);
+        }
+
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem(QString("%1").arg(patient["patient_age"].toInt()));
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 2, item1);
+        }
+
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["resource"].toString());
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 3, item1);
+        }
+
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem("");
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 4, item1);
+        }
+
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["testing_doctor"].toString());
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 5, item1);
+        }
+
+        {
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["testing_doctor"].toString());
+            if (tmp["status"].toInt() == 1)
+                item1->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 6, item1);
+        }
+
+        {
+            qlonglong timespan = tmp["date"].toVariant().toLongLong();
+            QDateTime t;
+            t.setMSecsSinceEpoch(timespan);
+            QTableWidgetItem* item2 = new QTableWidgetItem(t.toString());
+            if (tmp["status"].toInt() == 1)
+                item2->setForeground(QBrush(QColor(255, 0, 0)));
+            else
+                item2->setForeground(QBrush(QColor(0, 0, 255)));
+            tested_sample->setItem(index, 7, item2);
+        }
         ++index;
     }
     vec_sample_tested = samples;

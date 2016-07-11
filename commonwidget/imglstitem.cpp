@@ -1,4 +1,4 @@
-#include "imglstitem.h"
+﻿#include "imglstitem.h"
 #include <QPushButton>
 #include <QPixmap>
 

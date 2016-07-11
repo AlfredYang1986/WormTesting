@@ -1,4 +1,4 @@
-#include "samplereportingpane.h"
+﻿#include "samplereportingpane.h"
 
 #include <QHBoxLayout>
 #include <QFormLayout>

@@ -31,7 +31,7 @@ void imgcomparepane::setUpSubviews() {
     box = new QComboBox;
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
     foreach (const QCameraInfo &cameraInfo, cameras) {
-        box->addItem(cameraInfo.deviceName());
+        box->addItem(cameraInfo.description());
     }
     QObject::connect(box, SIGNAL(currentIndexChanged(int)),
                      this, SLOT(changeCurrentCamera(int)));
@@ -53,11 +53,15 @@ void imgcomparepane::setUpSubviews() {
     photo_preview = new QLabel;
     photo_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     main_layout->addWidget(photo_preview);
+     photo_preview ->setStyleSheet("QWidget {"
+                                "background-color: red;"
+                            "}");
+
 
     // btn lst
 
-    QSpacerItem* spacer_bottom = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
-    main_layout->addSpacerItem(spacer_bottom);
+    //QSpacerItem* spacer_bottom = new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    //main_layout->addSpacerItem(spacer_bottom);
 
     this->setLayout(main_layout);
 }
@@ -67,7 +71,9 @@ QSize imgcomparepane::sizeHint() const {
 }
 
 void imgcomparepane::imageStream(const QImage& image) {
-    photo_preview->setPixmap(QPixmap::fromImage(image));
+    QPixmap m = QPixmap::fromImage(image);
+    m = m.scaled(photo_preview->width(), photo_preview->height());
+    photo_preview->setPixmap(m);
 }
 
 void imgcomparepane::takeImage() {

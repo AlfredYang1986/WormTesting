@@ -9,5 +9,17 @@
         <file>resource/minus.png</file>
         <file>resource/plus.png</file>
         <file>resource/photo_preview.png</file>
+        <file>resource/menu6.png</file>
+        <file>resource/menu7.png</file>
+        <file>resource/menu8.png</file>
+        <file>resource/setting_report_section.png</file>
+        <file>resource/setting_resource_add.png</file>
+        <file>resource/setting_resource_delete.png</file>
+        <file>resource/setting_patient_add.png</file>
+        <file>resource/setting_patient_delete.png</file>
+        <file>resource/setting_description_add.png</file>
+        <file>resource/setting_pic_add.png</file>
+        <file>resource/setting_pic_delete.png</file>
+        <file>resource/setting_bkg.png</file>
     </qresource>
 </RCC>

@@ -1,4 +1,4 @@
-#include "starttestingpage.h"
+﻿#include "starttestingpage.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QPushButton>
@@ -51,6 +51,9 @@ void starttestingpage::setUpSubviews() {
     img_pane->setMinimumSize(QSize(200, 200));
     img_pane->setContentsMargins(0,0,0,0);
     page_one_content_layout->addWidget(img_pane);
+         img_pane->setStyleSheet("QWidget {"
+                                "background-color: green;"
+                            "}");
 
     img_lst_pane = new commonimglstwidget;
     img_lst_pane->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
@@ -66,24 +69,24 @@ void starttestingpage::setUpSubviews() {
 
     QHBoxLayout* control_pane = new QHBoxLayout;
     QSpacerItem* control_left_spacer = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
-    control_start_btn = new QPushButton(tr("开始测试"));
+    control_start_btn = new QPushButton(QStringLiteral("开始测试"));
     control_start_btn->setObjectName(QStringLiteral("page_one_start_btn"));
     control_start_btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     QObject::connect(control_start_btn, SIGNAL(released()), this, SLOT(startTestingBtnClicked()));
 
-    control_end_btn = new QPushButton(tr("完成测试"));
+    control_end_btn = new QPushButton(QStringLiteral("完成测试"));
     control_end_btn->setObjectName(QStringLiteral("page_one_cancel_btn"));
     control_end_btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     QObject::connect(control_end_btn, SIGNAL(released()), this, SLOT(endTestingBtnClicked()));
 
     {
-        control_report_btn = new QPushButton(tr("填写报告"));
+        control_report_btn = new QPushButton(QStringLiteral("填写报告"));
         control_report_btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         QObject::connect(control_report_btn, SIGNAL(released()), this, SLOT(startReportingBtnClicked()));
     }
 
     {
-        control_compare_btn = new QPushButton(tr("开始对比"));
+        control_compare_btn = new QPushButton(QStringLiteral("开始对比"));
         control_compare_btn->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
         QObject::connect(control_compare_btn, SIGNAL(released()), this, SLOT(startComparingBtnClicked()));
     }
@@ -130,7 +133,7 @@ void starttestingpage::startTestingBtnClicked() {
         cameraproxy::instance()->startTesting();
     } else {
         QMessageBox::warning(this, "Error",
-                             tr("请先选定测试样本"),
+                             QStringLiteral("请先选定测试样本"),
                              QMessageBox::Ok, QMessageBox::Ok);
     }
 }
@@ -148,7 +151,7 @@ void starttestingpage::takeImageSuccess(const QImage& image) {
     QString sample_id = sample_detail->queryCurrentSampleId();
     if (sample_id.isEmpty()) {
         QMessageBox::warning(this, "Error",
-                             tr("请先选定测试样本"),
+                             QStringLiteral("请先选定测试样本"),
                              QMessageBox::Ok, QMessageBox::Ok);
 
         return;
@@ -245,6 +248,7 @@ void starttestingpage::hideEvent(QHideEvent *) {
                      this, SLOT(didFinishEditSampleId(const QString&)));
     QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+    cameraproxy::instance()->endTesting();
 }
 
 starttestingpage::TestStatus starttestingpage::currentStatus() const {

@@ -104,8 +104,18 @@ FORMS    +=
 RESOURCES += \
     res.qrc
 
+win32 {
+INCLUDEPATH += C:\opencv\build\include
+
+LIBS += C:\opencv\build\x64\vc14\lib\opencv_core2413d.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_highgui2413d.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_imgproc2413d.lib \
+}
+
+mac {
 INCLUDEPATH += /usr/local/opt/include
 
 LIBS += /usr/local/lib/libopencv_core.dylib \
         /usr/local/lib/libopencv_highgui.dylib \
         /usr/local/lib/libopencv_imgproc.dylib
+}

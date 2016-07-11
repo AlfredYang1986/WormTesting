@@ -1,4 +1,4 @@
-#include "reportsearchconditionwidget.h"
+﻿#include "reportsearchconditionwidget.h"
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QGroupBox>
@@ -18,18 +18,18 @@ reportsearchconditionwidget::~reportsearchconditionwidget() {
 }
 
 QSize reportsearchconditionwidget::sizeHint() const {
-    return QSize(300, 300);
+    return QSize(200, 300);
 }
 
 void reportsearchconditionwidget::setUpSubviews() {
 
-    gb = new QGroupBox("检索条件");
+    gb = new QGroupBox(QStringLiteral("检索条件"));
 
     time_box = new QComboBox;
     time_box->addItem("--------------");
-    time_box->addItem("当天");
-    time_box->addItem("当周");
-    time_box->addItem("当月");
+    time_box->addItem(QStringLiteral("当天"));
+    time_box->addItem(QStringLiteral("当周"));
+    time_box->addItem(QStringLiteral("当月"));
 
     testing_doctor_box = new QComboBox;
     testing_doctor_box->addItem("--------------");
@@ -48,16 +48,16 @@ void reportsearchconditionwidget::setUpSubviews() {
 
     QFormLayout* content_layout = new QFormLayout;
 
-    content_layout->addRow("时间", time_box);
-    content_layout->addRow("检测医生", testing_doctor_box);
-    content_layout->addRow("审核医生", doctor_box);
-    content_layout->addRow("虫子名称", worm_box);
+    content_layout->addRow(QStringLiteral("时间"), time_box);
+    content_layout->addRow(QStringLiteral("检测医生"), testing_doctor_box);
+    content_layout->addRow(QStringLiteral("审核医生"), doctor_box);
+    content_layout->addRow(QStringLiteral("虫子名称"), worm_box);
 
-    content_layout->addRow("样本编号", sample_id_edit);
-    content_layout->addRow("病人姓名", patient_name_edit);
-    content_layout->addRow("病人编号", patient_id_edit);
-    content_layout->addRow("年   龄", patient_age_edit);
-    content_layout->addRow("科   室", patient_section_edit);
+    content_layout->addRow(QStringLiteral("样本编号"), sample_id_edit);
+    content_layout->addRow(QStringLiteral("病人姓名"), patient_name_edit);
+    content_layout->addRow(QStringLiteral("病人编号"), patient_id_edit);
+    content_layout->addRow(QStringLiteral("年   龄"), patient_age_edit);
+    content_layout->addRow(QStringLiteral("科   室"), patient_section_edit);
 
     gb->setLayout(content_layout);
 
@@ -66,7 +66,7 @@ void reportsearchconditionwidget::setUpSubviews() {
 
     QHBoxLayout* btn_layout = new QHBoxLayout;
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    QPushButton* search_btn = new QPushButton("搜索");
+    QPushButton* search_btn = new QPushButton(QStringLiteral("搜索"));
     btn_layout->addWidget(search_btn);
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
     main_layout->addLayout(btn_layout);

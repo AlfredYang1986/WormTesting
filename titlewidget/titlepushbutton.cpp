@@ -7,7 +7,8 @@
 
 titlepushbutton::titlepushbutton(const QString& img, const QString& title)
     : button_title(title) {
-    QString path = directoryOf("resource").absoluteFilePath(img);
+    //QString path = directoryOf("resource").absoluteFilePath(img);
+    QString path = ":resource/" + img;
     button_img.load(path);
 //    this->setObjectName("title_push_btn);
     this->setUpSubviews();

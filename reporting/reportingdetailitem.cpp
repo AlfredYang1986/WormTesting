@@ -1,4 +1,4 @@
-#include "reportingdetailitem.h"
+﻿#include "reportingdetailitem.h"
 #include <QHBoxLayout>
 #include <QLabel>
 #include <QComboBox>

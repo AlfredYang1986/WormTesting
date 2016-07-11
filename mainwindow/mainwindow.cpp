@@ -1,4 +1,4 @@
-#include "mainwindow.h"
+﻿#include "mainwindow.h"
 #include "titlewidget/titlewidget.h"
 #include "starttesting/starttestingpage.h"
 #include "reporting/reportingcontainer.h"
@@ -52,19 +52,19 @@ void MainWindow::setUpSubviews() {
 
 void MainWindow::changeMainContent(const QString &title) {
     if (this->isReadyToChangeMainWidget()) {
-        if (title == "开始检测") {
+        if (title == QStringLiteral("开始检测")) {
             this->createTestingWidget();
-        } else if (title == "填写报告") {
+        } else if (title == QStringLiteral("填写报告")) {
             this->createReportWidget();
-        } else if (title == "报告列表") {
+        } else if (title == QStringLiteral("报告列表")) {
             this->createReportLstWidget();
-        } else if (title == "录入样本") {
+        } else if (title == QStringLiteral("录入样本")) {
             this->createPushWidget();
-        } else if (title == "样本资料") {
+        } else if (title == QStringLiteral("样本资料")) {
             this->createResourceWidget();
-        } else if (title == "系统设置") {
+        } else if (title == QStringLiteral("系统设置")) {
             this->createSettingWidget();
-        } else if (title == "对比结果") {
+        } else if (title == QStringLiteral("对比结果")) {
             this->createCompareWidget();
         }
 //        else {
@@ -87,7 +87,6 @@ void MainWindow::changeMainContent(const QString &title) {
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-
          contents[QStringLiteral("录入样本")] = content_widget;
 
          QObject::connect(content_widget, SIGNAL(startTesting(const QJsonObject&)),
@@ -113,9 +112,8 @@ void MainWindow::changeMainContent(const QString &title) {
          starttestingpage* content_widget = new starttestingpage;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-         main_container->addWidget(content_widget);
-
          contents[QStringLiteral("开始检测")] = content_widget;
+         main_container->addWidget(content_widget);
 
          QObject::connect(content_widget, SIGNAL(startReporting(const QString&)),
                           this, SLOT(startReport(const QString&)));
@@ -142,7 +140,6 @@ void MainWindow::changeMainContent(const QString &title) {
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-
          contents[QStringLiteral("填写报告")] = content_widget;
          tmp = content_widget;
      }
@@ -164,7 +161,6 @@ void MainWindow::changeMainContent(const QString &title) {
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-
          contents[QStringLiteral("报告列表")] = content_widget;
 
          QObject::connect(content_widget, SIGNAL(startReporting(QString)),
@@ -190,7 +186,6 @@ void MainWindow::changeMainContent(const QString &title) {
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-
          contents[QStringLiteral("样本资料")] = content_widget;
          tmp = content_widget;
      }
@@ -212,7 +207,6 @@ void MainWindow::changeMainContent(const QString &title) {
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-
          contents[QStringLiteral("对比结果")] = content_widget;
          tmp = content_widget;
      }
@@ -234,7 +228,6 @@ void MainWindow::createSettingWidget() {
         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         main_container->addWidget(content_widget);
-
         contents[QStringLiteral("系统设置")] = content_widget;
         tmp = content_widget;
     }
@@ -256,7 +249,6 @@ void MainWindow::createAboutWidget() {
         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         main_container->addWidget(content_widget);
-
         contents[QStringLiteral("关于系统")] = content_widget;
         tmp = content_widget;
     }

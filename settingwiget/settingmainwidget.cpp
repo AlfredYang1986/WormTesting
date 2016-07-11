@@ -8,6 +8,7 @@
 #include "deletepatienttypedialog.h"
 #include "updatewormdesdialog.h"
 #include "uploadwormimgdialog.h"
+#include <QBitmap>
 
 settingmainwidget::settingmainwidget() {
     this->setUpSubviews();
@@ -25,23 +26,44 @@ void settingmainwidget::setUpSubviews() {
     main_layout = new QVBoxLayout;
 
     {
-        QPushButton* btn = new QPushButton("修改报告项目");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_report_section.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showReportingSettingDialog()));
         main_layout->addWidget(btn);
     }
 
     QHBoxLayout* resource = new QHBoxLayout;
     {
-        QPushButton* btn = new QPushButton("添加样本来源");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_resource_add.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddSampleTypeDialog()));
         resource->addWidget(btn);
     }
 
     {
-        QPushButton* btn = new QPushButton("删除样本来源");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_resource_delete.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeleteSampleTypeDialog()));
         resource->addWidget(btn);
     }
@@ -50,15 +72,29 @@ void settingmainwidget::setUpSubviews() {
 
     QHBoxLayout* patient = new QHBoxLayout;
     {
-        QPushButton* btn = new QPushButton("添加病人来源");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_patient_add.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddPatientTypeDialog()));
         patient->addWidget(btn);
     }
 
     {
-        QPushButton* btn = new QPushButton("删除病人来源");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_patient_delete.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
         patient->addWidget(btn);
     }
@@ -67,22 +103,43 @@ void settingmainwidget::setUpSubviews() {
 
     QHBoxLayout* sample = new QHBoxLayout;
     {
-        QPushButton* btn = new QPushButton("添加图片样本描述");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_description_add.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showUpdateWormDescriptionDialog()));
         sample->addWidget(btn);
     }
 
     {
-        QPushButton* btn = new QPushButton("添加样本图片");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_pic_add.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddWormImgDialog()));
         sample->addWidget(btn);
     }
 
     {
-        QPushButton* btn = new QPushButton("删除样本图片");
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_pic_delete.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
         sample->addWidget(btn);
     }
@@ -92,13 +149,11 @@ void settingmainwidget::setUpSubviews() {
     main_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
 
-    this->setStyleSheet("QPushButton {"
-                            "width: 100px;"
-                            "height: 30px;"
-                            "color: white;"
-                            "font-size: 14px;"
-                            "background-color: #1bd7ff;"
-                            "border: 1px solid #1bd7ff;"
+    this->setObjectName("setting_pane");
+    this->setStyleSheet("QWidget#setting_pane {"
+                            "border-image: url(:resource/setting_bkg.png);"
+                            "background-repeat: none;"
+                            "background-size: 100% 100%;"
                         "}");
 }
 

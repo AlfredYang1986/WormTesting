@@ -1,4 +1,4 @@
-#include "fileoptproxy.h"
+﻿#include "fileoptproxy.h"
 
 fileoptproxy::fileoptproxy() {
     http_connect = new QNetworkAccessManager(this);

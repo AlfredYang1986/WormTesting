@@ -1,4 +1,4 @@
-#include "sampledetailwidget.h"
+﻿#include "sampledetailwidget.h"
 #include <QLineEdit>
 #include <QComboBox>
 #include <QVBoxLayout>
@@ -46,8 +46,8 @@ void sampledetailwidget::setUpSubviews() {
     patient_type = new QComboBox;
 
     patient_gender_box = new QComboBox;
-    patient_gender_box->addItem(tr("男"));
-    patient_gender_box->addItem(tr("女"));
+    patient_gender_box->addItem(QStringLiteral("男"));
+    patient_gender_box->addItem(QStringLiteral("女"));
 
     patient_age_edit = new QLineEdit;
 
@@ -58,32 +58,32 @@ void sampledetailwidget::setUpSubviews() {
 //    content_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     QFormLayout* sample_layout = new QFormLayout;
-    sample_layout->addRow("病人编号:", patient_id_edit);
-    sample_layout->addRow("病人类型:", patient_type);
-    sample_layout->addRow("姓  名:", patient_name_edit);
-    sample_layout->addRow("性  别:", patient_gender_box);
-    sample_layout->addRow("年  龄:", patient_age_edit);
-    sample_layout->addRow("科  室:", patient_section_edit);
-    sample_layout->addRow("住院号:", patient_section_id_edit);
-    sample_layout->addRow("床  号:", patient_section_bed_id_edit);
+    sample_layout->addRow(QStringLiteral("病人编号:"), patient_id_edit);
+    sample_layout->addRow(QStringLiteral("病人类型:"), patient_type);
+    sample_layout->addRow(QStringLiteral("姓  名:"), patient_name_edit);
+    sample_layout->addRow(QStringLiteral("性  别:"), patient_gender_box);
+    sample_layout->addRow(QStringLiteral("年  龄:"), patient_age_edit);
+    sample_layout->addRow(QStringLiteral("科  室:"), patient_section_edit);
+    sample_layout->addRow(QStringLiteral("住院号:"), patient_section_id_edit);
+    sample_layout->addRow(QStringLiteral("床  号:"), patient_section_bed_id_edit);
 
     sample_layout->addItem(new QSpacerItem(0, 30, QSizePolicy::Fixed, QSizePolicy::Fixed));
 
-    sample_layout->addRow("样本编号:", sample_id_edit);
-    sample_layout->addRow("检验序号:", sample_index_edit);
-    sample_layout->addRow("样本类型:", sample_resource_box);
+    sample_layout->addRow(QStringLiteral("样本编号:"), sample_id_edit);
+    sample_layout->addRow(QStringLiteral("检验序号:"), sample_index_edit);
+    sample_layout->addRow(QStringLiteral("样本类型:"), sample_resource_box);
 
-    sample_layout->addRow("开单科室:", sample_section_edit);
-    sample_layout->addRow("开单医生:", sample_query_doctor_edit);
-    sample_layout->addRow("送检医生:", sample_pre_test_doctor_edit);
-    sample_layout->addRow("检测医生:", sample_testing_doctor_edit);
-    sample_layout->addRow("审核医生:", sample_post_test_doctor_edit);
+    sample_layout->addRow(QStringLiteral("开单科室:"), sample_section_edit);
+    sample_layout->addRow(QStringLiteral("开单医生:"), sample_query_doctor_edit);
+    sample_layout->addRow(QStringLiteral("送检医生:"), sample_pre_test_doctor_edit);
+    sample_layout->addRow(QStringLiteral("检测医生:"), sample_testing_doctor_edit);
+    sample_layout->addRow(QStringLiteral("审核医生:"), sample_post_test_doctor_edit);
 
-    sample_layout->addRow("开单时间:", sample_start_date_edit);
-    sample_layout->addRow("取样时间:", sample_end_date_edit);
-    sample_layout->addRow("送检时间:", sample_pre_test_date_edit);
-    sample_layout->addRow("检测时间:", sample_testing_date_edit);
-    sample_layout->addRow("报告时间:", sample_reporting_date_edit);
+    sample_layout->addRow(QStringLiteral("开单时间:"), sample_start_date_edit);
+    sample_layout->addRow(QStringLiteral("取样时间:"), sample_end_date_edit);
+    sample_layout->addRow(QStringLiteral("送检时间:"), sample_pre_test_date_edit);
+    sample_layout->addRow(QStringLiteral("检测时间:"), sample_testing_date_edit);
+    sample_layout->addRow(QStringLiteral("报告时间:"), sample_reporting_date_edit);
 
     this->setLayout(sample_layout);
     main_layout=sample_layout;
@@ -98,7 +98,7 @@ void sampledetailwidget::setUpSubviews() {
 }
 
 QSize sampledetailwidget::sizeHint() const {
-    return QSize(300, 300);
+    return QSize(200, 300);
 }
 
 

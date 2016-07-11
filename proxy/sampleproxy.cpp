@@ -1,4 +1,4 @@
-#include "sampleproxy.h"
+﻿#include "sampleproxy.h"
 #include "fileoptproxy.h"
 #include "proxymanager.h"
 #include <iostream>
