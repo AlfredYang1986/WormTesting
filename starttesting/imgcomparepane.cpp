@@ -53,10 +53,6 @@ void imgcomparepane::setUpSubviews() {
     photo_preview = new QLabel;
     photo_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     main_layout->addWidget(photo_preview);
-     photo_preview ->setStyleSheet("QWidget {"
-                                "background-color: red;"
-                            "}");
-
 
     // btn lst
 

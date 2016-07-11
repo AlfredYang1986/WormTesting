@@ -54,7 +54,8 @@ SOURCES += main.cpp\
     settingwiget/uploadwormimgdialog.cpp \
     imgcomparewidget/imagecomparewidget.cpp \
     reportlst/reportsearchconditionwidget.cpp \
-    reportlst/searchresulttablewidget.cpp
+    reportlst/searchresulttablewidget.cpp \
+    commonwidget/comparewindows/comparemainwindow.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -97,7 +98,8 @@ HEADERS  += mainwindow/mainwindow.h\
     settingwiget/uploadwormimgdialog.h \
     imgcomparewidget/imagecomparewidget.h \
     reportlst/reportsearchconditionwidget.h \
-    reportlst/searchresulttablewidget.h
+    reportlst/searchresulttablewidget.h \
+    commonwidget/comparewindows/comparemainwindow.h
 
 FORMS    +=
 

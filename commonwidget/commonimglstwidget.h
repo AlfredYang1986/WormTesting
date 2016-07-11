@@ -6,6 +6,7 @@
 
 class QVBoxLayout;
 class QLabel;
+class imglstitem;
 
 class commonimglstwidget : public QFrame {
     Q_OBJECT
@@ -30,16 +31,17 @@ private:
 
     QString sample_id;
     QVector<QString> img_name_lst;
-    QVector<QLabel*> img_lst;
+    QVector<imglstitem*> img_lst;
 
     QString current_download_name;
 
     const bool isWormSample;
+    const bool isVer;
 
     void moveToNextImage();
     void clearLabels();
 public:
-    commonimglstwidget(bool w = false);
+    commonimglstwidget(bool w = false, bool v = true);
     ~commonimglstwidget();
 
     void setUpSubviews();

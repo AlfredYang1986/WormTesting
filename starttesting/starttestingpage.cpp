@@ -51,9 +51,6 @@ void starttestingpage::setUpSubviews() {
     img_pane->setMinimumSize(QSize(200, 200));
     img_pane->setContentsMargins(0,0,0,0);
     page_one_content_layout->addWidget(img_pane);
-         img_pane->setStyleSheet("QWidget {"
-                                "background-color: green;"
-                            "}");
 
     img_lst_pane = new commonimglstwidget;
     img_lst_pane->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);

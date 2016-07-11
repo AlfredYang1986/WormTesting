@@ -26,7 +26,8 @@ private:
     QString _cur;
 };
 
-commonimglstwidget::commonimglstwidget(bool w) : isWormSample(w) {
+commonimglstwidget::commonimglstwidget(bool w, bool v)
+    : isWormSample(w), isVer(v) {
     this->setUpSubviews();
 }
 
@@ -35,7 +36,7 @@ commonimglstwidget::~commonimglstwidget() {
 }
 
 QSize commonimglstwidget::sizeHint() const {
-    return QSize(300, 300);
+    return QSize(250, 200);
 }
 
 void commonimglstwidget::setUpSubviews() {
@@ -77,11 +78,10 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {
     imglstitem* tmp = new imglstitem(isWormSample);
     tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
-    tmp->setMaximumSize(QSize(300, 200));
-    tmp->setMinimumSize(QSize(300, 200));
+    tmp->setFixedSize(QSize(250, 200));
     QPixmap m;
     m.loadFromData(data);
-    m = m.scaled(300, 200);
+    m = m.scaled(200, 200);
     tmp->setPixmap(m);
 
     QObject::connect(tmp, SIGNAL(imageSelected(const QPixmap*)),
@@ -166,7 +166,7 @@ void commonimglstwidget::deleteImageSuccess(const QString & sample_id_arg, const
 }
 
 void commonimglstwidget::clearLabels() {
-    QVector<QLabel*>::iterator iter_label = img_lst.begin();
+    QVector<imglstitem*>::iterator iter_label = img_lst.begin();
     for(; iter_label != img_lst.end(); ++iter_label) {
         main_layout->removeWidget(*iter_label);
         imglstitem* b = (imglstitem*)(*iter_label);

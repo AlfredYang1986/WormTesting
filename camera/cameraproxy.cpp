@@ -59,8 +59,10 @@ void cameraproxy::setUpCamera(int index) {
 }
 
 void cameraproxy::releaseCamera() {
-    cvReleaseCapture(&p);
-    p = NULL;
+    if (p) {
+        cvReleaseCapture(&p);
+        p = NULL;
+    }
 }
 
 void cameraproxy::readFarme() {
@@ -92,7 +94,9 @@ void cameraproxy::startTesting() {
 }
 
 void cameraproxy::endTesting() {
-    timer->stop();
-    canTakePic = false;
-    this->releaseCamera();
+    if (p) {
+        timer->stop();
+        canTakePic = false;
+        this->releaseCamera();
+    }
 }

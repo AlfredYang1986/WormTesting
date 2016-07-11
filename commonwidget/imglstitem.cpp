@@ -1,8 +1,10 @@
 ﻿#include "imglstitem.h"
 #include <QPushButton>
 #include <QPixmap>
+#include <QLabel>
 
-imglstitem::imglstitem(bool w) : isWormImgItem(w) {
+imglstitem::imglstitem(bool w, bool v)
+    : isWormImgItem(w), isVer(v) {
     this->setUpSubviews();
 }
 
@@ -16,14 +18,40 @@ QSize imglstitem::sizeHint() const {
 }
 
 void imglstitem::setUpSubviews() {
-    delect_btn = new QPushButton("删除");
-    save_as_btn = new QPushButton("另存为");
 
-    delect_btn->setGeometry(0, 0, 50, 30);
-    save_as_btn->setGeometry(0, 35, 50, 30);
+    {
+        delect_btn = new QPushButton;
+        delect_btn->setFixedSize(50, 30);
+        delect_btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        delect_btn->clearMask();
+        delect_btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/start_testing_delete.png");
+        delect_btn->setIcon(m);
+        delect_btn->setIconSize(QSize(50, 30));
+    }
+
+    {
+        save_as_btn = new QPushButton;
+        save_as_btn->setFixedSize(50, 30);
+        save_as_btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        save_as_btn->clearMask();
+        save_as_btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/start_testing_save_as.png");
+        save_as_btn->setIcon(m);
+        save_as_btn->setIconSize(QSize(50, 30));
+    }
+
+    pic_preview = new QLabel;
+
+    delect_btn->setGeometry(200, 0, 50, 30);
+    save_as_btn->setGeometry(200, 35, 50, 30);
+    pic_preview->setGeometry(0, 0, 200, 200);
 
     delect_btn->setParent(this);
     save_as_btn->setParent(this);
+    pic_preview->setParent(this);
 
     if (isWormImgItem) {
         delect_btn->hide();
@@ -31,12 +59,8 @@ void imglstitem::setUpSubviews() {
     }
 
     this->setStyleSheet("QPushButton {"
-                            "width: 80px;"
-                            "height: 30px;"
-                            "color: white;"
-                            "font-size: 14px;"
-                            "background-color: #1bd7ff;"
-                            "border: 1px solid #1bd7ff;"
+                            "background-color: none;"
+                            "border: none;"
                         "}");
 
     QObject::connect(save_as_btn, SIGNAL(released()), this, SLOT(saveAsBtnSelected()));
@@ -44,7 +68,7 @@ void imglstitem::setUpSubviews() {
 }
 
 void imglstitem::saveAsBtnSelected() {
-    const QPixmap* m = this->pixmap();
+    const QPixmap* m = pic_preview->pixmap();
     m->save(this->objectName(), "JPG");
 }
 
@@ -57,5 +81,9 @@ bool imglstitem::isShowOptBtns() const {
 }
 
 void imglstitem::mousePressEvent(QMouseEvent *) {
-    emit imageSelected(this->pixmap());
+    emit imageSelected(pic_preview->pixmap());
+}
+
+void imglstitem::setPixmap(const QPixmap & m) {
+    pic_preview->setPixmap(m);
 }
