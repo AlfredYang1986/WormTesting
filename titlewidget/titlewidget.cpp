@@ -79,13 +79,13 @@ void titlewidget::setUpSubViews() {
 
     vector<std::pair<QString, QString> > tmp_lst;
     tmp_lst.push_back(std::make_pair("menu1.png", "录入样本"));
-    tmp_lst.push_back(std::make_pair("menu1.png", "开始检测"));
-    tmp_lst.push_back(std::make_pair("menu2.png", "填写报告"));
-    tmp_lst.push_back(std::make_pair("menu3.png", "报告列表"));
-    tmp_lst.push_back(std::make_pair("menu4.png", "样本资料"));
-    tmp_lst.push_back(std::make_pair("menu5.png", "对比结果"));
-    tmp_lst.push_back(std::make_pair("menu5.png", "系统设置"));
-    tmp_lst.push_back(std::make_pair("menu5.png", "关于系统"));
+    tmp_lst.push_back(std::make_pair("menu2.png", "开始检测"));
+    tmp_lst.push_back(std::make_pair("menu3.png", "填写报告"));
+    tmp_lst.push_back(std::make_pair("menu4.png", "报告列表"));
+    tmp_lst.push_back(std::make_pair("menu5.png", "样本资料"));
+    tmp_lst.push_back(std::make_pair("menu6.png", "对比结果"));
+    tmp_lst.push_back(std::make_pair("menu7.png", "系统设置"));
+    tmp_lst.push_back(std::make_pair("menu8.png", "关于系统"));
 
     std::for_each(tmp_lst.begin(), tmp_lst.end(), pred_btn_creator(&menu_lst));
     std::for_each(menu_lst.begin(), menu_lst.end(), pred_push_layout(main_layout));
