@@ -14,7 +14,7 @@ Q_SIGNALS:
     void saveReportTestResult();
 
 protected Q_SLOTS:
-    void downloadFileSuccess(const QByteArray&);
+    void downloadFileSuccess(const QByteArray&, const QString&);
 
     void saveBtnClicked();
     void previewBtnClicked();
@@ -29,10 +29,14 @@ public:
 protected:
     void setUpSubviews();
 
+    virtual void showEvent(QShowEvent*);
+    virtual void hideEvent(QHideEvent*);
+
 private:
     QVBoxLayout* main_layout;
 
     QLabel* large_img;
+    QString current_img_name;
 };
 
 #endif // REPORTINGIMGPANE_H

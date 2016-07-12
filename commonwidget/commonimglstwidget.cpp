@@ -72,6 +72,7 @@ void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
         img_name_lst.push_back((*tmp_iter).toString());
     }
 
+    current_runnning = false;
     this->moveToNextImage();
 }
 
@@ -84,11 +85,15 @@ void commonimglstwidget::pushImageName(const QString& name) {
 
     current_download_name = name;
     proxymanager::instance()->getFileProxy()->downloadFile(current_download_name);
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+    //QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+    //                 this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
 }
 
-void commonimglstwidget::downloadFileSuccess(const QByteArray& data) {
+void commonimglstwidget::downloadFileSuccess(const QByteArray& data, const QString& filename) {
+
+    if (!img_name_lst.contains(filename))
+        return;
+
     imglstitem* tmp = new imglstitem(isWormSample);
     tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
@@ -122,8 +127,8 @@ void commonimglstwidget::moveToNextImage() {
 
         current_runnning = true;
         current_download_name = img_name_lst.first();
-        QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+        //QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+        //             this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
 
     } else {
         QVector<QString>::iterator iter = std::find_if(img_name_lst.begin(), img_name_lst.end(),
@@ -131,8 +136,8 @@ void commonimglstwidget::moveToNextImage() {
         if (iter == img_name_lst.end() || (++iter) == img_name_lst.end()) {
             current_runnning = false;
             current_download_name = "";
-            QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+            //QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+            //         this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
 
         } else {
             current_download_name = *iter;
@@ -144,17 +149,19 @@ void commonimglstwidget::moveToNextImage() {
 }
 
 void commonimglstwidget::showEvent(QShowEvent *) {
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+    this->clearLabels();
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
                      this, SLOT(deleteImageSuccess(QString,QString)));
 }
 
 void commonimglstwidget::hideEvent(QHideEvent *) {
-    QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+    QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
     QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
                      this, SLOT(deleteImageSuccess(QString,QString)));
+    this->clearLabels();
 }
 
 void commonimglstwidget::deleteImageStart(const QString & name) {

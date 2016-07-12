@@ -1,6 +1,6 @@
 ﻿#include "fileoptproxy.h"
 
-fileoptproxy::fileoptproxy() {
+fileoptproxy::fileoptproxy() : isDownLoading(false) {
     http_connect = new QNetworkAccessManager(this);
     QObject::connect(http_connect,SIGNAL(finished(QNetworkReply*)), this, SLOT(replayFinished(QNetworkReply*)));
 }
@@ -51,18 +51,18 @@ void fileoptproxy::uploadSampleImage(const QString &sample_id, const QImage &ima
 }
 
 void fileoptproxy::downloadFile(const QString &name) {
+
+    qDebug() << name << endl;
+    download_lst.push_back(name);
+    if (isDownLoading) return;
+    else this->downloadFileImpl(download_lst.first());
+}
+
+void fileoptproxy::downloadFileImpl(const QString &name) {
+    isDownLoading = true;
     QUrl url = QString("http://localhost:9000/images/") + name;
 
     QNetworkRequest request(url);
-//    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
-
-//    QJsonObject json;
-//    json.insert("cat", worm_cat_name);
-
-//    QJsonDocument document;
-//    document.setObject(json);
-//    QByteArray arr = document.toJson(QJsonDocument::Compact);
-
     QNetworkReply* http_replay = http_connect->get(request);
 
     QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
@@ -86,7 +86,15 @@ void fileoptproxy::replayFinished(QNetworkReply* result) {
                 }
              }
          } else {
-            emit downloadFileSuccess(data);
+            QString succ = download_lst.first();
+            download_lst.pop_front();
+            qDebug() << succ << endl;
+            if (!download_lst.isEmpty())
+                this->downloadFileImpl(download_lst.first());
+            else
+                isDownLoading = false;
+
+            emit downloadFileSuccess(data, succ);
         }
     }
 }

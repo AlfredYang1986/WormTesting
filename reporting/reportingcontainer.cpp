@@ -45,8 +45,8 @@ void reportingcontainer::setUpSubviews() {
 
     this->setLayout(main_layout);
 
-    //QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
-    //                 this, SLOT(currentSampleChange(const QJsonObject&)));
+    QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
+                     this, SLOT(currentSampleChange(const QJsonObject&)));
 
     QObject::connect(reporting_img, SIGNAL(saveReportTestResult()),
                      this, SLOT(saveTestResult()));

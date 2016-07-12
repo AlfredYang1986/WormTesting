@@ -16,7 +16,7 @@ Q_SIGNALS:
     void changeCurrentImageSignal(const QPixmap&);
 
 protected Q_SLOTS:
-    void downloadFileSuccess(const QByteArray&);
+    void downloadFileSuccess(const QByteArray&, const QString&);
 
     void deleteImageStart(const QString&);
     void deleteImageSuccess(const QString &, const QString &);

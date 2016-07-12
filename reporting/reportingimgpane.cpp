@@ -69,8 +69,16 @@ void reportingimgpane::setUpSubviews() {
                             "border: none;"
                         "}");
 
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&)),
-                     this, SLOT(downloadFileSuccess(const QByteArray&)));
+}
+
+void reportingimgpane::showEvent(QShowEvent *) {
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
+}
+
+void reportingimgpane::hideEvent(QHideEvent *) {
+    QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
+                     this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
 }
 
 QSize reportingimgpane::sizeHint() const {
@@ -79,15 +87,17 @@ QSize reportingimgpane::sizeHint() const {
 
 void reportingimgpane::fillImages(const QJsonObject& sample) {
     QJsonArray arr = sample["images"].toArray();
-    QString name = arr.last().toString();
-    proxymanager::instance()->getFileProxy()->downloadFile(name);
+    current_img_name = arr.last().toString();
+    proxymanager::instance()->getFileProxy()->downloadFile(current_img_name);
 }
 
-void reportingimgpane::downloadFileSuccess(const QByteArray& arr) {
-    QPixmap m;
-    m.loadFromData(arr);
-    m = m.scaled(this->width(), this->height() - 100);
-    large_img->setPixmap(m);
+void reportingimgpane::downloadFileSuccess(const QByteArray& arr, const QString& filename) {
+    if (current_img_name == filename) {
+        QPixmap m;
+        m.loadFromData(arr);
+        m = m.scaled(this->width(), this->height() - 100);
+        large_img->setPixmap(m);
+    }
 }
 
 void reportingimgpane::saveBtnClicked() {
