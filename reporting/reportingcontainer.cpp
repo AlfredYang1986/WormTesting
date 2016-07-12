@@ -7,6 +7,8 @@
 #include "proxy/sampleproxy.h"
 #include "proxy/patientproxy.h"
 #include "reportingdetailwidget.h"
+#include <QScrollArea>
+#include "commonwidget/commonimgpreviewwidget.h"
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -15,7 +17,7 @@ reportingcontainer::reportingcontainer() {
 reportingcontainer::~reportingcontainer() {
     main_layout->deleteLater();
     sample_detail->deleteLater();
-    reporting_img->deleteLater();
+    img_preview->deleteLater();
 }
 
 void reportingcontainer::setUpSubviews() {
@@ -35,21 +37,38 @@ void reportingcontainer::setUpSubviews() {
     reporting_detail->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     main_layout->addWidget(reporting_detail);
 
-    reporting_img = new reportingimgpane;
-    reporting_img->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
-    main_layout->addWidget(reporting_img);
+//    reporting_img = new reportingimgpane;
+//    reporting_img->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+//	main_layout->addWidget(reporting_img);
 
-    img_lst = new commonimglstwidget;
-    img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    main_layout->addWidget(img_lst);
+
+    QVBoxLayout* right_layout = new QVBoxLayout;
+
+    img_preview = new commonimgpreviewwidget;
+    img_preview->setMaximumWidth(500);
+    img_preview->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+    right_layout->addWidget(img_preview);
+
+    QScrollArea* area = new QScrollArea;
+    area->setMaximumSize(QSize(500, 100));
+    area->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    img_lst = new commonimglstwidget(false, false);
+    //img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    area->setWidget(img_lst);
+
+    right_layout->addWidget(area);
+    right_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+    main_layout->addLayout(right_layout);
 
     this->setLayout(main_layout);
 
     QObject::connect(reporting_detail, SIGNAL(changeCurrentSample(const QJsonObject&)),
                      this, SLOT(currentSampleChange(const QJsonObject&)));
 
-    QObject::connect(reporting_img, SIGNAL(saveReportTestResult()),
-                     this, SLOT(saveTestResult()));
+    //QObject::connect(reporting_img, SIGNAL(saveReportTestResult()),
+    //                 this, SLOT(saveTestResult()));
 }
 
 QSize reportingcontainer::sizeHint() const {
@@ -57,7 +76,7 @@ QSize reportingcontainer::sizeHint() const {
 }
 
 void reportingcontainer::currentSampleChange(const QJsonObject& sample) {
-    reporting_img->fillImages(sample);
+    img_preview->fillImages(sample);
 }
 
 void reportingcontainer::setCurrentReportingSampleId(const QString& sample_id) {
@@ -69,6 +88,7 @@ void reportingcontainer::querySampleWithIDSuccess(const QJsonObject & sample) {
     QJsonObject patient = sample["patient"].toObject();
     sample_detail->queryPatientSuccess(patient);
     img_lst->changeCurrentSample(sample);
+    //img_preview->fillImages(sample);
     reporting_detail->setSampleDefaultResult(sample);
 }
 
@@ -103,6 +123,9 @@ void reportingcontainer::showEvent(QShowEvent *) {
                      this, SLOT(didFinishEditPatientId(const QString&)));
     QObject::connect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
                      this, SLOT(didFinishEditSampleId(const QString&)));
+
+    QObject::connect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+                     img_preview, SLOT(setPreviewImage(QPixmap)));
 }
 
 void reportingcontainer::hideEvent(QHideEvent *) {
@@ -113,6 +136,9 @@ void reportingcontainer::hideEvent(QHideEvent *) {
                      this, SLOT(didFinishEditPatientId(const QString&)));
     QObject::disconnect(sample_detail, SIGNAL(didFinishEditSampleID(const QString&)),
                      this, SLOT(didFinishEditSampleId(const QString&)));
+
+    QObject::disconnect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+                     img_preview, SLOT(setPreviewImage(QPixmap)));
 }
 
 void reportingcontainer::saveTestResult() {

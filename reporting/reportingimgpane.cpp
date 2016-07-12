@@ -67,6 +67,9 @@ void reportingimgpane::setUpSubviews() {
                             "font-size: 14px;"
                             "margin: 0px;"
                             "border: none;"
+                        "}"
+                        "QWidget {"
+                            "background-color: red;"
                         "}");
 
 }

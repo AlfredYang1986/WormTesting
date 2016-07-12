@@ -39,26 +39,16 @@ QSize commonimglstwidget::sizeHint() const {
     return QSize(280, 200);
 }
 
-//void commonimglstwidget::setUpSubviews2() {
-//    main_layout = new QHBoxLayout;
-
-//    main_layout->setContentsMargins(0,0,0,0);
-
-//    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
-//    this->setLayout(main_layout);
-//}
-
 void commonimglstwidget::setUpSubviews() {
-    main_layout = new QVBoxLayout;
+    if (isVer)
+        main_layout = new QVBoxLayout;
+    else
+        main_layout = new QHBoxLayout;
 
     main_layout->setContentsMargins(0,0,0,0);
 
     main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
-
-    this->setStyleSheet("QWidget {"
-                            "background-color: red;"
-                        "}");
 }
 
 void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
@@ -72,6 +62,11 @@ void commonimglstwidget::changeCurrentSample(const QJsonObject& sample) {
         img_name_lst.push_back((*tmp_iter).toString());
     }
 
+    if (isVer)
+        this->resize(280, (200 + 10) * img_name_lst.count());
+    else
+        this->resize((140 + 10) * img_name_lst.count(), 100);
+
     current_runnning = false;
     this->moveToNextImage();
 }
@@ -83,6 +78,10 @@ bool commonimglstwidget::prePushImage() {
 void commonimglstwidget::pushImageName(const QString& name) {
     img_name_lst.push_back(name);
 
+    if (isVer)
+        this->resize(280, (200 + 10) * img_name_lst.count());
+    else
+        this->resize((140 + 10) * img_name_lst.count(), 140);
     current_download_name = name;
     proxymanager::instance()->getFileProxy()->downloadFile(current_download_name);
     //QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
@@ -97,10 +96,19 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data, const QStri
     imglstitem* tmp = new imglstitem(isWormSample);
     tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
-    tmp->setFixedSize(QSize(280, 200));
+
+    if (isVer)
+        tmp->setFixedSize(QSize(280, 200));
+    else
+        tmp->setFixedSize(QSize(140, 100));
+
     QPixmap m;
     m.loadFromData(data);
-    m = m.scaled(280, 200);
+    if (isVer)
+        m = m.scaled(280, 200);
+    else
+        m = m.scaled(140, 100);
+
     tmp->setPixmap(m);
 
     QObject::connect(tmp, SIGNAL(imageSelected(const QPixmap*)),
@@ -138,6 +146,8 @@ void commonimglstwidget::moveToNextImage() {
             current_download_name = "";
             //QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
             //         this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
+            const QPixmap* m = img_lst.first()->pixmap();
+            emit changeCurrentImageSignal(*m);
 
         } else {
             current_download_name = *iter;

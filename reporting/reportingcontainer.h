@@ -8,6 +8,7 @@ class sampledetailwidget;
 class reportingimgpane;
 class commonimglstwidget;
 class reportingdetailwidget;
+class commonimgpreviewwidget;
 
 class reportingcontainer : public QFrame {
     Q_OBJECT
@@ -42,9 +43,10 @@ protected:
 private:
     QHBoxLayout* main_layout;
     sampledetailwidget* sample_detail;
-    reportingimgpane* reporting_img;
+    //reportingimgpane* reporting_img;
     commonimglstwidget* img_lst;
     reportingdetailwidget* reporting_detail;
+    commonimgpreviewwidget* img_preview;
 };
 
 #endif // REPORTINGCONTAINER_H

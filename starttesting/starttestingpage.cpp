@@ -11,6 +11,7 @@
 #include "proxy/sampleproxy.h"
 #include "proxy/fileoptproxy.h"
 #include "proxy/patientproxy.h"
+#include <QScrollArea>
 
 starttestingpage::starttestingpage() : status(TestStatus_ready) {
     this->setUpSubviews();
@@ -46,17 +47,24 @@ void starttestingpage::setUpSubviews() {
 //    sample_searching_widget->setContentsMargins(0,0,0,0);
 //    page_one_content_layout->addWidget(sample_searching_widget);
 
+
     img_pane = new imgcomparepane;
     img_pane->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     img_pane->setMinimumSize(QSize(200, 200));
     img_pane->setContentsMargins(0,0,0,0);
     page_one_content_layout->addWidget(img_pane);
 
+
+    QScrollArea* thumbs = new QScrollArea;
+    thumbs->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    thumbs->setFixedWidth(280);
+
     img_lst_pane = new commonimglstwidget;
     img_lst_pane->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    img_lst_pane->setMinimumSize(QSize(300, 300));
-    img_lst_pane->setMaximumWidth(300);
-    page_one_content_layout->addWidget(img_lst_pane);
+    img_lst_pane->setFixedWidth(280);
+
+    thumbs->setWidget(img_lst_pane);
+    page_one_content_layout->addWidget(thumbs);
 
 //    QSpacerItem* page_one_content_spacer = new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum);
 //    page_one_content_layout->addSpacerItem(page_one_content_spacer);

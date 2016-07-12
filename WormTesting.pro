@@ -55,7 +55,7 @@ SOURCES += main.cpp\
     imgcomparewidget/imagecomparewidget.cpp \
     reportlst/reportsearchconditionwidget.cpp \
     reportlst/searchresulttablewidget.cpp \
-    commonwidget/comparewindows/comparemainwindow.cpp
+    commonwidget/commonimgpreviewwidget.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -99,7 +99,7 @@ HEADERS  += mainwindow/mainwindow.h\
     imgcomparewidget/imagecomparewidget.h \
     reportlst/reportsearchconditionwidget.h \
     reportlst/searchresulttablewidget.h \
-    commonwidget/comparewindows/comparemainwindow.h
+    commonwidget/commonimgpreviewwidget.h
 
 FORMS    +=
 

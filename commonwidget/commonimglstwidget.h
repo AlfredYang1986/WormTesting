@@ -5,7 +5,6 @@
 #include <QVector>
 
 class QBoxLayout;
-class QVBoxLayout;
 class QLabel;
 class imglstitem;
 
@@ -28,7 +27,7 @@ protected:
     virtual void hideEvent(QHideEvent *event);
 
 private:
-    QVBoxLayout* main_layout;
+    QBoxLayout* main_layout;
 
     QString sample_id;
     QVector<QString> img_name_lst;
