@@ -9,9 +9,15 @@
 #include "imgcomparewidget/imagecomparewidget.h"
 #include <QMessageBox>
 #include <QKeyEvent>
+#include "logindialog/logindialog.h"
+#include "proxy/proxymanager.h"
+#include "proxy/authproxy.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
+    QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(loginSuccess()),
+                     this, SLOT(loginSuccesSlot()));
+    dlg = new logindialog;
 }
 
 MainWindow::~MainWindow() {
@@ -286,4 +292,14 @@ bool MainWindow::isReadyToChangeMainWidget() {
     } else {
         return true;
     }
+}
+
+void MainWindow::loginSuccesSlot() {
+    this->show();
+    dlg->close();
+}
+
+void MainWindow::showLoginDialog() {
+    this->hide();
+    dlg->show();
 }

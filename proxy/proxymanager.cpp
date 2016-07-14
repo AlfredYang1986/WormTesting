@@ -4,13 +4,14 @@
 #include "wormproxy.h"
 #include "patientproxy.h"
 #include "configproxy.h"
+#include "authproxy.h"
 
 proxymanager* proxymanager::_instance;
 
 proxymanager::proxymanager()
     : file_proxy(0), patient_proxy(0)
     , sample_proxy(0), worm_proxy(0)
-    , config_proxy(0) {
+    , config_proxy(0), auth_proxy(0) {
 
 }
 
@@ -57,4 +58,10 @@ configproxy* proxymanager::getConfigProxy() {
     if (!config_proxy)
         config_proxy = new configproxy;
     return config_proxy;
+}
+
+authproxy* proxymanager::getAuthProxy() {
+    if (!auth_proxy)
+        auth_proxy = new authproxy;
+    return auth_proxy;
 }

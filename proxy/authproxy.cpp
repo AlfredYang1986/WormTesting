@@ -1,7 +1,9 @@
 #include "authproxy.h"
+#include <QMessageBox>
 
 authproxy::authproxy() {
-
+    http_connect = new QNetworkAccessManager(this);
+    QObject::connect(http_connect,SIGNAL(finished(QNetworkReply*)), this, SLOT(replayFinished(QNetworkReply*)));
 }
 
 authproxy::~authproxy() {
@@ -9,13 +11,14 @@ authproxy::~authproxy() {
 }
 
 void authproxy::login(const QString &user_name, const QString &password) {
-    QUrl url = QString("http://localhost:9000/config/patient/query");
+    QUrl url = QString("http://localhost:9000/auth/login");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-//    json.insert("patient", pt);
+    json.insert("user_name", user_name);
+    json.insert("password", password);
 
     QJsonDocument document;
     document.setObject(json);
@@ -28,13 +31,15 @@ void authproxy::login(const QString &user_name, const QString &password) {
 }
 
 void authproxy::pushUser(const QString &user_name, const QString &password, AuthStatus s) {
-    QUrl url = QString("http://localhost:9000/config/patient/query");
+    QUrl url = QString("http://localhost:9000/auth/register");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-//    json.insert("patient", pt);
+    json.insert("user_name", user_name);
+    json.insert("password", password);
+    json.insert("auth", s);
 
     QJsonDocument document;
     document.setObject(json);
@@ -47,13 +52,13 @@ void authproxy::pushUser(const QString &user_name, const QString &password, Auth
 }
 
 void authproxy::popUser(const QString &user_name) {
-    QUrl url = QString("http://localhost:9000/config/patient/query");
+    QUrl url = QString("http://localhost:9000/auth/pop");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-//    json.insert("patient", pt);
+    json.insert("user_name", user_name);
 
     QJsonDocument document;
     document.setObject(json);
@@ -66,13 +71,14 @@ void authproxy::popUser(const QString &user_name) {
 }
 
 void authproxy::changeUserStatus(const QString &user_name, AuthStatus s) {
-    QUrl url = QString("http://localhost:9000/config/patient/query");
+    QUrl url = QString("http://localhost:9000/auth/change/status");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-//    json.insert("patient", pt);
+    json.insert("username_name", user_name);
+    json.insert("auth", s);
 
     QJsonDocument document;
     document.setObject(json);
@@ -85,13 +91,14 @@ void authproxy::changeUserStatus(const QString &user_name, AuthStatus s) {
 }
 
 void authproxy::changePassword(const QString &password) {
-    QUrl url = QString("http://localhost:9000/config/patient/query");
+    QUrl url = QString("http://localhost:9000/auth/change/password");
 
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-//    json.insert("patient", pt);
+    json.insert("user_name", current_user_name);
+    json.insert("password", password);
 
     QJsonDocument document;
     document.setObject(json);
@@ -113,12 +120,14 @@ void authproxy::replayFinished(QNetworkReply * result) {
             QJsonObject obj = json.object();
             if (obj.contains("method")) {
                 QString method_name = obj["method"].toString();
-                if (method_name == "queryResourceType") {
-                    QJsonArray arr = obj["result"].toArray();
-                    emit querySampleResourceTypeSuccess(arr);
+                if (method_name == "login") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    current_user_name = tmp["user_name"].toString();
+                    status = (authproxy::AuthStatus)tmp["auth"].toInt();
+                    emit loginSuccess();
+
                 } else if (method_name =="queryPatientType") {
-                    QJsonArray arr = obj["result"].toArray();
-                    emit queryPatientTypeSuccess(arr);
+
                 }
             }
          }

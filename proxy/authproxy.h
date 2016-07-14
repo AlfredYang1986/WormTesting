@@ -7,6 +7,11 @@
 class authproxy : public QObject {
     Q_OBJECT
 
+Q_SIGNALS:
+    void loginSuccess();
+//    void pushUserSuccess();
+//    void popUserSuccess();
+
 protected Q_SLOTS:
     void replayFinished(QNetworkReply*);
     void networkError(QNetworkReply::NetworkError);

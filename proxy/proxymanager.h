@@ -8,6 +8,7 @@ class patientproxy;
 class sampleproxy;
 class wormproxy;
 class configproxy;
+class authproxy;
 
 class proxymanager : public QObject {
     Q_OBJECT
@@ -22,6 +23,7 @@ private:
     sampleproxy* sample_proxy;
     wormproxy* worm_proxy;
     configproxy* config_proxy;
+    authproxy* auth_proxy;
 public:
     static proxymanager* instance();
     ~proxymanager();
@@ -31,6 +33,7 @@ public:
     sampleproxy* getSampleProxy();
     wormproxy* getWormProxy();
     configproxy* getConfigProxy();
+    authproxy* getAuthProxy();
 };
 
 #endif // PROXYMANAGER_H

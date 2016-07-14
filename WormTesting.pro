@@ -56,7 +56,8 @@ SOURCES += main.cpp\
     reportlst/reportsearchconditionwidget.cpp \
     reportlst/searchresulttablewidget.cpp \
     commonwidget/commonimgpreviewwidget.cpp \
-    proxy/authproxy.cpp
+    proxy/authproxy.cpp \
+    logindialog/logindialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -101,7 +102,8 @@ HEADERS  += mainwindow/mainwindow.h\
     reportlst/reportsearchconditionwidget.h \
     reportlst/searchresulttablewidget.h \
     commonwidget/commonimgpreviewwidget.h \
-    proxy/authproxy.h
+    proxy/authproxy.h \
+    logindialog/logindialog.h
 
 FORMS    +=
 

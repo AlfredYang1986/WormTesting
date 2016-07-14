@@ -7,7 +7,7 @@
 #include <QVBoxLayout>
 #include <map>
 using std::map;
-
+class logindialog;
 class QFrame;
 
 class MainWindow : public QMainWindow
@@ -26,6 +26,8 @@ public slots:
     void startReport(const QString&);
     void startCompare(const QString&);
 
+    void loginSuccesSlot();
+
 protected:
     void setUpSubviews();
 
@@ -40,12 +42,17 @@ protected:
 
     bool isReadyToChangeMainWidget();
 
+public:
+    void showLoginDialog();
+
 private:
     QWidget* center_widget;
     QVBoxLayout* main_container;
     QWidget* title_widget;
 
     map<QString, QFrame*> contents;
+
+    logindialog* dlg;
 };
 
 #endif // MAINWINDOW_H
