@@ -36,7 +36,10 @@ commonimglstwidget::~commonimglstwidget() {
 }
 
 QSize commonimglstwidget::sizeHint() const {
-    return QSize(280, 200);
+    if (isVer)
+        return QSize(280, 200);
+    else
+        return QSize(140, 100);
 }
 
 void commonimglstwidget::setUpSubviews() {

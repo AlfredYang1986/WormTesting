@@ -4,7 +4,10 @@
 #include <QLabel>
 #include <proxy/proxymanager.h>
 #include <proxy/wormproxy.h>
+#include <QScrollArea>
 #include <commonwidget/commonimglstwidget.h>
+#include "commonwidget/commonimgpreviewwidget.h"
+#include <QGroupBox>
 
 sampleresourcecontainer::sampleresourcecontainer() {
     this->setUpSubviews();
@@ -22,18 +25,36 @@ void sampleresourcecontainer::setUpSubviews() {
     tree->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     main_layout->addWidget(tree);
 
-    QVBoxLayout* content_layout = new QVBoxLayout;
+    QVBoxLayout* right_layout = new QVBoxLayout;
 
+    img_preview = new commonimgpreviewwidget;
+//    img_preview->setMaximumWidth(500);
+    img_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    right_layout->addWidget(img_preview);
+
+    QScrollArea* area = new QScrollArea;
+//    area->setMaximumSize(QSize(500, 100));
+    area->setMaximumHeight(100);
+    area->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    img_lst = new commonimglstwidget(true, false);
+    //img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    area->setWidget(img_lst);
+
+    right_layout->addWidget(area);
+
+//    right_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
+    QGroupBox* box = new QGroupBox(QStringLiteral("样本描述"));
     html = new QLabel;
-    html->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    content_layout->addWidget(html);
-    content_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    QVBoxLayout* a = new QVBoxLayout;
+    a->addWidget(html);
+    box->setLayout(a);
+    right_layout->addWidget(box);
 
-    img_lst = new commonimglstwidget(true);
-    img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+    right_layout->addSpacerItem(new QSpacerItem(0, 8, QSizePolicy::Minimum, QSizePolicy::Fixed));
 
-    main_layout->addLayout(content_layout);
-    main_layout->addWidget(img_lst);
+    main_layout->addLayout(right_layout);
     this->setLayout(main_layout);
 
     QObject::connect(tree, SIGNAL(currentWormSignal(const QString&, const QString&)),
@@ -77,4 +98,14 @@ void sampleresourcecontainer::queryWormDetailSuccess(const QJsonObject& detail) 
         images.push_back((*iter).toString());
     }
     img_lst->changeShowingImgLst(images);
+}
+
+void sampleresourcecontainer::showEvent(QShowEvent *) {
+    QObject::connect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+                     img_preview, SLOT(setPreviewImage(QPixmap)));
+}
+
+void sampleresourcecontainer::hideEvent(QHideEvent *) {
+    QObject::disconnect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+                     img_preview, SLOT(setPreviewImage(QPixmap)));
 }

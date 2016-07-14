@@ -2,6 +2,7 @@
 #define REPORTINGCONTAINER_H
 
 #include <QFrame>
+#include <QJsonArray>
 
 class QHBoxLayout;
 class sampledetailwidget;
@@ -9,6 +10,7 @@ class reportingimgpane;
 class commonimglstwidget;
 class reportingdetailwidget;
 class commonimgpreviewwidget;
+class QTableWidget;
 
 class reportingcontainer : public QFrame {
     Q_OBJECT
@@ -25,6 +27,9 @@ protected Q_SLOTS:
     void querySampleWithIDSuccess(const QJsonObject&);
 
     void saveTestResult();
+
+    void testedWidgetClicked(const QModelIndex&);
+    void queryTesetedSamples(const QJsonArray&);
 protected:
     virtual void showEvent(QShowEvent *);
     virtual void hideEvent(QHideEvent *);
@@ -47,6 +52,9 @@ private:
     commonimglstwidget* img_lst;
     reportingdetailwidget* reporting_detail;
     commonimgpreviewwidget* img_preview;
+    QTableWidget*     tested_sample;
+
+    QJsonArray vec_sample_tested;
 };
 
 #endif // REPORTINGCONTAINER_H

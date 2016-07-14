@@ -7,6 +7,7 @@
 class QHBoxLayout;
 class QLabel;
 class commonimglstwidget;
+class commonimgpreviewwidget;
 
 class sampleresourcecontainer : public QFrame {
     Q_OBJECT
@@ -21,6 +22,7 @@ private:
     QHBoxLayout* main_layout;
     QLabel* html;
     commonimglstwidget* img_lst;
+    commonimgpreviewwidget* img_preview;
 
 public:
     sampleresourcecontainer();
@@ -30,6 +32,8 @@ public:
 
 protected:
     virtual QSize sizeHint() const;
+    virtual void showEvent(QShowEvent *);
+    virtual void hideEvent(QHideEvent *);
 };
 
 #endif // SAMPLERESOURCECONTAINER_H

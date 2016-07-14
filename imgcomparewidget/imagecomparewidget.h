@@ -5,6 +5,7 @@
 #include <QJsonObject>
 class QHBoxLayout;
 class commonimglstwidget;
+class commonimgpreviewwidget;
 class QComboBox;
 class QLabel;
 class QLineEdit;
@@ -22,8 +23,8 @@ protected Q_SLOTS:
 
     void querySampleWithIDSuccess(const QJsonObject&);
 
-    void changeWormPreview(const QPixmap&);
-    void changeSamplePreview(const QPixmap&);
+//    void changeWormPreview(const QPixmap&);
+//    void changeSamplePreview(const QPixmap&);
 
 protected:
     virtual void showEvent(QShowEvent *);
@@ -33,12 +34,14 @@ private:
     QHBoxLayout* main_layout;
 
     commonimglstwidget* worm_resource_lst;
+    commonimgpreviewwidget* worm_preview;
     commonimglstwidget* sample_lst;
+    commonimgpreviewwidget* sample_preview;
 
     QComboBox* box;
     QLineEdit* sample_id_edit;
-    QLabel* worm_preview;
-    QLabel* sample_preview;
+//    QLabel* worm_preview;
+//    QLabel* sample_preview;
 
     QJsonObject current_resource;
     QJsonObject current_cats;

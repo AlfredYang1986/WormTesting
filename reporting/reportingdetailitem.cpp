@@ -23,8 +23,8 @@ void reportingdetailitem::setUpSubviews() {
 
     box = new QComboBox;
     box->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
-    box->addItem("未检出");
-    box->addItem("已检出");
+    box->addItem(QStringLiteral("未检出"));
+    box->addItem(QStringLiteral("已检出"));
     main_layout->addWidget(box);
 
     this->setLayout(main_layout);

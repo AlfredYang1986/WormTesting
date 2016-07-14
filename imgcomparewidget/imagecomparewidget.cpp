@@ -1,5 +1,6 @@
 #include "imagecomparewidget.h"
 #include "commonwidget/commonimglstwidget.h"
+#include "commonwidget/commonimgpreviewwidget.h"
 #include <QLabel>
 #include <QComboBox>
 #include <QHBoxLayout>
@@ -11,6 +12,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/wormproxy.h"
 #include "proxy/sampleproxy.h"
+#include <QScrollArea>
 
 imagecomparewidget::imagecomparewidget() {
     this->setUpSubviews();
@@ -27,68 +29,70 @@ QSize imagecomparewidget::sizeHint() const {
 void imagecomparewidget::setUpSubviews() {
     main_layout = new QHBoxLayout;
 
-    worm_resource_lst = new commonimglstwidget(true);
-    worm_resource_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
-    sample_lst = new commonimglstwidget;
-    sample_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-
-    QVBoxLayout* content_layout = new QVBoxLayout;
     {
-        QHBoxLayout* line_one = new QHBoxLayout;
-        QFormLayout* line_one_left = new QFormLayout;
+        QVBoxLayout* left_layout = new QVBoxLayout;
+
         box = new QComboBox;
-        line_one_left->addRow("选择虫名", box);
+        left_layout->addWidget(box);
 
-        QFormLayout* line_one_right = new QFormLayout;
-        sample_id_edit = new QLineEdit;
-        line_one_right->addRow("样本编号", sample_id_edit);
-        QObject::connect(sample_id_edit, SIGNAL(editingFinished()), this, SLOT(didFinishEditSampleID_slot()));
-
-        line_one->addLayout(line_one_left);
-        line_one->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
-        line_one->addLayout(line_one_right);
-
-        content_layout->addLayout(line_one);
-    }
-
-    {
-        QHBoxLayout* line_two = new QHBoxLayout;
-        worm_preview = new QLabel;
+        worm_preview = new commonimgpreviewwidget;
         worm_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        left_layout->addWidget(worm_preview);
 
-        sample_preview = new QLabel;
-        sample_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        QScrollArea* area = new QScrollArea;
+        area->setMaximumHeight(100);
+        area->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-        line_two->addWidget(worm_preview);
-        line_two->addWidget(sample_preview);
+        worm_resource_lst = new commonimglstwidget(true, false);
+        area->setWidget(worm_resource_lst);
 
-        content_layout->addLayout(line_two);
+        left_layout->addWidget(area);
+        main_layout->addLayout(left_layout);
     }
 
     {
-        QHBoxLayout* line_three = new QHBoxLayout;
+        QVBoxLayout* right_layout = new QVBoxLayout;
 
-        QPushButton* btn_plus = new QPushButton("放大");
-        QPushButton* btn_mins = new QPushButton("缩小");
-        QPushButton* btn_back_to_report = new QPushButton("返回报告");
+        sample_id_edit = new QLineEdit;
+        right_layout->addWidget(sample_id_edit);
 
-        line_three->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
-        line_three->addWidget(btn_plus);
-        line_three->addWidget(btn_mins);
-        line_three->addWidget(btn_back_to_report);
+        sample_preview = new commonimgpreviewwidget;
+        sample_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        right_layout->addWidget(sample_preview);
 
-        content_layout->addLayout(line_three);
+        QScrollArea* area = new QScrollArea;
+        area->setMaximumHeight(100);
+        area->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+        sample_lst = new commonimglstwidget(false, false);
+        area->setWidget(sample_lst);
+
+        right_layout->addWidget(area);
+        main_layout->addLayout(right_layout);
     }
 
-    main_layout->addWidget(worm_resource_lst);
-    main_layout->addLayout(content_layout);
-    main_layout->addWidget(sample_lst);
+
+//    {
+//        QHBoxLayout* line_three = new QHBoxLayout;
+
+//        QPushButton* btn_plus = new QPushButton("放大");
+//        QPushButton* btn_mins = new QPushButton("缩小");
+//        QPushButton* btn_back_to_report = new QPushButton("返回报告");
+
+//        line_three->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+//        line_three->addWidget(btn_plus);
+//        line_three->addWidget(btn_mins);
+//        line_three->addWidget(btn_back_to_report);
+
+//        content_layout->addLayout(line_three);
+//    }
 
     this->setLayout(main_layout);
 
     QObject::connect(box, SIGNAL(currentTextChanged(QString)),
                      this, SLOT(currentBoxTextChanged(QString)));
+    QObject::connect(sample_id_edit, SIGNAL(editingFinished()),
+                     this, SLOT(didFinishEditSampleID_slot()));
 
     proxymanager::instance()->getWormProxy()->queryWormCat();
 }
@@ -98,10 +102,14 @@ void imagecomparewidget::showEvent(QShowEvent *) {
                      this, SLOT(queryWormCatSuccess(QJsonObject)));
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+//    QObject::connect(worm_resource_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+//                     this, SLOT(changeWormPreview(QPixmap)));
+//    QObject::connect(sample_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+//                     this, SLOT(changeSamplePreview(QPixmap)));
     QObject::connect(worm_resource_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
-                     this, SLOT(changeWormPreview(QPixmap)));
+                     worm_preview, SLOT(setPreviewImage(QPixmap)));
     QObject::connect(sample_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
-                     this, SLOT(changeSamplePreview(QPixmap)));
+                     sample_preview, SLOT(setPreviewImage(QPixmap)));
 }
 
 void imagecomparewidget::hideEvent(QHideEvent *) {
@@ -109,10 +117,14 @@ void imagecomparewidget::hideEvent(QHideEvent *) {
                      this, SLOT(queryWormCatSuccess(QJsonObject)));
     QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+//    QObject::disconnect(worm_resource_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+//                     this, SLOT(changeWormPreview(QPixmap)));
+//    QObject::disconnect(sample_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+//                     this, SLOT(changeSamplePreview(QPixmap)));
     QObject::disconnect(worm_resource_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
-                     this, SLOT(changeWormPreview(QPixmap)));
+                     worm_preview, SLOT(setPreviewImage(QPixmap)));
     QObject::disconnect(sample_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
-                     this, SLOT(changeSamplePreview(QPixmap)));
+                     sample_preview, SLOT(setPreviewImage(QPixmap)));
 }
 
 void imagecomparewidget::queryWormCatSuccess(const QJsonObject & cats) {
@@ -169,14 +181,14 @@ void imagecomparewidget::querySampleWithIDSuccess(const QJsonObject& sample) {
     sample_lst->changeCurrentSample(sample);
 }
 
-void imagecomparewidget::changeWormPreview(const QPixmap &p) {
-    QSize s = worm_preview->size();
-    QPixmap np = p.scaled(s.width(), s.height());
-    worm_preview->setPixmap(np);
-}
+//void imagecomparewidget::changeWormPreview(const QPixmap &p) {
+//    QSize s = worm_preview->size();
+//    QPixmap np = p.scaled(s.width(), s.height());
+//    worm_preview->setPixmap(np);
+//}
 
-void imagecomparewidget::changeSamplePreview(const QPixmap &p) {
-    QSize s = sample_preview->size();
-    QPixmap np = p.scaled(s.width(), s.height());
-    sample_preview->setPixmap(np);
-}
+//void imagecomparewidget::changeSamplePreview(const QPixmap &p) {
+//    QSize s = sample_preview->size();
+//    QPixmap np = p.scaled(s.width(), s.height());
+//    sample_preview->setPixmap(np);
+//}
