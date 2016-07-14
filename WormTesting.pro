@@ -55,7 +55,8 @@ SOURCES += main.cpp\
     imgcomparewidget/imagecomparewidget.cpp \
     reportlst/reportsearchconditionwidget.cpp \
     reportlst/searchresulttablewidget.cpp \
-    commonwidget/commonimgpreviewwidget.cpp
+    commonwidget/commonimgpreviewwidget.cpp \
+    proxy/authproxy.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -99,7 +100,8 @@ HEADERS  += mainwindow/mainwindow.h\
     imgcomparewidget/imagecomparewidget.h \
     reportlst/reportsearchconditionwidget.h \
     reportlst/searchresulttablewidget.h \
-    commonwidget/commonimgpreviewwidget.h
+    commonwidget/commonimgpreviewwidget.h \
+    proxy/authproxy.h
 
 FORMS    +=
 
@@ -109,9 +111,17 @@ RESOURCES += \
 win32 {
 INCLUDEPATH += C:\opencv\build\include
 
+debug {
 LIBS += C:\opencv\build\x64\vc14\lib\opencv_core2413d.lib \
         C:\opencv\build\x64\vc14\lib\opencv_highgui2413d.lib \
-        C:\opencv\build\x64\vc14\lib\opencv_imgproc2413d.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_imgproc2413d.lib
+}
+
+release {
+LIBS += C:\opencv\build\x64\vc14\lib\opencv_core2413.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_highgui2413.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_imgproc2413.lib
+}
 }
 
 mac {

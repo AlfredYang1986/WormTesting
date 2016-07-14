@@ -1,4 +1,4 @@
-﻿#include "searchresulttablewidget.h"
+#include "searchresulttablewidget.h"
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QDateTime>
@@ -14,14 +14,7 @@ searchresulttablewidget::~searchresulttablewidget() {
 
 void searchresulttablewidget::setUpSubviews() {
     QStringList header;
-    header<< QStringLiteral("样本编号")
-          << QStringLiteral("姓名")
-          << QStringLiteral("年龄")
-          << QStringLiteral("样本来源")
-          << QStringLiteral("样本总类")
-          << QStringLiteral("送检医生")
-          << QStringLiteral("审核医生")
-          << QStringLiteral("日期");
+    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
     this->setColumnCount(header.count());
     this->setHorizontalHeaderLabels(header);
 
@@ -62,15 +55,7 @@ void searchresulttablewidget::changeSearchResult(const QJsonArray & result) {
 void searchresulttablewidget::clearSearchResult() {
     this->clear();
     QStringList header;
-    header<< QStringLiteral("样本编号")
-          << QStringLiteral("姓名")
-          << QStringLiteral("年龄")
-          << QStringLiteral("样本来源")
-          << QStringLiteral("样本总类")
-          << QStringLiteral("送检医生")
-          << QStringLiteral("审核医生")
-          << QStringLiteral("日期");
-
+    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
     this->setColumnCount(header.count());   //设置列数为5
     this->setHorizontalHeaderLabels(header);
 }

@@ -23,5 +23,6 @@
         <file>resource/setting_bkg.png</file>
         <file>resource/start_testing_delete.png</file>
         <file>resource/start_testing_save_as.png</file>
+        <file>resource/splash_screen.png</file>
     </qresource>
 </RCC>
