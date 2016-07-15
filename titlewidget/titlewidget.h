@@ -20,6 +20,7 @@ public:
     void setUpSubViews();
     virtual QSize sizeHint() const;
 
+    void changeCurrentIndex(int index);
 private:
     QHBoxLayout* main_layout;
     vector<titlepushbutton*> menu_lst;

@@ -12,6 +12,8 @@
 #include "logindialog/logindialog.h"
 #include "proxy/proxymanager.h"
 #include "proxy/authproxy.h"
+#include <QDesktopWidget>
+#include <QApplication>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -36,6 +38,13 @@ void MainWindow::setUpSubviews() {
         this->setObjectName(QStringLiteral("MainWindow"));
     this->setWindowTitle(QStringLiteral("虫卵检测系统V1.0"));
     this->setWindowState(Qt::WindowMaximized);
+
+//    QDesktopWidget* desktopWidget = QApplication::desktop();
+//    QRect clientRect = desktopWidget->availableGeometry();
+//    QRect applicationRect = desktopWidget->screenGeometry();
+//    this->resize(clientRect.size());
+//    this->showMaximized();
+
     center_widget = new QWidget;
     center_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     center_widget->setObjectName(QStringLiteral("center_widget"));
@@ -97,11 +106,14 @@ void MainWindow::changeMainContent(const QString &title) {
 
          QObject::connect(content_widget, SIGNAL(startTesting(const QJsonObject&)),
                           this, SLOT(startTest(const QJsonObject&)));
+         QObject::connect(content_widget, SIGNAL(startReporting(QJsonObject)),
+                          this, SLOT(startReport(QJsonObject)));
 
          tmp = content_widget;
      }
 
      tmp->show();
+     title_widget->changeCurrentIndex(0);
  }
 
  void MainWindow::createTestingWidget() {
@@ -130,6 +142,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
+     title_widget->changeCurrentIndex(1);
  }
 
  void MainWindow::createReportWidget() {
@@ -151,6 +164,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
+     title_widget->changeCurrentIndex(2);
  }
 
  void MainWindow::createReportLstWidget() {
@@ -176,6 +190,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
+     title_widget->changeCurrentIndex(3);
  }
 
  void MainWindow::createResourceWidget() {
@@ -197,6 +212,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
+     title_widget->changeCurrentIndex(4);
  }
 
  void MainWindow::createCompareWidget() {
@@ -218,6 +234,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
+     title_widget->changeCurrentIndex(5);
  }
 
 void MainWindow::createSettingWidget() {
@@ -239,6 +256,7 @@ void MainWindow::createSettingWidget() {
     }
 
     tmp->show();
+     title_widget->changeCurrentIndex(6);
 }
 
 void MainWindow::createAboutWidget() {
@@ -260,6 +278,7 @@ void MainWindow::createAboutWidget() {
     }
 
     tmp->show();
+     title_widget->changeCurrentIndex(7);
 }
 
  void MainWindow::startTest(const QJsonObject & sample) {
@@ -269,7 +288,9 @@ void MainWindow::createAboutWidget() {
  }
 
  void MainWindow::startReport(const QJsonObject & sample) {
-
+    this->createReportWidget();
+    reportingcontainer* p = (reportingcontainer*)contents["填写报告"];
+    p->setCurrentReportingSample(sample);
  }
 
 void MainWindow::startReport(const QString& sample_id) {

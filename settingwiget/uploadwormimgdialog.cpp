@@ -1,5 +1,6 @@
 #include "uploadwormimgdialog.h"
 #include "commonwidget/commonimglstwidget.h"
+#include "commonwidget/commonimgpreviewwidget.h"
 #include <QVBoxLayout>
 #include <QFormLayout>
 #include <QHBoxLayout>
@@ -10,6 +11,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/wormproxy.h"
 #include "proxy/fileoptproxy.h"
+#include <QScrollArea>
 
 uploadwormimgdialog::uploadwormimgdialog() {
     this->setUpSubviews();
@@ -27,19 +29,40 @@ void uploadwormimgdialog::setUpSubviews() {
     main_layout = new QVBoxLayout;
 
     box = new QComboBox;
-    pic = new QLabel;
-    pic->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    img_lst = new commonimglstwidget;
-    img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+//    pic = new QLabel;
+//    pic->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+//    img_lst = new commonimglstwidget;
+//    img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
-    QFormLayout* form = new QFormLayout;
-    form->addRow("选择虫类", box);
-    main_layout->addLayout(form);
+//    QFormLayout* form = new QFormLayout;
+//    form->addRow("选择虫类", box);
+//    main_layout->addLayout(form);
 
-    QHBoxLayout* content_layout = new QHBoxLayout;
-    content_layout->addWidget(pic);
-    content_layout->addWidget(img_lst);
-    main_layout->addLayout(content_layout);
+//    QHBoxLayout* content_layout = new QHBoxLayout;
+//    content_layout->addWidget(pic);
+//    content_layout->addWidget(img_lst);
+//    main_layout->addLayout(content_layout);
+    {
+        QVBoxLayout* left_layout = new QVBoxLayout;
+
+        box = new QComboBox;
+        left_layout->addWidget(box);
+
+        img_preview = new commonimgpreviewwidget;
+        img_preview->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+        left_layout->addWidget(img_preview);
+
+        QScrollArea* area = new QScrollArea;
+        area->setMaximumHeight(100);
+        area->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+//        img_lst = new commonimglstwidget(true, false);
+        img_lst = new commonimglstwidget(true, false);
+        area->setWidget(img_lst);
+
+        left_layout->addWidget(area);
+        main_layout->addLayout(left_layout);
+    }
 
     QHBoxLayout* btns_layout = new QHBoxLayout;
     btns_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -133,14 +156,40 @@ void uploadwormimgdialog::currentBoxTextChanged(const QString& cur) {
 void uploadwormimgdialog::showEvent(QShowEvent *) {
     QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
                      this, SLOT(uploadSampleImageSuccess(QString,QString)));
+    QObject::connect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+                     img_preview, SLOT(setPreviewImage(QPixmap)));
 }
 
 void uploadwormimgdialog::hideEvent(QHideEvent *) {
     QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
                      this, SLOT(uploadSampleImageSuccess(QString,QString)));
+    QObject::disconnect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
+                     img_preview, SLOT(setPreviewImage(QPixmap)));
 }
 
 void uploadwormimgdialog::uploadSampleImageSuccess(const QString & worm_name, const QString & img_name) {
     proxymanager::instance()->getWormProxy()->pushWormImage(worm_name, img_name);
-    box->setCurrentText(worm_name);
+
+    QStringList keys = current_cats.keys();
+    QStringList::iterator key = keys.begin();
+    for (; key != keys.end(); ++key) {
+        QJsonArray arr = current_cats[*key].toArray();
+
+        QJsonArray::iterator iter = arr.begin();
+        for (; iter != arr.end(); ++iter) {
+            QString name = (*iter).toObject()["name"].toString();
+            if (name == worm_name) {
+                QVector<QVariant> var_lst = (*iter).toObject()["img_lst"]
+                        .toArray().toVariantList().toVector();
+                QVector<QString> name_lst;
+                QVector<QVariant>::iterator i = var_lst.begin();
+                for (; i != var_lst.end(); ++i) {
+                    name_lst.push_back((*i).toString());
+                }
+                name_lst.push_back(img_name);
+                img_lst->changeShowingImgLst(name_lst);
+                break;
+            }
+        }
+    }
 }

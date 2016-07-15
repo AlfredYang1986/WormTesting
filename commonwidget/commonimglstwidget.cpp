@@ -48,7 +48,7 @@ void commonimglstwidget::setUpSubviews() {
     else
         main_layout = new QHBoxLayout;
 
-    main_layout->setContentsMargins(0,0,0,0);
+    main_layout->setContentsMargins(8,8,8,8);
 
     main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
@@ -120,6 +120,7 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data, const QStri
                      this, SLOT(deleteImageStart(QString)));
 
     main_layout->insertWidget(0, tmp);
+//    main_layout->addWidget(tmp);
     img_lst.push_back(tmp);
 
     this->moveToNextImage();
@@ -217,6 +218,11 @@ void commonimglstwidget::clearLabels() {
 void commonimglstwidget::changeShowingImgLst(const QVector<QString> &name_lst) {
     this->clearLabels();
     img_name_lst = name_lst;
+
+    if (isVer)
+        this->resize(280, (200 + 10) * img_name_lst.count());
+    else
+        this->resize((140 + 10) * img_name_lst.count(), 100);
 
     this->moveToNextImage();
 }

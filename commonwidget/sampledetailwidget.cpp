@@ -110,10 +110,9 @@ void sampledetailwidget::setUpSubviews() {
                      this, SLOT(querySampleResourceTypeSuccess(QJsonArray)));
 }
 
-QSize sampledetailwidget::sizeHint() const {
-    return QSize(200, 300);
-}
-
+//QSize sampledetailwidget::sizeHint() const {
+//    return QSize(200, 300);
+//}
 
 void sampledetailwidget::didFinishEditPatientID_slot() {
     QString patient_id = patient_id_edit->text();
@@ -310,4 +309,8 @@ void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & resul
         QString tmp = (*iter).toString();
         sample_resource_box->addItem(tmp);
     }
+}
+
+void sampledetailwidget::showEvent(QShowEvent *) {
+    sample_id_edit->setFocus();
 }

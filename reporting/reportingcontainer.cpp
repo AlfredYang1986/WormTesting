@@ -11,6 +11,7 @@
 #include "commonwidget/commonimgpreviewwidget.h"
 #include <QTableWidget>
 #include <QPushButton>
+#include <QScrollArea>
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -30,9 +31,16 @@ void reportingcontainer::setUpSubviews() {
     main_layout = new QHBoxLayout;
     main_layout->setContentsMargins(8,0,0,0);
 
-    sample_detail = new sampledetailwidget;
-    sample_detail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    main_layout->addWidget(sample_detail);
+    {
+        QScrollArea* area = new QScrollArea;
+        area->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
+        sample_detail = new sampledetailwidget;
+        sample_detail->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
+        area->setWidget(sample_detail);
+        main_layout->addWidget(area);
+    }
 
 //    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
     reporting_detail = new reportingdetailwidget;
@@ -136,6 +144,10 @@ void reportingcontainer::currentSampleChange(const QJsonObject& sample) {
 
 void reportingcontainer::setCurrentReportingSampleId(const QString& sample_id) {
     proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
+}
+
+void reportingcontainer::setCurrentReportingSample(const QJsonObject& sample) {
+    this->querySampleWithIDSuccess(sample);
 }
 
 void reportingcontainer::querySampleWithIDSuccess(const QJsonObject & sample) {

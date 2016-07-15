@@ -105,9 +105,15 @@ void titlewidget::setUpSubViews() {
 }
 
 void titlewidget::menu_btn_cleck(const QString& title) {
-    std::for_each(menu_lst.begin(), menu_lst.end(), pred_btn_click());
-    vector<titlepushbutton*>::iterator iter = std::find_if(menu_lst.begin(), menu_lst.end(), pred_btn_locate_tab(title));
-    (*iter)->setChecked(true);
+//    std::for_each(menu_lst.begin(), menu_lst.end(), pred_btn_click());
+//    vector<titlepushbutton*>::iterator iter = std::find_if(menu_lst.begin(), menu_lst.end(), pred_btn_locate_tab(title));
+//    (*iter)->setChecked(true);
 
     emit changeContentPane(title);
+}
+
+void titlewidget::changeCurrentIndex(int index) {
+    std::for_each(menu_lst.begin(), menu_lst.end(), pred_btn_click());
+    titlepushbutton* iter = menu_lst.at(index);
+    iter->setChecked(true);
 }

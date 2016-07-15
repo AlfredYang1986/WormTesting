@@ -23,6 +23,9 @@ protected Q_SLOTS:
     void notTestWidgetDoubleClicked(const QModelIndex&);
     void testedWidgetDoubleClicked(const QModelIndex&);
 
+protected:
+    virtual void showEvent(QShowEvent *);
+
 private:
     QVBoxLayout*  main_layout;
     QTableWidget* not_test_sample;

@@ -13,6 +13,7 @@
 #include "proxy/sampleproxy.h"
 #include "proxy/patientproxy.h"
 #include "commonwidget/sampledetailwidget.h"
+#include <QScrollArea>
 
 pushwidget::pushwidget() {
     this->setUpSubviews();
@@ -31,9 +32,15 @@ void pushwidget::setUpSubviews() {
 //    content_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     QVBoxLayout* left_layout = new QVBoxLayout;
+
+    QScrollArea* area = new QScrollArea;
+    area->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+
     sample_detail_widget = new sampledetailwidget();
     sample_detail_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
-    left_layout->addWidget(sample_detail_widget);
+
+    area->setWidget(sample_detail_widget);
+    left_layout->addWidget(area);
 
     QHBoxLayout* bottom_layout = new QHBoxLayout;
 
@@ -47,7 +54,7 @@ void pushwidget::setUpSubviews() {
     bottom_layout->addWidget(sample_cancel);
 
     left_layout->addLayout(bottom_layout);
-    left_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+//    left_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     content_layout->addLayout(left_layout);
 
     sample_searching_widget = new samplesearchingwidget;
@@ -132,6 +139,9 @@ void pushwidget::querySampleSuccess(const QJsonObject& sample) {
 }
 
 void pushwidget::doubleSelectSample(const QJsonObject &sample) {
+    qDebug() << "heih" << endl;
+    qDebug() << sample << endl;
+
     if (sample["status"].toInt() == 0) {
         emit startTesting(sample);
     } else {

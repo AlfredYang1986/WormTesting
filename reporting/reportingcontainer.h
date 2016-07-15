@@ -41,6 +41,7 @@ public:
     virtual QSize sizeHint() const;
 
     void setCurrentReportingSampleId(const QString& sample_id);
+    void setCurrentReportingSample(const QJsonObject& sample);
 
 protected:
     void setUpSubviews();

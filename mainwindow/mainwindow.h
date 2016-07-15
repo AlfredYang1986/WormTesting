@@ -9,6 +9,7 @@
 using std::map;
 class logindialog;
 class QFrame;
+class titlewidget;
 
 class MainWindow : public QMainWindow
 {
@@ -48,7 +49,7 @@ public:
 private:
     QWidget* center_widget;
     QVBoxLayout* main_container;
-    QWidget* title_widget;
+    titlewidget* title_widget;
 
     map<QString, QFrame*> contents;
 

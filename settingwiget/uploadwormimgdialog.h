@@ -6,6 +6,7 @@
 class QVBoxLayout;
 class QComboBox;
 class commonimglstwidget;
+class commonimgpreviewwidget;
 class QLabel;
 
 class uploadwormimgdialog : public QDialog {
@@ -29,8 +30,9 @@ protected:
 private:
     QVBoxLayout* main_layout;
     QComboBox* box;
-    QLabel* pic;
+//    QLabel* pic;
     commonimglstwidget* img_lst;
+    commonimgpreviewwidget* img_preview;
 
     QJsonObject current_cats;
 public:

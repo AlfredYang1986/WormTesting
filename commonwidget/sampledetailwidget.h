@@ -30,12 +30,16 @@ public:
 
     void setUpSubviews();
 
-    virtual QSize sizeHint() const;
+//    virtual QSize sizeHint() const;
 
     void queryPatientSuccess(const QJsonObject& patitent);
     void querySampleSuccess(const QJsonObject& sample);
 
     QString queryCurrentSampleId() const;
+
+protected:
+    virtual void showEvent(QShowEvent*);
+
 private:
     QLineEdit* sample_id_edit;
     QComboBox* sample_resource_box;

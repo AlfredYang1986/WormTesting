@@ -57,8 +57,8 @@ void samplesearchingwidget::setUpSubviews() {
     QObject::connect(tested_sample, SIGNAL(doubleClicked(const QModelIndex&)),
                      this, SLOT(testedWidgetDoubleClicked(const QModelIndex&)));
 
-    proxymanager::instance()->getSampleProxy()->queryNotTestSample();
-    proxymanager::instance()->getSampleProxy()->queryTestedSample();
+//    proxymanager::instance()->getSampleProxy()->queryNotTestSample();
+//    proxymanager::instance()->getSampleProxy()->queryTestedSample();
 }
 
 QSize samplesearchingwidget::sizeHit() const {
@@ -213,4 +213,8 @@ void samplesearchingwidget::testedWidgetDoubleClicked(const QModelIndex & index)
 void samplesearchingwidget::reloadData() {
     proxymanager::instance()->getSampleProxy()->queryNotTestSample();
     proxymanager::instance()->getSampleProxy()->queryTestedSample();
+}
+
+void samplesearchingwidget::showEvent(QShowEvent *) {
+    this->reloadData();
 }
