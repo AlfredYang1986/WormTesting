@@ -183,6 +183,8 @@ void reportingcontainer::querySampleSuccess(const QJsonObject& sample) {
 }
 
 void reportingcontainer::showEvent(QShowEvent *) {
+    QObject::connect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
+                     this, SLOT(queryPatientSuccess(const QJsonObject&)));
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 
@@ -196,6 +198,8 @@ void reportingcontainer::showEvent(QShowEvent *) {
 }
 
 void reportingcontainer::hideEvent(QHideEvent *) {
+    QObject::disconnect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
+                     this, SLOT(queryPatientSuccess(const QJsonObject&)));
     QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 

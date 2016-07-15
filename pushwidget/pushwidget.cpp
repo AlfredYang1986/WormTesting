@@ -83,28 +83,7 @@ void pushwidget::setUpSubviews() {
 //    QObject::connect(proxymanager::instance()->getPatientProxy(), SIGNAL(pushPatientSuccess(const QJsonObject&)),
 //                     this, SLOT(pushPatientSuccess(const QJsonObject&)));
 
-    QObject::connect(sample_detail_widget, SIGNAL(didFinishEditPatientID(const QString&)),
-                     this, SLOT(didFinishEditPatientId(const QString&)));
-    QObject::connect(sample_detail_widget, SIGNAL(didFinishEditSampleID(const QString&)),
-                     this, SLOT(didFinishEditSampleId(const QString&)));
 
-    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(pushSampleSuccess(const QJsonObject&)),
-                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
-
-    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(const QJsonObject&)),
-                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
-
-    QObject::connect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
-                     this, SLOT(queryPatientSuccess(const QJsonObject&)));
-
-    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(const QJsonObject&)),
-                     this, SLOT(querySampleSuccess(const QJsonObject&)));
-
-    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
-                     this, SLOT(querySampleSuccess(const QJsonObject&)));
-
-    QObject::connect(sample_searching_widget, SIGNAL(doubleSelectSample(const QJsonObject&)),
-                     this, SLOT(doubleSelectSample(const QJsonObject&)));
 
 }
 
@@ -139,12 +118,59 @@ void pushwidget::querySampleSuccess(const QJsonObject& sample) {
 }
 
 void pushwidget::doubleSelectSample(const QJsonObject &sample) {
-    qDebug() << "heih" << endl;
-    qDebug() << sample << endl;
-
     if (sample["status"].toInt() == 0) {
         emit startTesting(sample);
     } else {
         emit startReporting(sample);
     }
+}
+
+void pushwidget::showEvent(QShowEvent *) {
+    QObject::connect(sample_detail_widget, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::connect(sample_detail_widget, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(pushSampleSuccess(const QJsonObject&)),
+                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(const QJsonObject&)),
+                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
+
+    QObject::connect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
+                     this, SLOT(queryPatientSuccess(const QJsonObject&)));
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(const QJsonObject&)),
+                     this, SLOT(querySampleSuccess(const QJsonObject&)));
+
+    QObject::connect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
+                     this, SLOT(querySampleSuccess(const QJsonObject&)));
+
+    QObject::connect(sample_searching_widget, SIGNAL(doubleSelectSample(const QJsonObject&)),
+                     this, SLOT(doubleSelectSample(const QJsonObject&)));
+}
+
+void pushwidget::hideEvent(QHideEvent *) {
+    QObject::disconnect(sample_detail_widget, SIGNAL(didFinishEditPatientID(const QString&)),
+                     this, SLOT(didFinishEditPatientId(const QString&)));
+    QObject::disconnect(sample_detail_widget, SIGNAL(didFinishEditSampleID(const QString&)),
+                     this, SLOT(didFinishEditSampleId(const QString&)));
+
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(pushSampleSuccess(const QJsonObject&)),
+                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
+
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(const QJsonObject&)),
+                     this, SLOT(pushSampleSuccess(const QJsonObject&)));
+
+    QObject::disconnect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
+                     this, SLOT(queryPatientSuccess(const QJsonObject&)));
+
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(querySampleWithIDSuccess(const QJsonObject&)),
+                     this, SLOT(querySampleSuccess(const QJsonObject&)));
+
+    QObject::disconnect(sample_searching_widget, SIGNAL(currentSample(const QJsonObject&)),
+                     this, SLOT(querySampleSuccess(const QJsonObject&)));
+
+    QObject::disconnect(sample_searching_widget, SIGNAL(doubleSelectSample(const QJsonObject&)),
+                     this, SLOT(doubleSelectSample(const QJsonObject&)));
 }

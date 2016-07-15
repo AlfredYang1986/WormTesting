@@ -40,6 +40,8 @@ public:
 
 protected:
     virtual QSize sizeHint() const;
+    virtual void showEvent(QShowEvent *);
+    virtual void hideEvent(QHideEvent *);
 };
 
 #endif // PUSHWIDGET_H
