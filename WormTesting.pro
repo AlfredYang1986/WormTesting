@@ -9,6 +9,7 @@ QT	 += network
 QT	 += multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+qtHaveModule(printsupport): QT += printsupport
 
 TARGET = WormTesting
 TEMPLATE = app
@@ -21,8 +22,6 @@ SOURCES += main.cpp\
         starttesting/starttestingpage.cpp \
     starttesting/imgcomparepane.cpp \
     reporting/reportingcontainer.cpp \
-    reporting/samplereportingpane.cpp \
-    reporting/reportingimgpane.cpp \
     reportlst/reportlstcontainer.cpp \
     sampleresource/sampleresourcecontainer.cpp \
     proxy/patientproxy.cpp \
@@ -57,7 +56,8 @@ SOURCES += main.cpp\
     reportlst/searchresulttablewidget.cpp \
     commonwidget/commonimgpreviewwidget.cpp \
     proxy/authproxy.cpp \
-    logindialog/logindialog.cpp
+    logindialog/logindialog.cpp \
+    reporting/printpreviewdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -66,8 +66,6 @@ HEADERS  += mainwindow/mainwindow.h\
         starttesting/starttestingpage.h \
     starttesting/imgcomparepane.h \
     reporting/reportingcontainer.h \
-    reporting/samplereportingpane.h \
-    reporting/reportingimgpane.h \
     reportlst/reportlstcontainer.h \
     sampleresource/sampleresourcecontainer.h \
     proxy/patientproxy.h \
@@ -103,7 +101,8 @@ HEADERS  += mainwindow/mainwindow.h\
     reportlst/searchresulttablewidget.h \
     commonwidget/commonimgpreviewwidget.h \
     proxy/authproxy.h \
-    logindialog/logindialog.h
+    logindialog/logindialog.h \
+    reporting/printpreviewdialog.h
 
 FORMS    +=
 

@@ -40,6 +40,8 @@ public:
 protected:
     virtual void showEvent(QShowEvent*);
 
+    void clearContents();
+
 private:
     QLineEdit* sample_id_edit;
     QComboBox* sample_resource_box;

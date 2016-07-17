@@ -235,3 +235,15 @@ bool commonimglstwidget::showOptBtns() const {
 void commonimglstwidget::changeCurrentImage(const QPixmap* p) {
     emit changeCurrentImageSignal(*p);
 }
+
+QVector<QImage> commonimglstwidget::getCurrentImages() const {
+    QVector<QImage> result;
+
+    QVector<imglstitem*>::const_iterator iter = img_lst.begin();
+    for (; iter != img_lst.end(); ++iter) {
+        imglstitem* tmp = (*iter);
+        result.push_back(tmp->pixmap()->toImage());
+    }
+
+    return result;
+}

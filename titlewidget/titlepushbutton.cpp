@@ -32,7 +32,8 @@ void titlepushbutton::setUpSubviews() {
 
     img_label = new QLabel;
     img_label->setObjectName(QStringLiteral("img_label"));
-    img_label->setPixmap(button_img.scaledToWidth(35));
+//    img_label->setPixmap(button_img.scaledToWidth(35));
+    img_label->setPixmap(button_img.scaledToHeight(35));
 
     line_one->addSpacerItem(line_one_left);
     line_one->addWidget(img_label);

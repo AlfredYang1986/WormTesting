@@ -2,6 +2,7 @@
 #define REPORTINGDETAILWIDGET_H
 
 #include <QFrame>
+#include <QJsonObject>
 class QHBoxLayout;
 class QVBoxLayout;
 class QFormLayout;
@@ -29,6 +30,8 @@ private:
     QVBoxLayout* content_layout;
 
     QVector<reportingdetailitem*> items;
+
+    QJsonObject current_sample;
 public:
     reportingdetailwidget();
     ~reportingdetailwidget();
@@ -38,6 +41,8 @@ public:
 
     QVector<QString> getTestItemResults() const;
     void setSampleDefaultResult(const QJsonObject& sample);
+
+    QStringList getAllReportingField() const;
 };
 
 #endif // REPORTINGDETAILWIDGET_H

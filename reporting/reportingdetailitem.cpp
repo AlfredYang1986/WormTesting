@@ -49,3 +49,7 @@ void reportingdetailitem::setCurrentSelected(bool b) {
     else
         box->setCurrentText("未检出");
 }
+
+QString reportingdetailitem::getItemTitle() const {
+    return title;
+}

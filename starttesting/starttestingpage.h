@@ -68,6 +68,8 @@ private:
     QPushButton* control_end_btn;
     QPushButton* control_report_btn;
     QPushButton* control_compare_btn;
+
+    QJsonObject current_sample;
 };
 
 #endif // STARTTESTINGPAGE_H

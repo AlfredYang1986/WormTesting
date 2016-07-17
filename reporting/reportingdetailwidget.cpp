@@ -64,7 +64,6 @@ void reportingdetailwidget::hideEvent(QHideEvent *) {
 }
 
 void reportingdetailwidget::queryReportingWormSuccess(const QJsonObject & cats) {
-
     if (!content_widget) {
 
         this->clearItems();
@@ -109,6 +108,10 @@ void reportingdetailwidget::queryReportingWormSuccess(const QJsonObject & cats) 
         area->setWidget(content_widget);
         QObject::disconnect(proxymanager::instance()->getWormProxy(), SIGNAL(queryReportingWormSuccess(QJsonObject)),
                      this, SLOT(queryReportingWormSuccess(QJsonObject)));
+
+        if (!current_sample.isEmpty()) {
+            this->setSampleDefaultResult(current_sample);
+        }
     }
 }
 
@@ -132,6 +135,7 @@ QVector<QString> reportingdetailwidget::getTestItemResults() const {
 }
 
 void reportingdetailwidget::setSampleDefaultResult(const QJsonObject &sample) {
+    current_sample = sample;
     QJsonArray result = sample["result"].toArray();
     QJsonArray::iterator iter = result.begin();
     for (; iter != result.end(); ++iter) {
@@ -139,7 +143,16 @@ void reportingdetailwidget::setSampleDefaultResult(const QJsonObject &sample) {
         QVector<reportingdetailitem*>::iterator iter =
                 std::find_if(items.begin(), items.end(), pred_find_label_with_name(cur));
         reportingdetailitem* item = (*iter);
-        item->setCurrentSelected(true);
+        if (item)
+            item->setCurrentSelected(true);
     }
+}
 
+QStringList reportingdetailwidget::getAllReportingField() const {
+    QStringList reVal;
+    QVector<reportingdetailitem*> ::const_iterator iter = items.begin();
+    for (; iter != items.end(); ++iter) {
+        reVal.push_back((*iter)->getItemTitle());
+    }
+    return reVal;
 }

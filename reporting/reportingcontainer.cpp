@@ -1,7 +1,7 @@
 #include "reportingcontainer.h"
 #include "commonwidget/sampledetailwidget.h"
 #include "commonwidget/commonimglstwidget.h"
-#include "reportingimgpane.h"
+//#include "reportingimgpane.h"
 #include <QHBoxLayout>
 #include "proxy/proxymanager.h"
 #include "proxy/sampleproxy.h"
@@ -12,6 +12,14 @@
 #include <QTableWidget>
 #include <QPushButton>
 #include <QScrollArea>
+#include <QtPrintSupport/QPrinter>
+#include <QtPrintSupport/QPrintDialog>
+#include <QtPrintSupport/QPrintPreviewDialog>
+#include <QFileDialog>
+#include <QFileInfo>
+#include <QDesktopServices>
+#include <QTextDocument>
+#include "printpreviewdialog.h"
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -51,15 +59,16 @@ void reportingcontainer::setUpSubviews() {
 
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    QPushButton* save_btn = new QPushButton(QStringLiteral("保存"));
+    QPushButton* save_btn = new QPushButton("保存");
     QObject::connect(save_btn, SIGNAL(released()), this, SLOT(saveTestResult()));
     btn_layout->addWidget(save_btn);
 
-    QPushButton* preview_btn = new QPushButton(QStringLiteral("打印"));
-//    QObject::connect(save_btn, SIGNAL(released()), this, SLOT()
-    btn_layout->addWidget(preview_btn);
+    QPushButton* print_preview_btn = new QPushButton("打印预览");
+    QObject::connect(print_preview_btn, SIGNAL(released()),
+                     this, SLOT(printPreview()));
+    btn_layout->addWidget(print_preview_btn);
 
-    QPushButton* cancel_btn = new QPushButton(QStringLiteral("取消"));
+    QPushButton* cancel_btn = new QPushButton("取消");
 //    QObject::connect(save_btn, SIGNAL(released()), this, SLOT()
     btn_layout->addWidget(cancel_btn);
 
@@ -151,6 +160,7 @@ void reportingcontainer::setCurrentReportingSample(const QJsonObject& sample) {
 }
 
 void reportingcontainer::querySampleWithIDSuccess(const QJsonObject & sample) {
+    current_sample = sample;
     sample_detail->querySampleSuccess(sample);
     QJsonObject patient = sample["patient"].toObject();
     sample_detail->queryPatientSuccess(patient);
@@ -195,6 +205,9 @@ void reportingcontainer::showEvent(QShowEvent *) {
 
     QObject::connect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
                      img_preview, SLOT(setPreviewImage(QPixmap)));
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }
 
 void reportingcontainer::hideEvent(QHideEvent *) {
@@ -210,6 +223,9 @@ void reportingcontainer::hideEvent(QHideEvent *) {
 
     QObject::disconnect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
                      img_preview, SLOT(setPreviewImage(QPixmap)));
+
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }
 
 void reportingcontainer::saveTestResult() {
@@ -300,7 +316,8 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
             qlonglong timespan = tmp["date"].toVariant().toLongLong();
             QDateTime t;
             t.setMSecsSinceEpoch(timespan);
-            QTableWidgetItem* item2 = new QTableWidgetItem(t.toString());
+            QString format = "yyyy-MM-dd HH:mm:ss";
+            QTableWidgetItem* item2 = new QTableWidgetItem(t.toString(format));
             if (tmp["status"].toInt() == 1)
                 item2->setForeground(QBrush(QColor(255, 0, 0)));
             else
@@ -314,4 +331,111 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
 
 void reportingcontainer::testedWidgetClicked(const QModelIndex& index) {
     QJsonObject sample = vec_sample_tested.at(index.row()).toObject();
+}
+
+QString reportingcontainer::htmlContent(QTextDocument& document) {
+
+    if (current_sample.isEmpty())
+        return "";
+
+    QFile f(":/resource/print");
+    if (f.open(QIODevice::OpenModeFlag::ReadOnly)) {
+        QString html = f.readAll();
+
+        QJsonObject patient = current_sample["patient"].toObject();
+        QString sample_id = current_sample["sample_id"].toString();
+        QString patient_name = patient["patient_name"].toString();
+        QString patient_gender = patient["patient_gender"].toInt() == 0 ? "男" : "女";
+        QString patient_age = QString("%1").arg(patient["patient_age"].toInt());
+        QString patient_id = patient["patient_id"].toString();
+        QString sample_resource = current_sample["resource"].toString();
+
+        QVector<QVariant> result = current_sample["result"].toArray().toVariantList().toVector();
+        QStringList str_result;
+        QVector<QVariant> ::iterator iter = result.begin();
+        for(; iter != result.end(); ++iter) {
+            str_result.push_back(iter->toString());
+        }
+
+        QString contents = "";
+        QString presuffix = "<tr>";
+        QString suffix = "</tr>";
+        QStringList str_reVal = reporting_detail->getAllReportingField();
+        QStringList::iterator i = str_reVal.begin();
+        for (; i != str_reVal.end(); ++i) {
+            QString tmp = *i;
+            contents += presuffix;
+            contents += "<td>" + tmp + "</td>";
+            if (str_result.contains(tmp)) {
+                contents += "<td>" + QString("已检出") + "</td>";
+            } else {
+                contents += "<td>" + QString("未检出") + "</td>";
+            }
+            contents += "<td></td>";
+            contents += "<td></td>";
+            contents += suffix;
+        }
+
+        qlonglong testing_time_span = current_sample["testing_date"].toVariant().toLongLong();
+        QDateTime testing_time;
+        testing_time.setMSecsSinceEpoch(testing_time_span);
+        QString format = "yyyy-MM-dd HH:mm:ss";
+        QString str_testing_time = testing_time.toString(format);
+
+        QDateTime reporting_time = QDateTime::currentDateTime();
+        QString str_reporting_time = reporting_time.toString(format);
+
+        QString testing_doctor = current_sample["testing_doctor"].toString();
+        QString post_test_doctor = current_sample["post_test_doctor"].toString();
+
+        QString images = "";
+        QString img_preffix = "<td>";
+        QString img_suffix = "</td>";
+
+        QVector<QImage> vec_img = img_lst->getCurrentImages();
+        QVector<QImage>::iterator vec_img_iter = vec_img.begin();
+        int index = 0;
+        for (; vec_img_iter != vec_img.end(); ++ vec_img_iter) {
+            QImage t = (*vec_img_iter);
+            QUrl url;
+            url.setUrl(QString("tmp%1").arg(index));
+            document.addResource(QTextDocument::ImageResource, url, QVariant(t));
+
+            images += img_preffix;
+            images += "<img src='" + QString("tmp%1").arg(index) +  "'></img>";
+            images += img_suffix;
+
+            ++index;
+        }
+
+        return html.arg(sample_id)
+                .arg(patient_name)
+                .arg(patient_gender)
+                .arg(patient_age)
+                .arg(patient_id)
+                .arg(sample_resource)
+                .arg(contents)
+                .arg(str_testing_time)
+                .arg(str_reporting_time)
+                .arg(testing_doctor)
+                .arg(post_test_doctor)
+                .arg(images);
+    } else {
+        return "";
+    }
+}
+
+void reportingcontainer::changeReportingStatusInService() {
+    QJsonObject a;
+    QDateTime reporting_time = QDateTime::currentDateTime();
+    a.insert("reporting_date", reporting_time.toMSecsSinceEpoch());
+    a.insert("status", 2);
+    a.insert("sample_id", current_sample["sample_id"].toString());
+
+    proxymanager::instance()->getSampleProxy()->pushOrUpdateSample(a);
+}
+
+void reportingcontainer::printPreview() {
+    printpreviewdialog* dlg = new printpreviewdialog(this);
+    dlg->exec();
 }

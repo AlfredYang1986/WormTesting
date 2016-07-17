@@ -1,0 +1,70 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="pragma" content="no-cache">
+	    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	</head>
+	<body>
+		<p>医院</p>
+		<h2 style='margin:0 auto;text-align: center;'>液基寄生虫检测报告单</h2>
+		<table width='100%' border=1 cellspacing=0>
+			<tr>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td>样本号:%1</td>
+			</tr>
+			<tr>
+				<td>姓名:%2</td>
+				<td>性别:%3</td>
+				<td>年龄:%4</td>
+				<td>病例号:%5</td>
+				<td>标本来源:%6</td>
+			</tr>
+			<tr>
+				<td>科室:</td>
+				<td>病区:</td>
+				<td>床号:</td>
+				<td>标本种类:</td>
+				<td>临床诊断:</td>
+			</tr>
+		</table>
+
+		<table width='100%' border=1 cellpadding=0>
+			<tr>
+				<th>项目</th>
+				<th>结果</th>
+				<th>参考值</th>
+				<th>单位</th>
+			</tr>
+			%7
+		</table>
+
+		<br/>
+		<table width="100%">
+			<tr>
+				<th>典型图像</th>
+			</tr>
+			<tr>
+				%12
+			</tr>
+		</table>
+
+		<br/>
+		<table width="100%" border="1" cellpadding="0">
+			<tr>
+				<td>检测时间:%8</td>
+				<td>报告时间:%9</td>
+			</tr>
+			<tr>
+				<td>检验者:%10</td>
+				<td>审核者:%11</td>
+			</tr>
+		</table>
+		<br/>
+		<p>检测试剂: PARATEST ECO 液基细胞和微生物处理，保存试剂</p>
+		<p>本次检测结果只表示检验对象当时状况或当日检验标本的结果!</p>
+	</body>
+</html>
+
