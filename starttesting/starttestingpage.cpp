@@ -171,6 +171,7 @@ void starttestingpage::takeImageSuccess(const QImage& image) {
 }
 
 void starttestingpage::setCurrentTestingSample(const QJsonObject &sample) {
+    current_sample = sample;
     sample_detail->querySampleSuccess(sample);
     QJsonObject patient = sample["patient"].toObject();
     sample_detail->queryPatientSuccess(patient);
@@ -198,10 +199,11 @@ void starttestingpage::startComparingBtnClicked() {
 }
 
 void starttestingpage::querySampleWithIDSuccess(const QJsonObject & sample) {
-    sample_detail->querySampleSuccess(sample);
-    QJsonObject patient = sample["patient"].toObject();
-    sample_detail->queryPatientSuccess(patient);
-    img_lst_pane->changeCurrentSample(sample);
+//    sample_detail->querySampleSuccess(sample);
+//    QJsonObject patient = sample["patient"].toObject();
+//    sample_detail->queryPatientSuccess(patient);
+//    img_lst_pane->changeCurrentSample(sample);
+    this->setCurrentTestingSample(sample);
 }
 
 void starttestingpage::didFinishEditPatientId(const QString& patient_id) {

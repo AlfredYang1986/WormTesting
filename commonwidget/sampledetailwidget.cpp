@@ -12,6 +12,7 @@
 #include "proxy/sampleproxy.h"
 #include "proxy/configproxy.h"
 #include <QGroupBox>
+#include <QDateTime>
 
 sampledetailwidget::sampledetailwidget() {
     this->setUpSubviews();
@@ -242,6 +243,9 @@ void sampledetailwidget::queryPatientSuccess(const QJsonObject & patient) {
 }
 
 void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
+
+    this->clearContents();
+
     if (!sample.isEmpty()) {
         sample_id_edit->setText(sample["sample_id"].toString());
         sample_resource_box->setCurrentText(sample["resource"].toString());
@@ -272,17 +276,22 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
             }
         }
 
+        QString format = "yyyy-MM-dd HH:mm::ss";
         {
-            long long n = sample["testing_date"].toVariant().toLongLong();
+            qlonglong n = sample["testing_date"].toVariant().toLongLong();
             if (n > 0) {
-                sample_testing_date_edit->setText(QString("%1").arg(n));
+                QDateTime t;
+                t.setMSecsSinceEpoch(n);
+                sample_testing_date_edit->setText(t.toString(format));
             }
         }
 
         {
-            long long n = sample["reporting_date"].toVariant().toLongLong();
+            qlonglong n = sample["reporting_date"].toVariant().toLongLong();
             if (n > 0) {
-                sample_reporting_date_edit->setText(QString("%1").arg(n));
+                QDateTime t;
+                t.setMSecsSinceEpoch(n);
+                sample_reporting_date_edit->setText(t.toString(format));
             }
         }
 
@@ -313,4 +322,27 @@ void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & resul
 
 void sampledetailwidget::showEvent(QShowEvent *) {
     sample_id_edit->setFocus();
+}
+
+void sampledetailwidget::clearContents() {
+    sample_id_edit->clear();
+//    sample_resource_box->clear();
+    sample_index_edit->clear();
+    sample_section_edit->clear();
+    sample_query_doctor_edit->clear();
+    sample_pre_test_doctor_edit->clear();
+    sample_testing_doctor_edit->clear();
+    sample_post_test_doctor_edit->clear();
+    sample_start_date_edit->clear();
+    sample_end_date_edit->clear();
+    sample_testing_date_edit->clear();
+    sample_reporting_date_edit->clear();
+
+    patient_id_edit->clear();
+    patient_name_edit->clear();
+//    patient_gender_box->clear();
+    patient_age_edit->clear();
+    patient_section_edit->clear();
+    patient_section_id_edit->clear();
+    patient_section_bed_id_edit->clear();
 }

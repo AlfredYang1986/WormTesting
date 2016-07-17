@@ -25,6 +25,7 @@ public:
     virtual QSize sizeHint() const;
 
     QString getItemTestResult() const;
+    QString getItemTitle() const;
     void setCurrentSelected(bool b);
 };
 

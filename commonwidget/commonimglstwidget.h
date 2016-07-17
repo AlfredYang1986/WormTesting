@@ -57,6 +57,8 @@ public:
     void changeShowingImgLst(const QVector<QString>& name_lst);
 
     bool showOptBtns() const;
+
+    QVector<QImage> getCurrentImages() const;
 };
 
 #endif // COMMONIMGLSTWIDGET_H
