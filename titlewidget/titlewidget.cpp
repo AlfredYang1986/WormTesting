@@ -82,8 +82,8 @@ void titlewidget::setUpSubViews() {
     tmp_lst.push_back(std::make_pair("menu2.png", QStringLiteral("开始检测")));
     tmp_lst.push_back(std::make_pair("menu3.png", QStringLiteral("填写报告")));
     tmp_lst.push_back(std::make_pair("menu4.png", QStringLiteral("报告列表")));
-    tmp_lst.push_back(std::make_pair("menu5.png", QStringLiteral("样本资料")));
     tmp_lst.push_back(std::make_pair("menu6.png", QStringLiteral("对比结果")));
+    tmp_lst.push_back(std::make_pair("menu5.png", QStringLiteral("样本资料")));
     tmp_lst.push_back(std::make_pair("menu7.png", QStringLiteral("系统设置")));
     tmp_lst.push_back(std::make_pair("menu8.png", QStringLiteral("关于系统")));
 

@@ -96,7 +96,7 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents["录入样本"];
+     QFrame* tmp = contents[QStringLiteral("录入样本")];
      if (tmp == NULL) {
          pushwidget* content_widget = new pushwidget;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -125,7 +125,7 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents["开始检测"];
+     QFrame* tmp = contents[QStringLiteral("开始检测")];
      if (tmp == NULL) {
          starttestingpage* content_widget = new starttestingpage;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -153,7 +153,7 @@ void MainWindow::changeMainContent(const QString &title) {
              tmp->hide();
      }
 
-     QFrame* tmp = contents["填写报告"];
+     QFrame* tmp = contents[QStringLiteral("填写报告")];
      if (tmp == NULL) {
          QFrame* content_widget = new reportingcontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -175,7 +175,7 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents["报告列表"];
+     QFrame* tmp = contents[QStringLiteral("报告列表")];
      if (tmp == NULL) {
          reportlstcontainer* content_widget = new reportlstcontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -201,7 +201,7 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents["样本资料"];
+     QFrame* tmp = contents[QStringLiteral("样本资料")];
      if (tmp == NULL) {
          QFrame* content_widget = new sampleresourcecontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -212,7 +212,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
-     title_widget->changeCurrentIndex(4);
+     title_widget->changeCurrentIndex(5);
  }
 
  void MainWindow::createCompareWidget() {
@@ -223,7 +223,7 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents["对比结果"];
+     QFrame* tmp = contents[QStringLiteral("对比结果")];
      if (tmp == NULL) {
          QFrame* content_widget = new imagecomparewidget;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -234,7 +234,7 @@ void MainWindow::changeMainContent(const QString &title) {
      }
 
      tmp->show();
-     title_widget->changeCurrentIndex(5);
+     title_widget->changeCurrentIndex(4);
  }
 
 void MainWindow::createSettingWidget() {
@@ -245,7 +245,7 @@ void MainWindow::createSettingWidget() {
             tmp->hide();
     }
 
-    QFrame* tmp = contents["系统设置"];
+    QFrame* tmp = contents[QStringLiteral("系统设置")];
     if (tmp == NULL) {
         QFrame* content_widget = new settingmainwidget;
         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -267,7 +267,7 @@ void MainWindow::createAboutWidget() {
             tmp->hide();
     }
 
-    QFrame* tmp = contents["关于系统"];
+    QFrame* tmp = contents[QStringLiteral("关于系统")];
     if (tmp == NULL) {
         QFrame* content_widget = new QFrame;
         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -283,19 +283,19 @@ void MainWindow::createAboutWidget() {
 
  void MainWindow::startTest(const QJsonObject & sample) {
     this->createTestingWidget();
-    starttestingpage* p = (starttestingpage*)contents["开始检测"];
+    starttestingpage* p = (starttestingpage*)contents[QStringLiteral("开始检测")];
     p->setCurrentTestingSample(sample);
  }
 
  void MainWindow::startReport(const QJsonObject & sample) {
     this->createReportWidget();
-    reportingcontainer* p = (reportingcontainer*)contents["填写报告"];
+    reportingcontainer* p = (reportingcontainer*)contents[QStringLiteral("填写报告")];
     p->setCurrentReportingSample(sample);
  }
 
 void MainWindow::startReport(const QString& sample_id) {
     this->createReportWidget();
-    reportingcontainer* p = (reportingcontainer*)contents["填写报告"];
+    reportingcontainer* p = (reportingcontainer*)contents[QStringLiteral("填写报告")];
     p->setCurrentReportingSampleId(sample_id);
 }
 
@@ -304,7 +304,7 @@ void MainWindow::startCompare(const QString& sample_id) {
 }
 
 bool MainWindow::isReadyToChangeMainWidget() {
-    starttestingpage* tmp = (starttestingpage*)contents["开始检测"];
+    starttestingpage* tmp = (starttestingpage*)contents[QStringLiteral("开始检测")];
     if (tmp && tmp->currentStatus() == starttestingpage::TestStatus_testing) {
         QMessageBox::information(this, "error",
                                  tr("请先完成测试在切换界面"),

@@ -1,4 +1,4 @@
-#include "logindialog.h"
+﻿#include "logindialog.h"
 #include <QFormLayout>
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -28,8 +28,9 @@ void logindialog::setUpSubview() {
     main_layout = new QVBoxLayout;
 
     QFormLayout* content_layout = new QFormLayout;
-    content_layout->addRow("用户名 :", user_name_edit);
-    content_layout->addRow("密 码 :", password_edit);
+    content_layout->addRow(QStringLiteral("用户名 :"), user_name_edit);
+    content_layout->addItem(new QSpacerItem(0, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
+    content_layout->addRow(QStringLiteral("密 码 :"), password_edit);
 
     main_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -74,9 +75,6 @@ void logindialog::setUpSubview() {
                             "border-bottom: 1px solid #1bb1ff;"
                             "width: 200px;"
                             "line-height: 36px;"
-                        "}"
-                        "QLineEdit:focus {"
-                            "border: none;"
                         "}"
                         "QPushButton {"
                             "margin-top: 20px;"

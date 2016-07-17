@@ -1,4 +1,4 @@
-#include "authproxy.h"
+﻿#include "authproxy.h"
 #include <QMessageBox>
 
 authproxy::authproxy() {
