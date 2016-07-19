@@ -84,9 +84,15 @@ bool imglstitem::isShowOptBtns() const {
 }
 
 void imglstitem::mousePressEvent(QMouseEvent *) {
-    emit imageSelected(this->pixmap());
+    emit imageSelected(&current_pixmap);
 }
 
-//void imglstitem::setPixmap(const QPixmap & m) {
-//    pic_preview->setPixmap(m);
-//}
+void imglstitem::setCurrentPixmap(const QPixmap & m) {
+    current_pixmap = m;
+    QPixmap tmp = current_pixmap;
+    if (isVer)
+        tmp = m.scaled(280, 200);
+    else
+        tmp = m.scaled(140, 100);
+    this->setPixmap(tmp);
+}

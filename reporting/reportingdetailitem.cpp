@@ -39,15 +39,15 @@ QSize reportingdetailitem::sizeHint() const {
 }
 
 QString reportingdetailitem::getItemTestResult() const {
-    if (box->currentText() == "已检出") return title;
+    if (box->currentText() == QStringLiteral("已检出")) return title;
     else return "";
 }
 
 void reportingdetailitem::setCurrentSelected(bool b) {
     if (b)
-        box->setCurrentText("已检出");
+        box->setCurrentText(QStringLiteral("已检出"));
     else
-        box->setCurrentText("未检出");
+        box->setCurrentText(QStringLiteral("未检出"));
 }
 
 QString reportingdetailitem::getItemTitle() const {

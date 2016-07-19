@@ -45,7 +45,7 @@ void sampleresourcecontainer::setUpSubviews() {
 
 //    right_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
-    QGroupBox* box = new QGroupBox(QStringLiteral("样本描述"));
+    QGroupBox* box = new QGroupBox("样本描述");
     html = new QLabel;
     QVBoxLayout* a = new QVBoxLayout;
     a->addWidget(html);
@@ -73,7 +73,6 @@ void sampleresourcecontainer::currentWorm(const QString& worm_name, const QStrin
 }
 
 void sampleresourcecontainer::queryWormDetailSuccess(const QJsonObject& detail) {
-    qDebug() << detail << endl;
     QString tmp("<h2>虫名</h2>");
     tmp += "<p>";
     tmp += detail["name"].toString();

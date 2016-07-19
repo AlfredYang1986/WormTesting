@@ -57,7 +57,8 @@ SOURCES += main.cpp\
     commonwidget/commonimgpreviewwidget.cpp \
     proxy/authproxy.cpp \
     logindialog/logindialog.cpp \
-    reporting/printpreviewdialog.cpp
+    reporting/printpreviewdialog.cpp \
+    settingwiget/addusersdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -102,7 +103,8 @@ HEADERS  += mainwindow/mainwindow.h\
     commonwidget/commonimgpreviewwidget.h \
     proxy/authproxy.h \
     logindialog/logindialog.h \
-    reporting/printpreviewdialog.h
+    reporting/printpreviewdialog.h \
+    settingwiget/addusersdialog.h
 
 FORMS    +=
 
@@ -113,9 +115,9 @@ win32 {
 INCLUDEPATH += C:\opencv\build\include
 
 debug {
-LIBS += C:\opencv\build\x64\vc14\lib\opencv_core2413d.lib \
-        C:\opencv\build\x64\vc14\lib\opencv_highgui2413d.lib \
-        C:\opencv\build\x64\vc14\lib\opencv_imgproc2413d.lib
+LIBS += C:\opencv\build\x64\vc14\lib\opencv_core2413.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_highgui2413.lib \
+        C:\opencv\build\x64\vc14\lib\opencv_imgproc2413.lib
 }
 
 release {

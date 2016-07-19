@@ -25,6 +25,8 @@ private:
     QPushButton* delect_btn;
     QPushButton* save_as_btn;
 
+    QPixmap current_pixmap;
+
     //QLabel* pic_preview;
 
     const bool isWormImgItem;
@@ -39,7 +41,7 @@ public:
 
     bool isShowOptBtns() const;
 
-    //void setPixmap(const QPixmap&);
+    void setCurrentPixmap(const QPixmap&);
 };
 
 #endif // IMGLSTITEM_H

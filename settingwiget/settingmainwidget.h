@@ -17,6 +17,10 @@ protected Q_SLOTS:
     void showUpdateWormDescriptionDialog();
     void showAddWormImgDialog();
     void showDeleteWormImgDialog();
+
+    void showUserAddDialog();
+    void showUserDeleteDialog();
+    void showPrintConfig();
 private:
     QVBoxLayout* main_layout;
 

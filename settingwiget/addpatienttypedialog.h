@@ -14,10 +14,12 @@ protected Q_SLOTS:
     void savaBtnClicked();
     void cancelBtnClicked();
 
+    void queryPatientTypeSuccess(const QJsonArray&);
 private:
     QVBoxLayout* main_layout;
     QLineEdit* patient_edit;
 
+    QVector<QString> vec_patient_type;
 public:
     addpatienttypedialog();
     ~addpatienttypedialog();

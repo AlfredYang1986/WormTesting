@@ -131,20 +131,65 @@ void settingmainwidget::setUpSubviews() {
     }
 
     {
+        //QPushButton* btn = new QPushButton;
+        //btn->setFixedSize(120, 120);
+        //btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        //btn->clearMask();
+        //btn->setBackgroundRole(QPalette::Base);
+        //QPixmap m;
+        //m.load(":resource/setting_pic_delete.png");
+        //btn->setIcon(m);
+        //btn->setIconSize(QSize(120, 120));
+        //QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
+        //sample->addWidget(btn);
+    }
+    sample->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    main_layout->addLayout(sample);
+
+    QHBoxLayout* users = new QHBoxLayout;
+    {
         QPushButton* btn = new QPushButton;
         btn->setFixedSize(120, 120);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
-        m.load(":resource/setting_pic_delete.png");
+        m.load(":resource/setting_users_add.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
+        QObject::connect(btn, SIGNAL(released()), this, SLOT(showUpdateWormDescriptionDialog()));
+        users->addWidget(btn);
+    }
+
+    {
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
+        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_users_delete.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
+        QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddWormImgDialog()));
+        users->addWidget(btn);
+    }
+
+    {
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
+        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_print_config.png");
         btn->setIcon(m);
         btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
-        sample->addWidget(btn);
+        users->addWidget(btn);
     }
-    sample->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    main_layout->addLayout(sample);
+    users->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    main_layout->addLayout(users);
 
     main_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
@@ -193,5 +238,17 @@ void settingmainwidget::showAddWormImgDialog() {
 }
 
 void settingmainwidget::showDeleteWormImgDialog() {
+
+}
+
+void settingmainwidget::showUserAddDialog() {
+
+}
+
+void settingmainwidget::showUserDeleteDialog() {
+
+}
+
+void settingmainwidget::showPrintConfig() {
 
 }

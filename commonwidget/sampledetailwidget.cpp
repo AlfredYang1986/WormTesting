@@ -102,9 +102,6 @@ void sampledetailwidget::setUpSubviews() {
     this->setLayout(sample_layout);
     main_layout=sample_layout;
 
-    proxymanager::instance()->getConfigProxy()->querySampleResourceType();
-    proxymanager::instance()->getConfigProxy()->queryPatientType();
-
     QObject::connect(proxymanager::instance()->getConfigProxy(), SIGNAL(queryPatientTypeSuccess(QJsonArray)),
                      this, SLOT(queryPatientTypeSuccess(QJsonArray)));
     QObject::connect(proxymanager::instance()->getConfigProxy(), SIGNAL(querySampleResourceTypeSuccess(QJsonArray)),
@@ -126,6 +123,7 @@ void sampledetailwidget::didFinishEditSampleID_slot() {
 }
 
 void sampledetailwidget::sampleBtnClick() {
+
     QString sample_id = sample_id_edit->text();
     QString sample_resource = sample_resource_box->currentText();
     QString sample_patient_id = patient_id_edit->text();
@@ -244,9 +242,10 @@ void sampledetailwidget::queryPatientSuccess(const QJsonObject & patient) {
 
 void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
 
-    this->clearContents();
-
     if (!sample.isEmpty()) {
+
+        this->clearContents();
+
         sample_id_edit->setText(sample["sample_id"].toString());
         sample_resource_box->setCurrentText(sample["resource"].toString());
 
@@ -305,6 +304,7 @@ QString sampledetailwidget::queryCurrentSampleId() const {
 }
 
 void sampledetailwidget::queryPatientTypeSuccess(const QJsonArray & result) {
+    patient_type->clear();
     QJsonArray::const_iterator iter = result.begin();
     for(; iter != result.end(); ++iter) {
         QString tmp = (*iter).toString();
@@ -313,6 +313,7 @@ void sampledetailwidget::queryPatientTypeSuccess(const QJsonArray & result) {
 }
 
 void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & result) {
+    sample_resource_box->clear();
     QJsonArray::const_iterator iter = result.begin();
     for(; iter != result.end(); ++iter) {
         QString tmp = (*iter).toString();
@@ -322,6 +323,8 @@ void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & resul
 
 void sampledetailwidget::showEvent(QShowEvent *) {
     sample_id_edit->setFocus();
+    proxymanager::instance()->getConfigProxy()->querySampleResourceType();
+    proxymanager::instance()->getConfigProxy()->queryPatientType();
 }
 
 void sampledetailwidget::clearContents() {

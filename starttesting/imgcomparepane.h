@@ -26,6 +26,8 @@ public:
 
     void clearPane();
     int getCurrentCameraIndex() const;
+    void startTesting(bool bTesting);
+
 protected:
     void setUpSubviews();
 

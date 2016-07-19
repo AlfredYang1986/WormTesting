@@ -83,5 +83,9 @@ void imgcomparepane::clearPane() {
 }
 
 void imgcomparepane::changeCurrentCamera(int index) {
-    cameraproxy::instance()->setUpCamera(index);
+//    cameraproxy::instance()->setUpCamera(index);
+}
+
+void imgcomparepane::startTesting(bool bTesting) {
+    box->setEnabled(!bTesting);
 }

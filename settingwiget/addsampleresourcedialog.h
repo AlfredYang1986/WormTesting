@@ -14,11 +14,12 @@ protected Q_SLOTS:
     void savaBtnClicked();
     void cancelBtnClicked();
 
+    void querySampleResourceTypeSuccess(const QJsonArray&);
 private:
     QVBoxLayout* main_layout;
-
     QLineEdit* resource_edit;
 
+    QVector<QString> vec_resource_type;
 public:
     addsampleresourcedialog();
     ~addsampleresourcedialog();

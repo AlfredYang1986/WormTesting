@@ -2,6 +2,7 @@
 #define PUSHWIDGET_H
 
 #include <QFrame>
+#include <QJsonObject>
 
 class QVBoxLayout;
 class QLineEdit;
@@ -27,11 +28,15 @@ protected Q_SLOTS:
 
     void doubleSelectSample(const QJsonObject& sample);
 
+    void sampleBtnClick();
+
 private:
     QVBoxLayout* main_layout;
 
     sampledetailwidget* sample_detail_widget;
     samplesearchingwidget* sample_searching_widget;
+
+    QJsonObject current_object;
 public:
     pushwidget();
     ~pushwidget();

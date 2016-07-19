@@ -140,6 +140,7 @@ void starttestingpage::startTestingBtnClicked() {
     if (!sample_id.isEmpty()) {
         status = TestStatus_testing;
         sample_detail->setEnabled(false);
+        img_pane->startTesting(true);
         cameraproxy::instance()->startTesting();
     } else {
         QMessageBox::warning(this, "Error",
@@ -154,6 +155,7 @@ void starttestingpage::endTestingBtnClicked() {
     proxymanager::instance()->getSampleProxy()->sampleTestComplished(sample_id);
     cameraproxy::instance()->endTesting();
     sample_detail->setEnabled(true);
+    img_pane->startTesting(false);
     img_pane->clearPane();
 }
 
@@ -183,8 +185,12 @@ void starttestingpage::uploadSampleImageSuccess(const QString& sample_id, const 
     img_lst_pane->pushImageName(image_name);
 }
 
-
 void starttestingpage::startReportingBtnClicked() {
+
+    if (status == TestStatus_testing) {
+        this->endTestingBtnClicked();
+    }
+
     QString sample_id = sample_detail->queryCurrentSampleId();
     if (!sample_id.isEmpty()) {
         emit startReporting(sample_id);

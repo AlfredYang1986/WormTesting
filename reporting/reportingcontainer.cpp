@@ -1,4 +1,4 @@
-#include "reportingcontainer.h"
+﻿#include "reportingcontainer.h"
 #include "commonwidget/sampledetailwidget.h"
 #include "commonwidget/commonimglstwidget.h"
 //#include "reportingimgpane.h"
@@ -59,16 +59,16 @@ void reportingcontainer::setUpSubviews() {
 
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    QPushButton* save_btn = new QPushButton("保存");
+    QPushButton* save_btn = new QPushButton(QStringLiteral("保存"));
     QObject::connect(save_btn, SIGNAL(released()), this, SLOT(saveTestResult()));
     btn_layout->addWidget(save_btn);
 
-    QPushButton* print_preview_btn = new QPushButton("打印预览");
+    QPushButton* print_preview_btn = new QPushButton(QStringLiteral("打印预览"));
     QObject::connect(print_preview_btn, SIGNAL(released()),
                      this, SLOT(printPreview()));
     btn_layout->addWidget(print_preview_btn);
 
-    QPushButton* cancel_btn = new QPushButton("取消");
+    QPushButton* cancel_btn = new QPushButton(QStringLiteral("取消"));
 //    QObject::connect(save_btn, SIGNAL(released()), this, SLOT()
     btn_layout->addWidget(cancel_btn);
 
@@ -107,7 +107,14 @@ void reportingcontainer::setUpSubviews() {
     tested_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
-        header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
+        header<< QStringLiteral("样本编号")
+              << QStringLiteral("姓名")
+              << QStringLiteral("年龄")
+              << QStringLiteral("样本来源")
+              << QStringLiteral("样本总类")
+              << QStringLiteral("送检医生")
+              << QStringLiteral("审核医生")
+              << QStringLiteral("日期");
         tested_sample->setColumnCount(header.count());
         tested_sample->setHorizontalHeaderLabels(header);
     }
@@ -237,7 +244,14 @@ void reportingcontainer::saveTestResult() {
 void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
     tested_sample->clear();
     QStringList header;
-    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
+    header<< QStringLiteral("样本编号")
+          << QStringLiteral("姓名")
+          << QStringLiteral("年龄")
+          << QStringLiteral("样本来源")
+          << QStringLiteral("样本总类")
+          << QStringLiteral("送检医生")
+          << QStringLiteral("审核医生")
+          << QStringLiteral("日期");
     tested_sample->setColumnCount(header.count());
     tested_sample->setHorizontalHeaderLabels(header);
 
@@ -345,7 +359,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QJsonObject patient = current_sample["patient"].toObject();
         QString sample_id = current_sample["sample_id"].toString();
         QString patient_name = patient["patient_name"].toString();
-        QString patient_gender = patient["patient_gender"].toInt() == 0 ? "男" : "女";
+        QString patient_gender = patient["patient_gender"].toInt() == 0 ? QStringLiteral("男") : QStringLiteral("女");
         QString patient_age = QString("%1").arg(patient["patient_age"].toInt());
         QString patient_id = patient["patient_id"].toString();
         QString sample_resource = current_sample["resource"].toString();
@@ -367,9 +381,9 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
             contents += presuffix;
             contents += "<td>" + tmp + "</td>";
             if (str_result.contains(tmp)) {
-                contents += "<td>" + QString("已检出") + "</td>";
+                contents += "<td>" + QString(QStringLiteral("已检出")) + "</td>";
             } else {
-                contents += "<td>" + QString("未检出") + "</td>";
+                contents += "<td>" + QString(QStringLiteral("未检出")) + "</td>";
             }
             contents += "<td></td>";
             contents += "<td></td>";

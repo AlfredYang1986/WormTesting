@@ -14,7 +14,7 @@ Q_SIGNALS:
     void didFinishEditPatientID(const QString&);
     void didFinishEditSampleID(const QString&);
 
-protected Q_SLOTS:
+public Q_SLOTS:
     void didFinishEditPatientID_slot();
     void didFinishEditSampleID_slot();
 

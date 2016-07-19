@@ -15,6 +15,7 @@ protected Q_SLOTS:
     void readFarme();
 
 private:
+    int current_index;
     CvCapture* p;
     QTimer* timer;
     bool canTakePic;

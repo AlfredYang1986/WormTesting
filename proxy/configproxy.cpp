@@ -147,15 +147,14 @@ void configproxy::replayFinished(QNetworkReply * result) {
          }
     } else {
         QMessageBox::warning(NULL, "Error",
-                             tr("访问数据库操作失败"),
+                             QStringLiteral("访问数据库操作失败"),
                              QMessageBox::Ok, QMessageBox::Ok);
     }
 }
 
 void configproxy::networkError(QNetworkReply::NetworkError error) {
-    qDebug() << error << endl;
     QMessageBox::warning(NULL, "Error",
-                         tr("访问数据库操作失败"),
+                         QStringLiteral("访问数据库操作失败"),
                          QMessageBox::Ok, QMessageBox::Ok);
     QObject::sender()->deleteLater();
 }

@@ -25,5 +25,8 @@
         <file>resource/start_testing_save_as.png</file>
         <file>resource/splash_screen.png</file>
         <file>resource/print</file>
+        <file>resource/setting_print_config.png</file>
+        <file>resource/setting_users_add.png</file>
+        <file>resource/setting_users_delete.png</file>
     </qresource>
 </RCC>

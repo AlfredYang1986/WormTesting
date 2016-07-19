@@ -107,12 +107,8 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data, const QStri
 
     QPixmap m;
     m.loadFromData(data);
-    if (isVer)
-        m = m.scaled(280, 200);
-    else
-        m = m.scaled(140, 100);
-
-    tmp->setPixmap(m);
+    //tmp->setPixmap(m);
+    tmp->setCurrentPixmap(m);
 
     QObject::connect(tmp, SIGNAL(imageSelected(const QPixmap*)),
                      this, SLOT(changeCurrentImage(const QPixmap*)));

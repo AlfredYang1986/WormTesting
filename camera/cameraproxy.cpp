@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <iostream>
 #include <QImage>
+#include <QTime>
+#include <QCoreApplication>
 #include "qtipl.hpp"
 using namespace cv;
 
@@ -42,20 +44,30 @@ void cameraproxy::setUpCamera(int index) {
 
     if (p) {
         this->releaseCamera();
+        disconnect(timer, SIGNAL(timeout()), this, SLOT(readFarme()));
         timer->deleteLater();
+        QTime t;
+        t.start();
+        while(t.elapsed() < 500)
+            QCoreApplication::processEvents();
     }
 
     p = cvCaptureFromCAM(index);
-    timer   = new QTimer(this);
-
-    connect(timer, SIGNAL(timeout()), this, SLOT(readFarme()));
-
     FAILURE_CHECK(p, "Init Capture Failed");
+    current_index = index;
+
+    QTime t;
+    t.start();
+    while(t.elapsed() < 500)
+        QCoreApplication::processEvents();
 
     if (!cvGrabFrame(p)) {
-      std::cerr << "Conldn't GrabFrame" << std::endl;
-      exit(EXIT_FAILURE);
+        std::cerr << "Conldn't GrabFrame" << std::endl;
+        exit(EXIT_FAILURE);
     }
+
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(readFarme()));
 }
 
 void cameraproxy::releaseCamera() {
@@ -67,11 +79,15 @@ void cameraproxy::releaseCamera() {
 
 void cameraproxy::readFarme() {
     IplImage* frame = cvQueryFrame(p);
+
     uchar *data;
 	if (frame) {
 		QImage qImage = *(IplImageToQImage(frame, &data));
 	    emit stream(qImage);
-	}
+    } else {
+        this->setUpCamera();
+        this->readFarme();
+    }
 }
 
 QImage* cameraproxy::takeImage() {
