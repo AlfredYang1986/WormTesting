@@ -58,7 +58,8 @@ SOURCES += main.cpp\
     proxy/authproxy.cpp \
     logindialog/logindialog.cpp \
     reporting/printpreviewdialog.cpp \
-    settingwiget/addusersdialog.cpp
+    settingwiget/addusersdialog.cpp \
+    deleteusersdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -104,7 +105,8 @@ HEADERS  += mainwindow/mainwindow.h\
     proxy/authproxy.h \
     logindialog/logindialog.h \
     reporting/printpreviewdialog.h \
-    settingwiget/addusersdialog.h
+    settingwiget/addusersdialog.h \
+    deleteusersdialog.h
 
 FORMS    +=
 

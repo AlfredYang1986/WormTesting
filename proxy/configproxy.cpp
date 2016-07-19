@@ -126,6 +126,67 @@ void configproxy::queryPatientType() {
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void configproxy::pushUser(const QString &name, const QString& pwd, int status) {
+    QUrl url = QString("http://localhost:9000/auth/register");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+//    json.insert("patient", pt);
+    json.insert("user_name", name);
+    json.insert("password", pwd);
+    json.insert("auth", status);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
+void configproxy::popUser(const QString &name) {
+    QUrl url = QString("http://localhost:9000/auth/pop");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+//    json.insert("patient", pt);
+    json.insert("user_name", name);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
+void configproxy::lstUsers() {
+    QUrl url = QString("http://localhost:9000/auth/doctors/lst");
+
+    QNetworkRequest request(url);
+    request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+    QJsonObject json;
+//    json.insert("patient", pt);
+
+    QJsonDocument document;
+    document.setObject(json);
+    QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+    QNetworkReply* http_replay = http_connect->post(request , arr);
+
+    QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+}
+
 void configproxy::replayFinished(QNetworkReply * result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -142,6 +203,14 @@ void configproxy::replayFinished(QNetworkReply * result) {
                 } else if (method_name =="queryPatientType") {
                     QJsonArray arr = obj["result"].toArray();
                     emit queryPatientTypeSuccess(arr);
+                } else if (method_name == "register") {
+
+                } else if (method_name == "popUser") {
+
+                } else if (method_name == "lstDoctor") {
+                    qDebug() << "lst doctor" << endl;
+                    QJsonArray arr = obj["result"].toArray();
+                    emit queryLstDoctorsSuccess(arr);
                 }
             }
          }
@@ -152,7 +221,7 @@ void configproxy::replayFinished(QNetworkReply * result) {
     }
 }
 
-void configproxy::networkError(QNetworkReply::NetworkError error) {
+void configproxy::networkError(QNetworkReply::NetworkError) {
     QMessageBox::warning(NULL, "Error",
                          QStringLiteral("访问数据库操作失败"),
                          QMessageBox::Ok, QMessageBox::Ok);

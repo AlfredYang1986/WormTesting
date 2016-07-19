@@ -8,6 +8,8 @@
 #include "deletepatienttypedialog.h"
 #include "updatewormdesdialog.h"
 #include "uploadwormimgdialog.h"
+#include "addusersdialog.h"
+#include "deleteusersdialog.h"
 #include <QBitmap>
 
 settingmainwidget::settingmainwidget() {
@@ -157,7 +159,7 @@ void settingmainwidget::setUpSubviews() {
         m.load(":resource/setting_users_add.png");
         btn->setIcon(m);
         btn->setIconSize(QSize(120, 120));
-        QObject::connect(btn, SIGNAL(released()), this, SLOT(showUpdateWormDescriptionDialog()));
+        QObject::connect(btn, SIGNAL(released()), this, SLOT(showUserAddDialog()));
         users->addWidget(btn);
     }
 
@@ -171,7 +173,7 @@ void settingmainwidget::setUpSubviews() {
         m.load(":resource/setting_users_delete.png");
         btn->setIcon(m);
         btn->setIconSize(QSize(120, 120));
-        QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddWormImgDialog()));
+        QObject::connect(btn, SIGNAL(released()), this, SLOT(showUserDeleteDialog()));
         users->addWidget(btn);
     }
 
@@ -242,11 +244,13 @@ void settingmainwidget::showDeleteWormImgDialog() {
 }
 
 void settingmainwidget::showUserAddDialog() {
-
+    addusersdialog* dlg = new addusersdialog;
+    dlg->exec();
 }
 
 void settingmainwidget::showUserDeleteDialog() {
-
+    deleteusersdialog* dlg = new deleteusersdialog;
+    dlg->exec();
 }
 
 void settingmainwidget::showPrintConfig() {

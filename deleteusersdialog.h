@@ -1,12 +1,11 @@
-#ifndef ADDUSERSDIALOG_H
-#define ADDUSERSDIALOG_H
+#ifndef DELETEUSERSDIALOG_H
+#define DELETEUSERSDIALOG_H
 
 #include <QDialog>
-#include <QJsonArray>
-class QLineEdit;
 class QVBoxLayout;
+class QComboBox;
 
-class addusersdialog : public QDialog {
+class deleteusersdialog :  public QDialog {
     Q_OBJECT
 
 Q_SIGNALS:
@@ -16,9 +15,10 @@ protected Q_SLOTS:
     void cancelBtnClicked();
 
     void queryLstDoctorsSuccess(const QJsonArray&);
+
 public:
-    addusersdialog();
-    ~addusersdialog();
+    deleteusersdialog();
+    ~deleteusersdialog();
 
 protected:
     virtual QSize sizeHint() const;
@@ -26,11 +26,7 @@ protected:
 
 private:
     QVBoxLayout* main_layout;
-
-    QLineEdit* user_name_edit;
-    QLineEdit* pwd_edit;
-
-    QVector<QString> users_lst;
+    QComboBox* box;
 };
 
-#endif // ADDUSERSDIALOG_H
+#endif // DELETEUSERSDIALOG_H
