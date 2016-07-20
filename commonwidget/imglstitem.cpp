@@ -96,3 +96,7 @@ void imglstitem::setCurrentPixmap(const QPixmap & m) {
         tmp = m.scaled(140, 100);
     this->setPixmap(tmp);
 }
+
+QPixmap imglstitem::getCurrentPixmap() const {
+    return current_pixmap;
+}

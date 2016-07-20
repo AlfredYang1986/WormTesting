@@ -160,7 +160,6 @@ void starttestingpage::endTestingBtnClicked() {
 }
 
 void starttestingpage::takeImageSuccess(const QImage& image) {
-    qDebug() << 345 << endl;
     QString sample_id = sample_detail->queryCurrentSampleId();
     if (sample_id.isEmpty()) {
         QMessageBox::warning(this, "Error",

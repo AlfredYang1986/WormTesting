@@ -76,8 +76,7 @@ void imgcomparepane::takeImage() {
     QImage* pImg = cameraproxy::instance()->takeImage();
     if (pImg) {
         emit takeImageSuccess(*pImg);
-        qDebug() << 123 << endl;
-        delete pImg;
+        delete(pImg);
     }
 }
 
@@ -85,7 +84,7 @@ void imgcomparepane::clearPane() {
     photo_preview->clear();
 }
 
-void imgcomparepane::changeCurrentCamera(int index) {
+void imgcomparepane::changeCurrentCamera(int) {
 //    cameraproxy::instance()->setUpCamera(index);
 }
 

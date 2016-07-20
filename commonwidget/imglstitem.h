@@ -42,6 +42,7 @@ public:
     bool isShowOptBtns() const;
 
     void setCurrentPixmap(const QPixmap&);
+    QPixmap getCurrentPixmap() const;
 };
 
 #endif // IMGLSTITEM_H
