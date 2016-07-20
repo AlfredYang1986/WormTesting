@@ -1,4 +1,4 @@
-#include "addusersdialog.h"
+﻿#include "addusersdialog.h"
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
@@ -28,21 +28,21 @@ void addusersdialog::setUpSubviews() {
     pwd_edit->setEchoMode(QLineEdit::Password);
 
     QFormLayout* form = new QFormLayout;
-    form->addRow("用户名:", user_name_edit);
-    form->addRow("密  码:", pwd_edit);
+    form->addRow(QStringLiteral("用户名:"), user_name_edit);
+    form->addRow(QStringLiteral("密  码:"), pwd_edit);
 
     main_layout->addLayout(form);
 
     QHBoxLayout* btn_layout = new QHBoxLayout;
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    QPushButton* save_btn = new QPushButton("保存");
+    QPushButton* save_btn = new QPushButton(QStringLiteral("保存"));
     QObject::connect(save_btn, SIGNAL(released()), this, SLOT(saveBtnClicked()));
     btn_layout->addWidget(save_btn);
 
     btn_layout->addSpacerItem(new QSpacerItem(30, 0, QSizePolicy::Fixed , QSizePolicy::Minimum));
 
-    QPushButton* cancel_btn = new QPushButton("取消");
+    QPushButton* cancel_btn = new QPushButton(QStringLiteral("取消"));
     QObject::connect(cancel_btn, SIGNAL(released()), this, SLOT(cancelBtnClicked()));
     btn_layout->addWidget(cancel_btn);
 

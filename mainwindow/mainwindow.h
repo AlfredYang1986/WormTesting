@@ -43,6 +43,8 @@ protected:
 
     bool isReadyToChangeMainWidget();
 
+    virtual void closeEvent(QCloseEvent*);
+
 public:
     void showLoginDialog();
 

@@ -130,7 +130,7 @@ void sampledetailwidget::sampleBtnClick() {
 
     if (sample_id.isEmpty() || sample_resource.isEmpty() || sample_patient_id.isEmpty()) {
         QMessageBox::information(this, "Error",
-                tr("填写所有选项"),
+                QStringLiteral("填写所有选项"),
                 QMessageBox::Ok|QMessageBox::Cancel,QMessageBox::Ok);
     } else {
         QJsonObject json;

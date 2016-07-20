@@ -12,6 +12,7 @@
 #include "logindialog/logindialog.h"
 #include "proxy/proxymanager.h"
 #include "proxy/authproxy.h"
+#include "camera/cameraproxy.h"
 #include <QDesktopWidget>
 #include <QApplication>
 
@@ -306,8 +307,8 @@ void MainWindow::startCompare(const QString& sample_id) {
 bool MainWindow::isReadyToChangeMainWidget() {
     starttestingpage* tmp = (starttestingpage*)contents[QStringLiteral("开始检测")];
     if (tmp && tmp->currentStatus() == starttestingpage::TestStatus_testing) {
-        QMessageBox::information(this, "error",
-                                 tr("请先完成测试在切换界面"),
+        QMessageBox::information(this, "Error",
+                                 QStringLiteral("请先完成测试在切换界面"),
                                  QMessageBox::Ok, QMessageBox::Ok);
         return false;
     } else {
@@ -323,4 +324,8 @@ void MainWindow::loginSuccesSlot() {
 void MainWindow::showLoginDialog() {
     this->hide();
     dlg->show();
+}
+
+void MainWindow::closeEvent(QCloseEvent *) {
+    cameraproxy::instance()->endTesting();
 }

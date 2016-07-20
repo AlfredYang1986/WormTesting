@@ -74,8 +74,11 @@ void imgcomparepane::imageStream(const QImage& image) {
 
 void imgcomparepane::takeImage() {
     QImage* pImg = cameraproxy::instance()->takeImage();
-    if (pImg)
+    if (pImg) {
         emit takeImageSuccess(*pImg);
+        qDebug() << 123 << endl;
+        delete pImg;
+    }
 }
 
 void imgcomparepane::clearPane() {

@@ -53,7 +53,7 @@ void addsampleresourcedialog::setUpSubviews() {
 
 void addsampleresourcedialog::savaBtnClicked() {
     QString resource = resource_edit->text();
-    if (!resource.isEmpty() && vec_resource_type.contains(resource)) {
+    if (!resource.isEmpty() && !vec_resource_type.contains(resource)) {
         proxymanager::instance()->getConfigProxy()->addSampleResourceType(resource);
         this->close();
     } else {

@@ -81,9 +81,11 @@ void cameraproxy::readFarme() {
     IplImage* frame = cvQueryFrame(p);
 
     uchar *data;
-	if (frame) {
-		QImage qImage = *(IplImageToQImage(frame, &data));
-	    emit stream(qImage);
+    if (frame) {
+        QImage *qImage = IplImageToQImage(frame, &data);
+        emit stream(*qImage);
+        delete qImage;
+        free(data);
     } else {
         this->setUpCamera();
         this->readFarme();
@@ -94,7 +96,9 @@ QImage* cameraproxy::takeImage() {
     if (canTakePic) {
         IplImage* frame = cvQueryFrame(p);
         uchar *data;
-        return IplImageToQImage(frame, &data);
+        QImage* reVal = IplImageToQImage(frame, &data);
+        free(data);
+        return reVal;
     } else {
         return NULL;
     }

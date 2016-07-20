@@ -59,7 +59,7 @@ SOURCES += main.cpp\
     logindialog/logindialog.cpp \
     reporting/printpreviewdialog.cpp \
     settingwiget/addusersdialog.cpp \
-    deleteusersdialog.cpp
+    settingwiget/deleteusersdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -106,7 +106,7 @@ HEADERS  += mainwindow/mainwindow.h\
     logindialog/logindialog.h \
     reporting/printpreviewdialog.h \
     settingwiget/addusersdialog.h \
-    deleteusersdialog.h
+    settingwiget/deleteusersdialog.h
 
 FORMS    +=
 
