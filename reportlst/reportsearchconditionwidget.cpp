@@ -8,6 +8,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/wormproxy.h"
 #include "proxy/sampleproxy.h"
+#include <QDateEdit>
 
 reportsearchconditionwidget::reportsearchconditionwidget() {
     this->setUpSubviews();
@@ -25,11 +26,13 @@ void reportsearchconditionwidget::setUpSubviews() {
 
     gb = new QGroupBox(QStringLiteral("检索条件"));
 
-    time_box = new QComboBox;
-    time_box->addItem("--------------");
-    time_box->addItem(QStringLiteral("当天"));
-    time_box->addItem(QStringLiteral("当周"));
-    time_box->addItem(QStringLiteral("当月"));
+   time_box = new QDateEdit;
+   time_box->setDisplayFormat("MM-dd-yyyy");
+   time_box->setDate(QDate::currentDate());
+//    time_box->addItem("--------------");
+//    time_box->addItem(QStringLiteral("当天"));
+//    time_box->addItem(QStringLiteral("当周"));
+//    time_box->addItem(QStringLiteral("当月"));
 
     testing_doctor_box = new QComboBox;
     testing_doctor_box->addItem("--------------");
@@ -124,8 +127,14 @@ void reportsearchconditionwidget::searchBtnClicked() {
 }
 
 void reportsearchconditionwidget::pushConditions(QJsonObject & conditions) {
-    if (time_box->currentIndex() > 0) {
+    if (!time_box->text().isEmpty()) {
 //        conditions
+        QString date = time_box->text();
+        QString format = "MM-dd-yyyy";
+        QDateTime t = QDateTime::fromString(date, format);
+        qlonglong l = t.toMSecsSinceEpoch();
+//        conditions.insert("date", (qlonglong)(l / 24 * 60 * 60 * 1000));
+        conditions.insert("time", l + 1);
     }
 
     if (doctor_box->currentIndex() > 0) {

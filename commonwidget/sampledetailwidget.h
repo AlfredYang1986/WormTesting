@@ -5,6 +5,8 @@
 
 class QLineEdit;
 class QComboBox;
+class QDateEdit;
+class QDateTimeEdit;
 class QFormLayout;
 
 class sampledetailwidget : public QFrame {
@@ -51,11 +53,18 @@ private:
     QLineEdit* sample_pre_test_doctor_edit;
     QLineEdit* sample_testing_doctor_edit;
     QLineEdit* sample_post_test_doctor_edit;
-    QLineEdit* sample_start_date_edit;
-    QLineEdit* sample_end_date_edit;
-    QLineEdit* sample_pre_test_date_edit;
-    QLineEdit* sample_testing_date_edit;
-    QLineEdit* sample_reporting_date_edit;
+
+//    QLineEdit* sample_start_date_edit;
+//    QLineEdit* sample_end_date_edit;
+//    QLineEdit* sample_pre_test_date_edit;
+//    QLineEdit* sample_testing_date_edit;
+//    QLineEdit* sample_reporting_date_edit;
+
+    QDateTimeEdit* sample_start_date_edit;
+    QDateTimeEdit* sample_end_date_edit;
+    QDateTimeEdit* sample_pre_test_date_edit;
+    QDateTimeEdit* sample_testing_date_edit;
+    QDateTimeEdit* sample_reporting_date_edit;
 
     QLineEdit* patient_id_edit;
     QLineEdit* patient_name_edit;

@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(loginSuccess()),
                      this, SLOT(loginSuccesSlot()));
     dlg = new logindialog;
+    this->setWindowIcon(QIcon(":resource/logo.ico"));
 }
 
 MainWindow::~MainWindow() {
@@ -37,7 +38,7 @@ MainWindow::~MainWindow() {
 void MainWindow::setUpSubviews() {
     if (this->objectName().isEmpty())
         this->setObjectName(QStringLiteral("MainWindow"));
-    this->setWindowTitle(QStringLiteral("虫卵检测系统V1.0"));
+    this->setWindowTitle(QStringLiteral("派拉微液基检测系统"));
     this->setWindowState(Qt::WindowMaximized);
 
 //    QDesktopWidget* desktopWidget = QApplication::desktop();
@@ -72,11 +73,11 @@ void MainWindow::changeMainContent(const QString &title) {
             this->createTestingWidget();
         } else if (title == QStringLiteral("填写报告")) {
             this->createReportWidget();
-        } else if (title == QStringLiteral("报告列表")) {
+        } else if (title == QStringLiteral("结果查询")) {
             this->createReportLstWidget();
         } else if (title == QStringLiteral("录入样本")) {
             this->createPushWidget();
-        } else if (title == QStringLiteral("样本资料")) {
+        } else if (title == QStringLiteral("形态学图谱")) {
             this->createResourceWidget();
         } else if (title == QStringLiteral("系统设置")) {
             this->createSettingWidget();
@@ -176,13 +177,13 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents[QStringLiteral("报告列表")];
+     QFrame* tmp = contents[QStringLiteral("结果查询")];
      if (tmp == NULL) {
          reportlstcontainer* content_widget = new reportlstcontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-         contents[QStringLiteral("报告列表")] = content_widget;
+         contents[QStringLiteral("结果查询")] = content_widget;
 
          QObject::connect(content_widget, SIGNAL(startReporting(QString)),
                           this, SLOT(startReport(const QString&)));
@@ -202,13 +203,13 @@ void MainWindow::changeMainContent(const QString &title) {
             tmp->hide();
      }
 
-     QFrame* tmp = contents[QStringLiteral("样本资料")];
+     QFrame* tmp = contents[QStringLiteral("形态学图谱")];
      if (tmp == NULL) {
          QFrame* content_widget = new sampleresourcecontainer;
          content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
          main_container->addWidget(content_widget);
-         contents[QStringLiteral("样本资料")] = content_widget;
+         contents[QStringLiteral("形态学图谱")] = content_widget;
          tmp = content_widget;
      }
 

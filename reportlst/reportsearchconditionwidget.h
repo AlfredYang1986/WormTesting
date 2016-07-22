@@ -9,6 +9,7 @@ class QFormLayout;
 class QGroupBox;
 class QComboBox;
 class QLineEdit;
+class QDateEdit;
 
 class reportsearchconditionwidget : public QFrame {
     Q_OBJECT
@@ -29,7 +30,9 @@ private:
     QVBoxLayout* main_layout;
     QGroupBox* gb;
 
-    QComboBox* time_box;
+//    QComboBox* time_box;
+    QDateEdit* time_box;
+
     QComboBox* testing_doctor_box;
     QComboBox* doctor_box;
     QComboBox* worm_box;

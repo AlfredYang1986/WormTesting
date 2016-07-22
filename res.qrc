@@ -28,5 +28,6 @@
         <file>resource/setting_print_config.png</file>
         <file>resource/setting_users_add.png</file>
         <file>resource/setting_users_delete.png</file>
+        <file>resource/logo.png</file>
     </qresource>
 </RCC>

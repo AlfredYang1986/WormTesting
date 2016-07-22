@@ -330,7 +330,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
             qlonglong timespan = tmp["date"].toVariant().toLongLong();
             QDateTime t;
             t.setMSecsSinceEpoch(timespan);
-            QString format = "yyyy-MM-dd HH:mm:ss";
+            QString format = "MM-dd-yyyy HH:mm:ss";
             QTableWidgetItem* item2 = new QTableWidgetItem(t.toString(format));
             if (tmp["status"].toInt() == 1)
                 item2->setForeground(QBrush(QColor(255, 0, 0)));
@@ -393,7 +393,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         qlonglong testing_time_span = current_sample["testing_date"].toVariant().toLongLong();
         QDateTime testing_time;
         testing_time.setMSecsSinceEpoch(testing_time_span);
-        QString format = "yyyy-MM-dd HH:mm:ss";
+        QString format = "MM-dd-yyyy HH:mm:ss";
         QString str_testing_time = testing_time.toString(format);
 
         QDateTime reporting_time = QDateTime::currentDateTime();

@@ -18,7 +18,7 @@ void searchresulttablewidget::setUpSubviews() {
           << QStringLiteral("姓名")
           << QStringLiteral("年龄")
           << QStringLiteral("样本来源")
-          << QStringLiteral("样本总类")
+//          << QStringLiteral("样本总类")
           << QStringLiteral("送检医生")
           << QStringLiteral("审核医生")
           << QStringLiteral("日期");
@@ -53,8 +53,9 @@ void searchresulttablewidget::changeSearchResult(const QJsonArray & result) {
 
         qlonglong timespan = tmp["date"].toVariant().toLongLong();
         QDateTime t;
-        t.setMSecsSinceEpoch(timespan);
-        this->setItem(index, 6, new QTableWidgetItem(t.toString()));
+        t.setMSecsSinceEpoch(timespan * 24 * 60 * 60 * 1000);
+        QString format = "MM-dd-yyyy";
+        this->setItem(index, 6, new QTableWidgetItem(t.toString(format)));
         ++index;
     }
 }
@@ -66,7 +67,7 @@ void searchresulttablewidget::clearSearchResult() {
           << QStringLiteral("姓名")
           << QStringLiteral("年龄")
           << QStringLiteral("样本来源")
-          << QStringLiteral("样本总类")
+//          << QStringLiteral("样本总类")
           << QStringLiteral("送检医生")
           << QStringLiteral("审核医生")
           << QStringLiteral("日期");

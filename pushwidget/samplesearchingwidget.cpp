@@ -87,10 +87,11 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
         not_test_sample->setItem(index, 5, new QTableWidgetItem(tmp["testing_doctor"].toString()));
         not_test_sample->setItem(index, 6, new QTableWidgetItem(tmp["testing_doctor"].toString()));
 
-        qlonglong timespan = tmp["date"].toVariant().toLongLong();
+        qlonglong timespan = tmp["date"].toVariant().toLongLong() * 1000 * 24 * 60 * 60;
         QDateTime t;
         t.setMSecsSinceEpoch(timespan);
-        not_test_sample->setItem(index, 7, new QTableWidgetItem(t.toString()));
+        QString format = "MM-dd-yyyy";
+        not_test_sample->setItem(index, 7, new QTableWidgetItem(t.toString(format)));
         ++index;
     }
     vec_sample_not_test = samples;
@@ -175,10 +176,11 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
         }
 
         {
-            qlonglong timespan = tmp["date"].toVariant().toLongLong();
+            qlonglong timespan = tmp["date"].toVariant().toLongLong() * 1000 * 24 * 60 * 60;
             QDateTime t;
             t.setMSecsSinceEpoch(timespan);
-            QTableWidgetItem* item2 = new QTableWidgetItem(t.toString());
+            QString format = "MM-dd-yyyy";
+            QTableWidgetItem* item2 = new QTableWidgetItem(t.toString(format));
             if (tmp["status"].toInt() == 1)
                 item2->setForeground(QBrush(QColor(255, 0, 0)));
             else

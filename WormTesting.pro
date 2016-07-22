@@ -11,7 +11,7 @@ QT	 += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 qtHaveModule(printsupport): QT += printsupport
 
-TARGET = WormTesting
+TARGET = 派拉微液基检测系统
 TEMPLATE = app
 
 
@@ -112,6 +112,9 @@ FORMS    +=
 
 RESOURCES += \
     res.qrc
+
+RC_ICONS = logo.ico
+ICON = icon.icns
 
 win32 {
 INCLUDEPATH += C:\opencv\build\include
