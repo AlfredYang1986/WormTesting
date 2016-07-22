@@ -168,7 +168,6 @@ void starttestingpage::takeImageSuccess(const QImage& image) {
 
         return;
     }
-
     proxymanager::instance()->getSampleProxy()->pushSampleImage(sample_id, image);
 }
 

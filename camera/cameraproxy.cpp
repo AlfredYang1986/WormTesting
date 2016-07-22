@@ -97,7 +97,7 @@ QImage* cameraproxy::takeImage() {
         IplImage* frame = cvQueryFrame(p);
         uchar *data;
         QImage* reVal = IplImageToQImage(frame, &data);
-        free(data);
+        //free(data);
         return reVal;
     } else {
         return NULL;

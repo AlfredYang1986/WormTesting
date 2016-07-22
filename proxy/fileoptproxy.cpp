@@ -13,10 +13,10 @@ void fileoptproxy::uploadSampleImage(const QString &sample_id, const QImage &ima
     QByteArray bytes;
     QBuffer buffer(&bytes);
     buffer.open(QIODevice::WriteOnly);
-    image.save(&buffer, "PNG"); // writes image into ba in PNG format
+    image.save(&buffer, "PNG");
 
     //分界线的标识符
-    QString TWITTERFON_FORM_BOUNDARY = QStringLiteral("AaB03x");
+    QString TWITTERFON_FORM_BOUNDARY = "AaB03x";
     //根据url初始化request
     QUrl url = QString("http://localhost:9000/file/upload");
     QNetworkRequest request(url);
@@ -24,7 +24,7 @@ void fileoptproxy::uploadSampleImage(const QString &sample_id, const QImage &ima
     //分界线 --AaB03x
     //结束符 AaB03x--
     //声明结束符：--AaB03x--
-    QString end = QStringLiteral("\r\n--%1--").arg(TWITTERFON_FORM_BOUNDARY);
+    QString end = QString("\r\n--%1--").arg(TWITTERFON_FORM_BOUNDARY);
     //要上传的图片
     //得到图片的data
     //http body的字符串
