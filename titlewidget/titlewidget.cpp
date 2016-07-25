@@ -65,7 +65,7 @@ titlewidget::~titlewidget() {
 }
 
 QSize titlewidget::sizeHint() const {
-    return QSize(100, 100);
+    return QSize(150, 100);
 }
 
 void titlewidget::setUpSubViews() {

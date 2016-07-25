@@ -9,6 +9,7 @@
 #include <QPrinter>
 #include <QPrintDialog>
 #include <QFileDialog>
+#include <QMessageBox>
 
 printpreviewdialog::printpreviewdialog(QWidget* p)
     : QDialog(p) {

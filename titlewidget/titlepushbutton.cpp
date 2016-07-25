@@ -97,7 +97,7 @@ void titlepushbutton::setUpSubviews() {
 }
 
 QSize titlepushbutton::sizeHint() const {
-    return QSize(80, 80);
+    return QSize(100, 80);
 }
 
 void titlepushbutton::btnClicked() {
