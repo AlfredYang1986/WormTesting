@@ -11,7 +11,7 @@ QT	 += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 qtHaveModule(printsupport): QT += printsupport
 
-TARGET = 派拉微液基检测系统
+TARGET = WormTesting
 TEMPLATE = app
 
 

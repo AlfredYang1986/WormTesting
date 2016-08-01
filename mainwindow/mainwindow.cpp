@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(loginSuccess()),
                      this, SLOT(loginSuccesSlot()));
     dlg = new logindialog;
-    this->setWindowIcon(QIcon(":resource/logo.ico"));
+    this->setWindowIcon(QIcon(":resource/logo.png"));
 }
 
 MainWindow::~MainWindow() {
