@@ -88,7 +88,6 @@ void fileoptproxy::replayFinished(QNetworkReply* result) {
          } else {
             QString succ = download_lst.first();
             download_lst.pop_front();
-            qDebug() << succ << endl;
             if (!download_lst.isEmpty())
                 this->downloadFileImpl(download_lst.first());
             else
