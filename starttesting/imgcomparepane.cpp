@@ -91,3 +91,7 @@ void imgcomparepane::changeCurrentCamera(int) {
 void imgcomparepane::startTesting(bool bTesting) {
     box->setEnabled(!bTesting);
 }
+
+int imgcomparepane::currentCameraIndex() const {
+    return box->currentIndex();
+}

@@ -28,6 +28,7 @@ public:
     int getCurrentCameraIndex() const;
     void startTesting(bool bTesting);
 
+    int currentCameraIndex() const;
 protected:
     void setUpSubviews();
 

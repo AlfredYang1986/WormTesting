@@ -104,10 +104,10 @@ QImage* cameraproxy::takeImage() {
     }
 }
 
-void cameraproxy::startTesting() {
+void cameraproxy::startTesting(int index) {
 
     if (!p)
-        this->setUpCamera();
+        this->setUpCamera(index);
 
     timer->start(33);
     canTakePic = true;

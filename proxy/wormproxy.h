@@ -16,6 +16,7 @@ Q_SIGNALS:
 
     void pushWormCatSuccess();
     void pushWormSuccess();
+    void pushWormSuccess(const QString&, const QString&);
     void popWormCatSuccess();
     void popWormSuccess();
     void onlyWormCatSuccess(const QJsonArray&);

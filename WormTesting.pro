@@ -59,7 +59,9 @@ SOURCES += main.cpp\
     logindialog/logindialog.cpp \
     reporting/printpreviewdialog.cpp \
     settingwiget/addusersdialog.cpp \
-    settingwiget/deleteusersdialog.cpp
+    settingwiget/deleteusersdialog.cpp \
+    sampleresource/resourceproxy/resourceproxy.cpp \
+    sampleresource/resourceproxy/resourceimportdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -106,7 +108,9 @@ HEADERS  += mainwindow/mainwindow.h\
     logindialog/logindialog.h \
     reporting/printpreviewdialog.h \
     settingwiget/addusersdialog.h \
-    settingwiget/deleteusersdialog.h
+    settingwiget/deleteusersdialog.h \
+    sampleresource/resourceproxy/resourceproxy.h \
+    sampleresource/resourceproxy/resourceimportdialog.h
 
 FORMS    +=
 

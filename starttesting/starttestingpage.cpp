@@ -141,7 +141,7 @@ void starttestingpage::startTestingBtnClicked() {
         status = TestStatus_testing;
         sample_detail->setEnabled(false);
         img_pane->startTesting(true);
-        cameraproxy::instance()->startTesting();
+        cameraproxy::instance()->startTesting(img_pane->currentCameraIndex());
     } else {
         QMessageBox::warning(this, "Error",
                              QStringLiteral("请先选定测试样本"),

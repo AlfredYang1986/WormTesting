@@ -28,7 +28,7 @@ public:
     ~cameraproxy();
 
     void setUpCamera(int index = 0);
-    void startTesting();
+    void startTesting(int index = 0);
     void endTesting();
     void releaseCamera();
 

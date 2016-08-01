@@ -270,7 +270,9 @@ void wormproxy::replayFinished(QNetworkReply* result) {
                 } else if (method_name == "popWormCategory") {
                     emit popWormCatSuccess();
                 } else if (method_name == "pushWorm") {
+                    QJsonObject tmp = obj["result"].toObject();
                     emit pushWormSuccess();
+                    emit pushWormSuccess(tmp["cat"].toString(), tmp["name"].toString());
                 } else if (method_name == "popWorm") {
                     emit popWormSuccess();
                 } else if (method_name == "onlyCategories") {

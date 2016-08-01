@@ -21,6 +21,8 @@ protected Q_SLOTS:
     void showUserAddDialog();
     void showUserDeleteDialog();
     void showPrintConfig();
+
+    void startFetchResource();
 private:
     QVBoxLayout* main_layout;
 

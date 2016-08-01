@@ -11,6 +11,9 @@
 #include "addusersdialog.h"
 #include "deleteusersdialog.h"
 #include <QBitmap>
+#include "sampleresource/resourceproxy/resourceproxy.h"
+#include "sampleresource/resourceproxy/resourceimportdialog.h"
+#include <QMessageBox>
 
 settingmainwidget::settingmainwidget() {
     this->setUpSubviews();
@@ -190,6 +193,21 @@ void settingmainwidget::setUpSubviews() {
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
         users->addWidget(btn);
     }
+
+    {
+        QPushButton* btn = new QPushButton;
+        btn->setFixedSize(120, 120);
+        btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        btn->clearMask();
+        btn->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/setting_print_config.png");
+        btn->setIcon(m);
+        btn->setIconSize(QSize(120, 120));
+        QObject::connect(btn, SIGNAL(released()), this, SLOT(startFetchResource()));
+        users->addWidget(btn);
+    }
+
     users->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
     main_layout->addLayout(users);
 
@@ -254,5 +272,12 @@ void settingmainwidget::showUserDeleteDialog() {
 }
 
 void settingmainwidget::showPrintConfig() {
+
+}
+
+void settingmainwidget::startFetchResource() {
+    resourceimportdialog* dlg = new resourceimportdialog;
+    dlg->exec();
+
 
 }
