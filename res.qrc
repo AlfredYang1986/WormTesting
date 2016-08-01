@@ -29,5 +29,6 @@
         <file>resource/setting_users_add.png</file>
         <file>resource/setting_users_delete.png</file>
         <file>resource/logo.png</file>
+        <file>resource/sample_resource.png</file>
     </qresource>
 </RCC>

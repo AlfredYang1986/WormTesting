@@ -201,7 +201,7 @@ void settingmainwidget::setUpSubviews() {
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
-        m.load(":resource/setting_print_config.png");
+        m.load(":resource/sample_resource.png");
         btn->setIcon(m);
         btn->setIconSize(QSize(120, 120));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(startFetchResource()));
@@ -278,6 +278,4 @@ void settingmainwidget::showPrintConfig() {
 void settingmainwidget::startFetchResource() {
     resourceimportdialog* dlg = new resourceimportdialog;
     dlg->exec();
-
-
 }

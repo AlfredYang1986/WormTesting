@@ -102,11 +102,14 @@ void resourceproxy::fetchResourcesAccImg(const QString& cat, const QString& name
 }
 
 void resourceproxy::fetchResources() {
-    dir_name = QFileDialog::getExistingDirectory(NULL);
-    if (dir_name.trimmed() == "") {
-        return;
-    }
-    qDebug() << dir_name << endl;
+//    dir_name = QFileDialog::getExistingDirectory(NULL);
+//    if (dir_name.trimmed() == "") {
+//        return;
+//    }
+//    qDebug() << dir_name << endl;
+
+    dir_name = QApplication::applicationDirPath() + "/sample_resource";
+
     QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
                      this, SLOT(uploadSampleImageSuccess(QString,QString)));
 
