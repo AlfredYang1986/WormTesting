@@ -214,9 +214,6 @@ void resourceproxy::pushSourceImageSuccess(const QString &) {
                      this, SLOT(uploadSampleImageSuccess(QString,QString)));
     }
 
-    qDebug() << index << endl;
-    qDebug() << count << endl;
-
     emit resrouceImportProgress(index * 100.0 / count);
 }
 

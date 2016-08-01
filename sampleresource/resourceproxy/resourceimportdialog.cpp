@@ -34,7 +34,7 @@ void resourceimportdialog::setUpSubviews() {
 
     QHBoxLayout* btn_layout = new QHBoxLayout;
 
-    QPushButton* start_btn = new QPushButton(QStringLiteral("开始"));
+    start_btn = new QPushButton(QStringLiteral("开始"));
     QObject::connect(start_btn, SIGNAL(released()),
                      this, SLOT(startBtnPushed()));
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
@@ -63,6 +63,7 @@ void resourceimportdialog::startBtnPushed() {
                                                  QStringLiteral("导入数据会覆盖以前数据，确定吗?"),
                                                  QMessageBox::Yes | QMessageBox::No,
                                                  QMessageBox::Yes)) {
+        start_btn->setEnabled(false);
         resourceproxy::instance()->startResourceImport();
     }
 }
@@ -74,4 +75,12 @@ void resourceimportdialog::cancelBtnPushed() {
 void resourceimportdialog::resrouceImportProgress(double pro) {
     qDebug() << pro << endl;
     bar->setValue(pro);
+
+    if (pro == 100) {
+        QMessageBox::information(this, "Success",
+                                 QStringLiteral("成功导入所有"),
+                                 QMessageBox::Ok, QMessageBox::Ok);
+
+        start_btn->setEnabled(true);
+    }
 }

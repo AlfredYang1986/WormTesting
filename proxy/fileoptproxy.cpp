@@ -94,7 +94,8 @@ void fileoptproxy::replayFinished(QNetworkReply* result) {
             else
                 isDownLoading = false;
 
-            emit downloadFileSuccess(data, succ);
+            if (!data.isEmpty())
+                emit downloadFileSuccess(data, succ);
         }
     }
 }

@@ -5,6 +5,7 @@
 
 class QProgressBar;
 class QVBoxLayout;
+class QPushButton;
 
 class resourceimportdialog : public QDialog {
     Q_OBJECT
@@ -26,6 +27,7 @@ protected:
 private:
     QVBoxLayout* main_layout;
     QProgressBar* bar;
+    QPushButton* start_btn;
 };
 
 #endif // RESOURCEIMPORTDIALOG_H
