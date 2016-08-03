@@ -146,8 +146,10 @@ void commonimglstwidget::moveToNextImage() {
             current_download_name = "";
             //QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
             //         this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
-            const QPixmap* m = img_lst.first()->pixmap();
-            emit changeCurrentImageSignal(*m);
+            if (!img_lst.isEmpty()) {
+                const QPixmap* m = img_lst.first()->pixmap();
+                emit changeCurrentImageSignal(*m);
+            }
 
         } else {
             current_download_name = *iter;

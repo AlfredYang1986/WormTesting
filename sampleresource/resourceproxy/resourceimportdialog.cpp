@@ -1,4 +1,4 @@
-#include "resourceimportdialog.h"
+﻿#include "resourceimportdialog.h"
 #include <QProgressBar>
 #include <QVBoxLayout>
 #include <QHBoxLayout>

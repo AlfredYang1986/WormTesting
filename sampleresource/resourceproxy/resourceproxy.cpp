@@ -1,4 +1,4 @@
-#include "resourceproxy.h"
+﻿#include "resourceproxy.h"
 #include <QApplication>
 #include <QDir>
 #include <QFileDialog>

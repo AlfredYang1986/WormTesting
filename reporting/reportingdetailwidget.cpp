@@ -142,9 +142,12 @@ void reportingdetailwidget::setSampleDefaultResult(const QJsonObject &sample) {
         QString cur = (*iter).toString();
         QVector<reportingdetailitem*>::iterator iter =
                 std::find_if(items.begin(), items.end(), pred_find_label_with_name(cur));
-        reportingdetailitem* item = (*iter);
-        if (item)
-            item->setCurrentSelected(true);
+
+        if (iter != items.end()) {
+            reportingdetailitem* item = (*iter);
+            if (item)
+                item->setCurrentSelected(true);
+        }
     }
 }
 
