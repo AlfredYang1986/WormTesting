@@ -36,15 +36,15 @@ void aboutmainwidget::setupSubviews() {
     QHBoxLayout* btn_layout = new QHBoxLayout;
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    QPushButton* des_btn = new QPushButton(QStringLiteral("测试描述"));
+    QPushButton* des_btn = new QPushButton(("测试描述"));
     QObject::connect(des_btn, SIGNAL(released()), this, SLOT(des_btn_clicked()));
     btn_layout->addWidget(des_btn);
 
-    QPushButton* aboutus_btn = new QPushButton(QStringLiteral("关于我们"));
+    QPushButton* aboutus_btn = new QPushButton(("关于我们"));
     QObject::connect(aboutus_btn, SIGNAL(released()), this, SLOT(aboutus_btn_clicked()));
     btn_layout->addWidget(aboutus_btn);
 
-    QPushButton* declear_btn = new QPushButton(QStringLiteral("免责声明"));
+    QPushButton* declear_btn = new QPushButton(("免责声明"));
     QObject::connect(declear_btn, SIGNAL(released()), this, SLOT(declearaton_btn_clicked()));
     btn_layout->addWidget(declear_btn);
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));

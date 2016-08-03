@@ -31,10 +31,16 @@ void logindialog::setUpSubview() {
 
     main_layout = new QVBoxLayout;
 
+    QHBoxLayout* tmp = new QHBoxLayout;
+    tmp->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+
     QFormLayout* content_layout = new QFormLayout;
     content_layout->addRow(QStringLiteral("用户名 :"), user_name_edit);
     content_layout->addItem(new QSpacerItem(0, 10, QSizePolicy::Minimum, QSizePolicy::Fixed));
     content_layout->addRow(QStringLiteral("密 码 :"), password_edit);
+
+    tmp->addLayout(content_layout);
+    tmp->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
     main_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -46,7 +52,7 @@ void logindialog::setUpSubview() {
     label_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding , QSizePolicy::Minimum));
 
     main_layout->addLayout(label_layout);
-    main_layout->addLayout(content_layout);
+    main_layout->addLayout(tmp);
 
     QHBoxLayout* btn_layout = new QHBoxLayout;
     QPushButton* btn_login = new QPushButton(QStringLiteral("登录"));

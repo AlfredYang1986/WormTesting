@@ -11,6 +11,7 @@
 #include <QPrinterInfo>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QDebug>
 
 printpreviewdialog::printpreviewdialog(QWidget* p)
     : QDialog(p) {
