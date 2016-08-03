@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QPrinter>
 #include <QPrintDialog>
+#include <QPrinterInfo>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -62,15 +63,26 @@ void printpreviewdialog::setUpSubviews() {
 }
 
 void printpreviewdialog::printReport() {
-    QPrinter printer;
-    QPrintDialog printDialog(&printer, (QWidget*)this->parent());
-    if (printDialog.exec()) {
-//        QTextDocument textDocument;
-//        QString html = ((reportingcontainer*)this->parent())->htmlContent(document);
-//        textDocument.setHtml(html);
-//        textDocument.print(&printer);
-        document->print(&printer);
+
+    QPrinterInfo printerInfo = QPrinterInfo::defaultPrinter();
+
+    QPrinter * pPrinter = 0;
+    if ( !printerInfo.isNull() )
+        pPrinter = new QPrinter(printerInfo, QPrinter::ScreenResolution);
+    else {
+        QMessageBox::warning(this, "error",
+                             QStringLiteral("没有有效的打印机"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+
+    if ( pPrinter && pPrinter->isValid() ) {
+        QPrintDialog dlg(pPrinter);
+        dlg.setOptions(QAbstractPrintDialog::None);
+
+        document->print(pPrinter);
         ((reportingcontainer*)this->parent())->changeReportingStatusInService();
+        delete pPrinter;
     }
 }
 
