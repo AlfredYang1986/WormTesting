@@ -21,6 +21,10 @@ QSize logindialog::sizeHint() const {
 }
 
 void logindialog::setUpSubview() {
+    setWindowFlags(Qt::FramelessWindowHint);
+//    setWindowOpacity(1);
+//    setAttribute(Qt::WA_TranslucentBackground);
+
     user_name_edit = new QLineEdit;
     password_edit = new QLineEdit;
     password_edit->setEchoMode(QLineEdit::Password);
@@ -35,7 +39,7 @@ void logindialog::setUpSubview() {
     main_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
     QHBoxLayout* label_layout = new QHBoxLayout;
-    QLabel* label = new QLabel(QStringLiteral("登录"));
+    QLabel* label = new QLabel(" ");
     label->setObjectName("login_title");
     label_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding , QSizePolicy::Minimum));
     label_layout->addWidget(label);
@@ -58,7 +62,8 @@ void logindialog::setUpSubview() {
 
     this->setObjectName("login_dialog");
     this->setStyleSheet("QWidget#login_dialog {"
-                            "background-color: white;"
+                            "background-color: none;"
+                            "background-image: url(':/resource/login_bkg.png');"
                         "}"
                         "QLabel {"
                             "color: #1bb1ff;"
@@ -80,11 +85,13 @@ void logindialog::setUpSubview() {
                             "margin-top: 20px;"
                             "width: 280px;"
                             "height: 35px;"
-                            "color: white;"
+                            "color: #1bd7ff;"
                             "font-size: 18px;"
-                            "background-color: #1bd7ff;"
+                            "background-color: white;"
                             "border: 1px solid #1bd7ff;"
-                        "}");
+                            "border-radius: 4px;"
+                        "}"
+                        );
 }
 
 void logindialog::loginBtnClicked() {
