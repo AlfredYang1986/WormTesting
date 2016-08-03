@@ -3,6 +3,8 @@
 #include "titlepushbutton.h"
 #include <QSpacerItem>
 #include <QObject>
+#include <QDesktopServices>
+#include <QUrl>
 
 class pred_btn_creator {
 public:
@@ -98,6 +100,12 @@ void titlewidget::setUpSubViews() {
     right_item = new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum);
     main_layout->addSpacerItem(right_item);
 
+    titlepushbutton* help_btn = new titlepushbutton("help.png", QStringLiteral("联系我们"));
+    help_btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    QObject::connect(help_btn, SIGNAL(didSelectTitle(const QString&)), this, SLOT(help_btn_click(QString)));
+
+    main_layout->addWidget(help_btn);
+
     this->setLayout(main_layout);
 
     vector<titlepushbutton*>::iterator begin = menu_lst.begin();
@@ -110,6 +118,10 @@ void titlewidget::menu_btn_cleck(const QString& title) {
 //    (*iter)->setChecked(true);
 
     emit changeContentPane(title);
+}
+
+void titlewidget::help_btn_click(const QString &) {
+    QDesktopServices::openUrl(QUrl("http://altbio.com.cn/"));
 }
 
 void titlewidget::changeCurrentIndex(int index) {

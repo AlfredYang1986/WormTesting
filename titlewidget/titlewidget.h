@@ -31,6 +31,7 @@ signals:
 
 public slots:
     void menu_btn_cleck(const QString& title);
+    void help_btn_click(const QString&);
 };
 
 #endif // TITLEWIDGET_H

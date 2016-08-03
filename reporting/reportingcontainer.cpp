@@ -355,6 +355,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
     QFile f(":/resource/print");
     if (f.open(QIODevice::OpenModeFlag::ReadOnly)) {
         QString html = f.readAll();
+        f.close();
 
         QJsonObject patient = current_sample["patient"].toObject();
         QString sample_id = current_sample["sample_id"].toString();

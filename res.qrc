@@ -30,5 +30,10 @@
         <file>resource/setting_users_delete.png</file>
         <file>resource/logo.png</file>
         <file>resource/sample_resource.png</file>
+        <file>resource/help.png</file>
+        <file>resource/descriptions</file>
+        <file>resource/aboutus</file>
+        <file>resource/aboutus.png</file>
+        <file>resource/declearation</file>
     </qresource>
 </RCC>

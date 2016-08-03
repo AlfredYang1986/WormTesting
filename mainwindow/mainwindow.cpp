@@ -15,6 +15,7 @@
 #include "camera/cameraproxy.h"
 #include <QDesktopWidget>
 #include <QApplication>
+#include "aboutwidget/aboutmainwidget.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent) {
     this->setUpSubviews();
@@ -83,10 +84,9 @@ void MainWindow::changeMainContent(const QString &title) {
             this->createSettingWidget();
         } else if (title == QStringLiteral("对比结果")) {
             this->createCompareWidget();
+        } else {
+            this->createAboutWidget();
         }
-//        else {
-//            this->createCompareWidget();
-//        }
     }
 }
 
@@ -271,7 +271,7 @@ void MainWindow::createAboutWidget() {
 
     QFrame* tmp = contents[QStringLiteral("关于系统")];
     if (tmp == NULL) {
-        QFrame* content_widget = new QFrame;
+        aboutmainwidget* content_widget = new aboutmainwidget;
         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
         main_container->addWidget(content_widget);

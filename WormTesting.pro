@@ -11,7 +11,7 @@ QT	 += multimedia
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 qtHaveModule(printsupport): QT += printsupport
 
-TARGET = WormTesting
+TARGET = Paraview
 TEMPLATE = app
 
 
@@ -61,7 +61,11 @@ SOURCES += main.cpp\
     settingwiget/addusersdialog.cpp \
     settingwiget/deleteusersdialog.cpp \
     sampleresource/resourceproxy/resourceproxy.cpp \
-    sampleresource/resourceproxy/resourceimportdialog.cpp
+    sampleresource/resourceproxy/resourceimportdialog.cpp \
+    aboutwidget/aboutmainwidget.cpp \
+    aboutwidget/descriptionlabel.cpp \
+    aboutwidget/aboutuswidget.cpp \
+    aboutwidget/declearationwidget.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -110,7 +114,11 @@ HEADERS  += mainwindow/mainwindow.h\
     settingwiget/addusersdialog.h \
     settingwiget/deleteusersdialog.h \
     sampleresource/resourceproxy/resourceproxy.h \
-    sampleresource/resourceproxy/resourceimportdialog.h
+    sampleresource/resourceproxy/resourceimportdialog.h \
+    aboutwidget/aboutmainwidget.h \
+    aboutwidget/descriptionlabel.h \
+    aboutwidget/aboutuswidget.h \
+    aboutwidget/declearationwidget.h
 
 FORMS    +=
 
