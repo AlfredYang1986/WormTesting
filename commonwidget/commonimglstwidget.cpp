@@ -96,7 +96,7 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data, const QStri
     if (!img_name_lst.contains(filename))
         return;
 
-    imglstitem* tmp = new imglstitem(isWormSample);
+    imglstitem* tmp = new imglstitem(isWormSample, isVer);
     tmp->setObjectName(current_download_name);
     tmp->setContentsMargins(0,0,0,0);
 

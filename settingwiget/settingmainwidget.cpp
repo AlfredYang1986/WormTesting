@@ -15,6 +15,8 @@
 #include "sampleresource/resourceproxy/resourceimportdialog.h"
 #include <QMessageBox>
 
+#define BTN_WIDTH	80
+
 settingmainwidget::settingmainwidget() {
     this->setUpSubviews();
 }
@@ -32,14 +34,14 @@ void settingmainwidget::setUpSubviews() {
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_report_section.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showReportingSettingDialog()));
         main_layout->addWidget(btn);
     }
@@ -47,28 +49,28 @@ void settingmainwidget::setUpSubviews() {
     QHBoxLayout* resource = new QHBoxLayout;
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_resource_add.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddSampleTypeDialog()));
         resource->addWidget(btn);
     }
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_resource_delete.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeleteSampleTypeDialog()));
         resource->addWidget(btn);
     }
@@ -78,28 +80,28 @@ void settingmainwidget::setUpSubviews() {
     QHBoxLayout* patient = new QHBoxLayout;
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_patient_add.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddPatientTypeDialog()));
         patient->addWidget(btn);
     }
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_patient_delete.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
         patient->addWidget(btn);
     }
@@ -109,42 +111,42 @@ void settingmainwidget::setUpSubviews() {
     QHBoxLayout* sample = new QHBoxLayout;
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_description_add.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showUpdateWormDescriptionDialog()));
         sample->addWidget(btn);
     }
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_pic_add.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showAddWormImgDialog()));
         sample->addWidget(btn);
     }
 
     {
         //QPushButton* btn = new QPushButton;
-        //btn->setFixedSize(120, 120);
+        //btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         //btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         //btn->clearMask();
         //btn->setBackgroundRole(QPalette::Base);
         //QPixmap m;
         //m.load(":resource/setting_pic_delete.png");
         //btn->setIcon(m);
-        //btn->setIconSize(QSize(120, 120));
+        //btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         //QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
         //sample->addWidget(btn);
     }
@@ -154,56 +156,56 @@ void settingmainwidget::setUpSubviews() {
     QHBoxLayout* users = new QHBoxLayout;
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_users_add.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showUserAddDialog()));
         users->addWidget(btn);
     }
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_users_delete.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showUserDeleteDialog()));
         users->addWidget(btn);
     }
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/setting_print_config.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
         users->addWidget(btn);
     }
 
     {
         QPushButton* btn = new QPushButton;
-        btn->setFixedSize(120, 120);
+        btn->setFixedSize(BTN_WIDTH, BTN_WIDTH);
         btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
         btn->clearMask();
         btn->setBackgroundRole(QPalette::Base);
         QPixmap m;
         m.load(":resource/sample_resource.png");
         btn->setIcon(m);
-        btn->setIconSize(QSize(120, 120));
+        btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
         QObject::connect(btn, SIGNAL(released()), this, SLOT(startFetchResource()));
         users->addWidget(btn);
     }
