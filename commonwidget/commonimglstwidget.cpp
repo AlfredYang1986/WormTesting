@@ -147,8 +147,9 @@ void commonimglstwidget::moveToNextImage() {
             //QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
             //         this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
             if (!img_lst.isEmpty()) {
-                const QPixmap* m = img_lst.first()->pixmap();
-                emit changeCurrentImageSignal(*m);
+//                const QPixmap* m = img_lst.first()->pixmap();
+                QPixmap m = img_lst.first()->getCurrentPixmap();
+                emit changeCurrentImageSignal(m);
             }
 
         } else {
