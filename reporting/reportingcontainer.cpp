@@ -107,13 +107,13 @@ void reportingcontainer::setUpSubviews() {
     tested_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
-        header<< QStringLiteral("样本编号")
+        header<< QStringLiteral("病人编号")
               << QStringLiteral("姓名")
               << QStringLiteral("年龄")
-              << QStringLiteral("样本来源")
-              << QStringLiteral("样本总类")
+              << QStringLiteral("样本编号")
+              << QStringLiteral("样本类型")
               << QStringLiteral("送检医生")
-              << QStringLiteral("审核医生")
+              << QStringLiteral("检测医生")
               << QStringLiteral("日期");
         tested_sample->setColumnCount(header.count());
         tested_sample->setHorizontalHeaderLabels(header);
@@ -244,13 +244,13 @@ void reportingcontainer::saveTestResult() {
 void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
     tested_sample->clear();
     QStringList header;
-    header<< QStringLiteral("样本编号")
+    header<< QStringLiteral("病人编号")
           << QStringLiteral("姓名")
           << QStringLiteral("年龄")
-          << QStringLiteral("样本来源")
-          << QStringLiteral("样本总类")
+          << QStringLiteral("样本编号")
+          << QStringLiteral("样本类型")
           << QStringLiteral("送检医生")
-          << QStringLiteral("审核医生")
+          << QStringLiteral("检测医生")
           << QStringLiteral("日期");
     tested_sample->setColumnCount(header.count());
     tested_sample->setHorizontalHeaderLabels(header);
@@ -264,7 +264,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
         QJsonObject patient = tmp["patient"].toObject();
 
         {
-            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
+            QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_id"].toString());
             if (tmp["status"].toInt() == 1)
                 item1->setForeground(QBrush(QColor(255, 0, 0)));
             else
@@ -291,7 +291,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
         }
 
         {
-            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["resource"].toString());
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
             if (tmp["status"].toInt() == 1)
                 item1->setForeground(QBrush(QColor(255, 0, 0)));
             else
@@ -300,7 +300,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
         }
 
         {
-            QTableWidgetItem* item1 = new QTableWidgetItem("");
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["resource"].toString());
             if (tmp["status"].toInt() == 1)
                 item1->setForeground(QBrush(QColor(255, 0, 0)));
             else
@@ -309,7 +309,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
         }
 
         {
-            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["testing_doctor"].toString());
+            QTableWidgetItem* item1 = new QTableWidgetItem(tmp["query_doctor"].toString());
             if (tmp["status"].toInt() == 1)
                 item1->setForeground(QBrush(QColor(255, 0, 0)));
             else
