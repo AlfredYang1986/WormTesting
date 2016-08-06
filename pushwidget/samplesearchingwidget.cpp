@@ -23,8 +23,14 @@ void samplesearchingwidget::setUpSubviews() {
     not_test_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
-//        header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
-        header<<"病人编号"<<"姓名" << "年龄" << "样本编号" << "样本类型" << "送检医生" << "检测医生" << "日期";
+        header<< QStringLiteral("病人编号")
+              << QStringLiteral("姓名")
+              << QStringLiteral("年龄")
+              << QStringLiteral("样本编号")
+              << QStringLiteral("样本类型")
+              << QStringLiteral("送检医生")
+              << QStringLiteral("检测医生")
+              << QStringLiteral("日期");
         not_test_sample->setColumnCount(header.count());
         not_test_sample->setHorizontalHeaderLabels(header);
     }
@@ -35,8 +41,14 @@ void samplesearchingwidget::setUpSubviews() {
     tested_sample->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     {
         QStringList header;
-//        header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
-        header<<"病人编号"<<"姓名" << "年龄" << "样本编号" << "样本类型" << "送检医生" << "检测医生" << "日期";
+        header<< QStringLiteral("病人编号")
+              << QStringLiteral("姓名")
+              << QStringLiteral("年龄")
+              << QStringLiteral("样本编号")
+              << QStringLiteral("样本类型")
+              << QStringLiteral("送检医生")
+              << QStringLiteral("检测医生")
+              << QStringLiteral("日期");
         tested_sample->setColumnCount(header.count());
         tested_sample->setHorizontalHeaderLabels(header);
     }
@@ -70,8 +82,14 @@ QSize samplesearchingwidget::sizeHit() const {
 void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     not_test_sample->clear();
     QStringList header;
-//    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
-    header<<"病人编号"<<"姓名" << "年龄" << "样本编号" << "样本类型" << "送检医生" << "检测医生" << "日期";
+    header<< QStringLiteral("病人编号")
+          << QStringLiteral("姓名")
+          << QStringLiteral("年龄")
+          << QStringLiteral("样本编号")
+          << QStringLiteral("样本类型")
+          << QStringLiteral("送检医生")
+          << QStringLiteral("检测医生")
+          << QStringLiteral("日期");
     not_test_sample->setColumnCount(header.count());
     not_test_sample->setHorizontalHeaderLabels(header);
 
@@ -103,8 +121,14 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
 void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
     tested_sample->clear();
     QStringList header;
-//    header<<"样本编号"<<"姓名" << "年龄" << "样本来源" << "样本总类" << "送检医生" << "审核医生" << "日期";
-    header<<"病人编号"<<"姓名" << "年龄" << "样本编号" << "样本类型" << "送检医生" << "检测医生" << "日期";
+    header<< QStringLiteral("病人编号")
+          << QStringLiteral("姓名")
+          << QStringLiteral("年龄")
+          << QStringLiteral("样本编号")
+          << QStringLiteral("样本类型")
+          << QStringLiteral("送检医生")
+          << QStringLiteral("检测医生")
+          << QStringLiteral("日期");
     tested_sample->setColumnCount(header.count());
     tested_sample->setHorizontalHeaderLabels(header);
 

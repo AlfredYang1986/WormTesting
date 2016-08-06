@@ -52,6 +52,8 @@ public:
 
     virtual QSize sizeHint() const;
     void setUpSubviews();
+
+    void setCurrentCompareSample(const QString& sample_id);
 };
 
 #endif // IMAGECOMPAREWIDGET_H

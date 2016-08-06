@@ -302,7 +302,9 @@ void MainWindow::startReport(const QString& sample_id) {
 }
 
 void MainWindow::startCompare(const QString& sample_id) {
-
+    this->createCompareWidget();
+    imagecomparewidget* p = (imagecomparewidget*)contents[QStringLiteral("对比结果")];
+    p->setCurrentCompareSample(sample_id);
 }
 
 bool MainWindow::isReadyToChangeMainWidget() {

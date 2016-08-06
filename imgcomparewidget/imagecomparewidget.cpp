@@ -181,6 +181,12 @@ void imagecomparewidget::querySampleWithIDSuccess(const QJsonObject& sample) {
     sample_lst->changeCurrentSample(sample);
 }
 
+void imagecomparewidget::setCurrentCompareSample(const QString &sample_id) {
+    if (!sample_id.isEmpty()) {
+        proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
+    }
+}
+
 //void imagecomparewidget::changeWormPreview(const QPixmap &p) {
 //    QSize s = worm_preview->size();
 //    QPixmap np = p.scaled(s.width(), s.height());
