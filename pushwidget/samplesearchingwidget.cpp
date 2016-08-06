@@ -1,4 +1,4 @@
-#include "samplesearchingwidget.h"
+﻿#include "samplesearchingwidget.h"
 #include <QVBoxLayout>
 #include <QTableWidget>
 #include <QTableWidgetItem>
