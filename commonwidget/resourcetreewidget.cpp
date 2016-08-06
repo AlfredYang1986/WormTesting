@@ -33,8 +33,8 @@ void resourcetreewidget::setUpSubviews() {
     QObject::connect(proxymanager::instance()->getWormProxy(), SIGNAL(queryWormCatSuccess(const QJsonObject&)),
                      this, SLOT(queryWormCatSuccess(const QJsonObject&)));
 
-    QObject::connect(this, SIGNAL(clicked(const QModelIndex&)),
-                     this, SLOT(currentWormSlot(const QModelIndex&)));
+    QObject::connect(this, SIGNAL(itemClicked(QTreeWidgetItem*,int)),
+                     this, SLOT(currentWormSlot(QTreeWidgetItem*,int)));
 }
 
 QSize resourcetreewidget::sizeHint() const {
@@ -63,10 +63,10 @@ void resourcetreewidget::queryWormCatSuccess(const QJsonObject& cat) {
     }
 }
 
-void resourcetreewidget::currentWormSlot(const QModelIndex& index) {
-    qDebug() << index << endl;
-    QString worm_cat_name = categories.keys().at(index.column());
-    QJsonArray arr = categories[worm_cat_name].toArray();
-    QString worm_name = arr.at(index.row()).toObject().operator []("name").toString();
-    emit currentWormSignal(worm_name, worm_cat_name);
+void resourcetreewidget::currentWormSlot(QTreeWidgetItem * item, int col) {
+    if (item->parent() != NULL) {
+        QString worm_cat_name = item->parent()->data(0, 0).toString();
+        QString worm_name = item->data(0, 0).toString();
+        emit currentWormSignal(worm_name, worm_cat_name);
+    }
 }

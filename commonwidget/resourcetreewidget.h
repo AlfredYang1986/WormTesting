@@ -13,7 +13,8 @@ Q_SIGNALS:
 
 public Q_SLOTS:
     void queryWormCatSuccess(const QJsonObject&);
-    void currentWormSlot(const QModelIndex&);
+//    void currentWormSlot(const QModelIndex&);
+    void currentWormSlot(QTreeWidgetItem*, int);
 
 public:
     resourcetreewidget();
