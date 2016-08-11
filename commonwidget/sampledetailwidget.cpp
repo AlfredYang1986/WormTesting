@@ -154,14 +154,18 @@ void sampledetailwidget::sampleBtnClick() {
         json.insert("testing_doctor", sample_testing_doctor_edit->text());
         json.insert("post_test_doctor", sample_post_test_doctor_edit->text());
 
+        json.insert("section", sample_section_edit->text());
+        json.insert("index", sample_index_edit->text().toInt());
+
+        QDateTime start, end;
         {
             QString str_num = sample_start_date_edit->text();
             QDateTime time;
             time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
             long long n = time.toMSecsSinceEpoch();
             json.insert("start_date", n);
+            start = time;
         }
-
 
         {
             QString str_num = sample_end_date_edit->text();
@@ -169,8 +173,14 @@ void sampledetailwidget::sampleBtnClick() {
             time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
             long long n = time.toMSecsSinceEpoch();
             json.insert("end_date", n);
+            end = time;
         }
-
+        if (start.toMSecsSinceEpoch() > end.toMSecsSinceEpoch()) {
+            QMessageBox::warning(this, "Error",
+                                 QStringLiteral("送检时间应该小于取样时间"),
+                                 QMessageBox::Ok | QMessageBox::Cancel, QMessageBox::Ok);
+            return;
+        }
 
         {
             QString str_num = sample_pre_test_date_edit->text();
@@ -205,6 +215,10 @@ void sampledetailwidget::sampleBtnClick() {
         int patient_age = patient_age_edit->text().toInt();
         patient.insert("patient_gender", (patientproxy::PatientGender)patient_gender);
         patient.insert("patient_age", patient_age);
+
+        patient.insert("patient_section", patient_section_edit->text());
+        patient.insert("patient_section_no", patient_section_id_edit->text());
+        patient.insert("patient_bed_no", patient_section_bed_id_edit->text());
 
         json.insert("patient", patient);
 
@@ -247,6 +261,15 @@ void sampledetailwidget::queryPatientSuccess(const QJsonObject & patient) {
         int age = patient["patient_age"].toInt();
         patient_age_edit->setText(QString("%1").arg(age));
 
+        QString section = patient["patient_section"].toString();
+        patient_section_edit->setText(section);
+
+        QString section_no = patient["patient_section_no"].toString();
+        patient_section_id_edit->setText(section_no);
+
+        QString bed_no = patient["patient_bed_no"].toString();
+        patient_section_bed_id_edit->setText(bed_no);
+
     } else {
         qDebug() << "query patient empty" << endl;
     }
@@ -265,6 +288,9 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
         sample_pre_test_doctor_edit->setText(sample["pre_test_doctor"].toString());
         sample_testing_doctor_edit->setText(sample["testing_doctor"].toString());
         sample_post_test_doctor_edit->setText(sample["post_test_doctor"].toString());
+
+        sample_section_edit->setText(sample["section"].toString());
+        sample_index_edit->setText(sample["index"].toString());
 
         QString date_format = "MM-dd-yyyy";
         {

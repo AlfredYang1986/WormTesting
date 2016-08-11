@@ -1,9 +1,10 @@
 #include "commonimgpreviewwidget.h"
 #include "proxy/proxymanager.h"
 #include "proxy/fileoptproxy.h"
+#include <QtMath>
 
 commonimgpreviewwidget::commonimgpreviewwidget() {
-
+    content = new QLabel(this);
 }
 
 commonimgpreviewwidget::~commonimgpreviewwidget() {
@@ -11,9 +12,9 @@ commonimgpreviewwidget::~commonimgpreviewwidget() {
 }
 
 void commonimgpreviewwidget::setPreviewImage(const QPixmap & m) {
-    QPixmap m2 = m.scaled(this->width(), this->height());
-//    QPixmap m2 = m.scaledToHeight(this->height());
-    this->setPixmap(m2);
+    float w = this->layoutContent();
+    QPixmap m2 = m.scaled(w, w);
+    content->setPixmap(m2);
 }
 
 void commonimgpreviewwidget::fillImages(const QJsonObject& sample) {
@@ -26,10 +27,20 @@ void commonimgpreviewwidget::downloadFileSuccess(const QByteArray& arr, const QS
     if (current_img_name == filename) {
         QPixmap m;
         m.loadFromData(arr);
-        m = m.scaled(this->width(), this->height());
-//        m = m.scaledToHeight(this->height());
-        this->setPixmap(m);
+        float w = this->layoutContent();
+        m = m.scaled(w, w);
     }
+}
+
+float commonimgpreviewwidget::layoutContent() {
+    QSize s = this->size();
+    float w =  fmin(s.width(), s.height());
+    if (s.width() > s.height()) {
+        content->setGeometry((s.width() - w) / 2, 0, w, w);
+    } else {
+        content->setGeometry(0 , (s.height() - w) / 2, w, w);
+    }
+    return w;
 }
 
 void commonimgpreviewwidget::showEvent(QShowEvent *) {

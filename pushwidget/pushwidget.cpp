@@ -128,10 +128,14 @@ void pushwidget::sampleBtnClick() {
     if (current_object.isEmpty()) {
         sample_detail_widget->sampleBtnClick();
     } else {
-        if (QMessageBox::Yes == QMessageBox::information(this, "Error",
+        if (current_object["sample_id"] == sample_detail_widget->queryCurrentSampleId()){
+            if (QMessageBox::Yes == QMessageBox::information(this, "Error",
                                  QStringLiteral("需要修改样品信息么"),
                                  QMessageBox::Yes | QMessageBox:: No,
                                  QMessageBox::Yes)) {
+                sample_detail_widget->sampleBtnClick();
+            }
+        } else {
             sample_detail_widget->sampleBtnClick();
         }
     }
