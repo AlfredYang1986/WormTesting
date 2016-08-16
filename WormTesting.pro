@@ -65,7 +65,8 @@ SOURCES += main.cpp\
     aboutwidget/aboutmainwidget.cpp \
     aboutwidget/descriptionlabel.cpp \
     aboutwidget/aboutuswidget.cpp \
-    aboutwidget/declearationwidget.cpp
+    aboutwidget/declearationwidget.cpp \
+    settingwiget/printconfigdialog.cpp
 
 HEADERS  += mainwindow/mainwindow.h\
         titlewidget/titlewidget.h \
@@ -118,7 +119,8 @@ HEADERS  += mainwindow/mainwindow.h\
     aboutwidget/aboutmainwidget.h \
     aboutwidget/descriptionlabel.h \
     aboutwidget/aboutuswidget.h \
-    aboutwidget/declearationwidget.h
+    aboutwidget/declearationwidget.h \
+    settingwiget/printconfigdialog.h
 
 FORMS    +=
 

@@ -106,6 +106,7 @@ void resourceproxy::fetchResourcesAccImg(const QString& cat, const QString& name
                 if(description.open(QIODevice::ReadOnly | QIODevice::Text)) {
                     QString str(description.readAll());
                     proxymanager::instance()->getWormProxy()->changeWromdescription(name, str);
+                    description.close();
                 }
             }
 

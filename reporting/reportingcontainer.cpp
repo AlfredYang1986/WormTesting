@@ -20,6 +20,7 @@
 #include <QDesktopServices>
 #include <QTextDocument>
 #include "printpreviewdialog.h"
+#include <QApplication>
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -423,6 +424,13 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
             ++index;
         }
 
+        QString hos_name;
+        QFile f(QApplication::applicationDirPath() + "/config");
+        if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            hos_name = QString(f.readAll());
+            f.close();
+        }
+
         return html.arg(sample_id)
                 .arg(patient_name)
                 .arg(patient_gender)
@@ -434,7 +442,8 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
                 .arg(str_reporting_time)
                 .arg(testing_doctor)
                 .arg(post_test_doctor)
-                .arg(images);
+                .arg(images)
+                .arg(hos_name);
     } else {
         return "";
     }

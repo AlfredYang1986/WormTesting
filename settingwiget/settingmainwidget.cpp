@@ -14,6 +14,7 @@
 #include "sampleresource/resourceproxy/resourceproxy.h"
 #include "sampleresource/resourceproxy/resourceimportdialog.h"
 #include <QMessageBox>
+#include "printconfigdialog.h"
 
 #define BTN_WIDTH	80
 
@@ -192,7 +193,7 @@ void settingmainwidget::setUpSubviews() {
         m.load(":resource/setting_print_config.png");
         btn->setIcon(m);
         btn->setIconSize(QSize(BTN_WIDTH, BTN_WIDTH));
-        QObject::connect(btn, SIGNAL(released()), this, SLOT(showdeletePatientTypeDialog()));
+        QObject::connect(btn, SIGNAL(released()), this, SLOT(showPrintConfig()));
         users->addWidget(btn);
     }
 
@@ -274,7 +275,8 @@ void settingmainwidget::showUserDeleteDialog() {
 }
 
 void settingmainwidget::showPrintConfig() {
-
+    printconfigdialog* dlg = new printconfigdialog;
+    dlg->exec();
 }
 
 void settingmainwidget::startFetchResource() {
