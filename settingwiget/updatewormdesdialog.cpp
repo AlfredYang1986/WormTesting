@@ -66,6 +66,10 @@ void updatewormdesdialog::savaBtnClicked() {
     QString d = des->toPlainText();
     if (!n.isEmpty() && !d.isEmpty()) {
         proxymanager::instance()->getWormProxy()->changeWromdescription(n, d);
+
+        QTime dieTime = QTime::currentTime().addMSecs(1000);
+        while( QTime::currentTime() < dieTime )
+            QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
     }
 
     this->close();

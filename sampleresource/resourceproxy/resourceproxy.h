@@ -39,6 +39,7 @@ private:
     QNetworkAccessManager* http_connect;
 
     QString dir_name;
+    QString txt_name;
     int count;
     int index;
 };

@@ -24,6 +24,12 @@ resourceproxy::resourceproxy() {
     QObject::connect(proxymanager::instance()->getWormProxy(), SIGNAL(pushWormSuccess(QString,QString)),
                      this, SLOT(pushWormSuccess(QString,QString)));
 
+    dir_name = QApplication::applicationDirPath() + "/sample_resource";
+    txt_name = QApplication::applicationDirPath() + "/sample_txt";
+
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
+                     this, SLOT(uploadSampleImageSuccess(QString,QString)));
+
 }
 
 resourceproxy::~resourceproxy() {
@@ -94,6 +100,15 @@ void resourceproxy::fetchResourcesAccImg(const QString& cat, const QString& name
             QImage image(file);
             proxymanager::instance()->getFileProxy()->uploadSampleImage(name, image);
 
+            QFile description(txt_name + "/" + name + ".txt");
+            if (description.exists()) {
+                qDebug() << description.fileName() << endl;
+                if(description.open(QIODevice::ReadOnly | QIODevice::Text)) {
+                    QString str(description.readAll());
+                    proxymanager::instance()->getWormProxy()->changeWromdescription(name, str);
+                }
+            }
+
             QTime dieTime = QTime::currentTime().addMSecs(200);
             while( QTime::currentTime() < dieTime )
                 QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
@@ -107,11 +122,6 @@ void resourceproxy::fetchResources() {
 //        return;
 //    }
 //    qDebug() << dir_name << endl;
-
-    dir_name = QApplication::applicationDirPath() + "/sample_resource";
-
-    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(uploadSampleImageSuccess(QString,QString)),
-                     this, SLOT(uploadSampleImageSuccess(QString,QString)));
 
     this->getFetchCount();
 

@@ -8,6 +8,8 @@
 #include <commonwidget/commonimglstwidget.h>
 #include "commonwidget/commonimgpreviewwidget.h"
 #include <QGroupBox>
+#include <QDesktopWidget>
+#include <QApplication>
 
 sampleresourcecontainer::sampleresourcecontainer() {
     this->setUpSubviews();
@@ -45,8 +47,13 @@ void sampleresourcecontainer::setUpSubviews() {
 
 //    right_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
+    QDesktopWidget* desktopWidget = QApplication::desktop();
+    QRect clientRect = desktopWidget->availableGeometry();
+
     QGroupBox* box = new QGroupBox("样本描述");
     html = new QLabel;
+    html->setWordWrap(true);
+    html->setMaximumWidth(clientRect.width() - 210);
     QVBoxLayout* a = new QVBoxLayout;
     a->addWidget(html);
     box->setLayout(a);
@@ -73,17 +80,19 @@ void sampleresourcecontainer::currentWorm(const QString& worm_name, const QStrin
 }
 
 void sampleresourcecontainer::queryWormDetailSuccess(const QJsonObject& detail) {
-    QString tmp("<h2>虫名</h2>");
-    tmp += "<p>";
-    tmp += detail["name"].toString();
-    tmp += "</p>";
+//    QString tmp("<h2>虫名</h2>");
+//    tmp += "<p>";
+//    tmp += detail["name"].toString();
+//    tmp += "</p>";
 
-    tmp += "<br/><h2>虫类</h2>";
-    tmp += "<p>";
-    tmp += detail["cat"].toString();
-    tmp += "</p>";
+//    tmp += "<br/><h2>虫类</h2>";
+//    tmp += "<p>";
+//    tmp += detail["cat"].toString();
+//    tmp += "</p>";
 
-    tmp += "<br/><h2>描述</h2>";
+    QString tmp;
+//    tmp += "<br/><h2>描述</h2>";
+    tmp += "<h2>描述</h2>";
     tmp += "<p>";
     tmp += detail["description"].toString();
     tmp += "</p>";
