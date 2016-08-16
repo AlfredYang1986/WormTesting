@@ -411,7 +411,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QVector<QImage>::iterator vec_img_iter = vec_img.begin();
         int index = 0;
         for (; vec_img_iter != vec_img.end(); ++ vec_img_iter) {
-            QImage t = (*vec_img_iter);
+            QImage t = (*vec_img_iter).scaledToWidth(120);
             QUrl url;
             url.setUrl(QString("tmp%1").arg(index));
             document.addResource(QTextDocument::ImageResource, url, QVariant(t));
