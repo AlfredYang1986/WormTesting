@@ -60,9 +60,9 @@ private:
 //    QLineEdit* sample_testing_date_edit;
 //    QLineEdit* sample_reporting_date_edit;
 
-    QDateTimeEdit* sample_start_date_edit;
-    QDateTimeEdit* sample_end_date_edit;
-    QDateTimeEdit* sample_pre_test_date_edit;
+    QDateEdit* sample_start_date_edit;
+    QDateEdit* sample_end_date_edit;
+    QDateEdit* sample_pre_test_date_edit;
     QDateTimeEdit* sample_testing_date_edit;
     QDateTimeEdit* sample_reporting_date_edit;
 

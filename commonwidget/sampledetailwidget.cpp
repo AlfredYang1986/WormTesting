@@ -16,6 +16,9 @@
 #include <QDateEdit>
 #include <QDateTimeEdit>
 
+const QString date_format = "MM-dd-yyyy";
+const QString date_time_format = "MM-dd-yyyy hh:mm";
+
 sampledetailwidget::sampledetailwidget() {
     this->setUpSubviews();
 }
@@ -43,11 +46,20 @@ void sampledetailwidget::setUpSubviews() {
 //    sample_testing_date_edit = new QLineEdit;
 //    sample_reporting_date_edit = new QLineEdit;
 
-    sample_start_date_edit = new QDateTimeEdit;
-    sample_pre_test_date_edit = new QDateTimeEdit;
-    sample_end_date_edit = new QDateTimeEdit;
+    sample_start_date_edit = new QDateEdit;
+    sample_start_date_edit->setDisplayFormat(date_format);
+
+    sample_pre_test_date_edit = new QDateEdit;
+    sample_pre_test_date_edit->setDisplayFormat(date_format);
+
+    sample_end_date_edit = new QDateEdit;
+    sample_end_date_edit->setDisplayFormat(date_format);
+
     sample_testing_date_edit = new QDateTimeEdit;
+    sample_testing_date_edit->setDisplayFormat(date_time_format);
+
     sample_reporting_date_edit = new QDateTimeEdit;
+    sample_reporting_date_edit->setDisplayFormat(date_time_format);
 
     sample_testing_date_edit->setEnabled(false);
     sample_reporting_date_edit->setEnabled(false);
@@ -161,7 +173,7 @@ void sampledetailwidget::sampleBtnClick() {
         {
             QString str_num = sample_start_date_edit->text();
             QDateTime time;
-            time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
+            time = QDateTime::fromString(str_num, date_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("start_date", n);
             start = time;
@@ -170,7 +182,7 @@ void sampledetailwidget::sampleBtnClick() {
         {
             QString str_num = sample_end_date_edit->text();
             QDateTime time;
-            time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
+            time = QDateTime::fromString(str_num, date_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("end_date", n);
             end = time;
@@ -185,7 +197,7 @@ void sampledetailwidget::sampleBtnClick() {
         {
             QString str_num = sample_pre_test_date_edit->text();
             QDateTime time;
-            time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
+            time = QDateTime::fromString(str_num, date_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("pre_test_date", n);
         }
@@ -194,7 +206,7 @@ void sampledetailwidget::sampleBtnClick() {
         {
             QString str_num = sample_testing_date_edit->text();
             QDateTime time;
-            time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
+            time = QDateTime::fromString(str_num, date_time_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("testing_date", n);
         }
@@ -203,7 +215,7 @@ void sampledetailwidget::sampleBtnClick() {
         {
             QString str_num = sample_reporting_date_edit->text();
             QDateTime time;
-            time = QDateTime::fromString(str_num, "MM-dd-yyyy hh:mm");
+            time = QDateTime::fromString(str_num, date_time_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("reporting_date", n);
         }
@@ -292,15 +304,12 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
         sample_section_edit->setText(sample["section"].toString());
         sample_index_edit->setText(sample["index"].toString());
 
-        QString date_format = "MM-dd-yyyy";
         {
             qlonglong n = sample["start_date"].toVariant().toLongLong();
             if (n > 0) {
                 QDateTime t;
                 t.setMSecsSinceEpoch(n);
                 sample_start_date_edit->setDateTime(t);
-                sample_start_date_edit->setDisplayFormat(date_format);
-//                sample_start_date_edit->setText(QString("%1").arg(n));
             }
         }
 
@@ -310,8 +319,6 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
                 QDateTime t;
                 t.setMSecsSinceEpoch(n);
                 sample_end_date_edit->setDateTime(t);
-                sample_end_date_edit->setDisplayFormat(date_format);
-//                sample_end_date_edit->setText(QString("%1").arg(n));
             }
         }
 
@@ -321,19 +328,15 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
                 QDateTime t;
                 t.setMSecsSinceEpoch(n);
                 sample_pre_test_date_edit->setDateTime(t);
-                sample_pre_test_date_edit->setDisplayFormat(date_format);
-//                sample_pre_test_date_edit->setText(QString("%1").arg(n));
             }
         }
 
-        QString format = "MM-dd-yyyy HH:mm::ss";
         {
             qlonglong n = sample["testing_date"].toVariant().toLongLong();
             if (n > 0) {
                 QDateTime t;
                 t.setMSecsSinceEpoch(n);
                 sample_testing_date_edit->setDateTime(t);
-                sample_testing_date_edit->setDisplayFormat(format);
             }
         }
 
@@ -343,8 +346,6 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
                 QDateTime t;
                 t.setMSecsSinceEpoch(n);
                 sample_reporting_date_edit->setDateTime(t);
-                sample_reporting_date_edit->setDisplayFormat(format);
-//                sample_reporting_date_edit->setText(t.toString(format));
             }
         }
 
