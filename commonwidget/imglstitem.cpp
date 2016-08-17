@@ -2,6 +2,7 @@
 #include <QPushButton>
 #include <QPixmap>
 #include <QLabel>
+#include <QFileDialog>
 
 imglstitem::imglstitem(bool w, bool v)
     : isWormImgItem(w), isVer(v) {
@@ -71,8 +72,14 @@ void imglstitem::setUpSubviews() {
 }
 
 void imglstitem::saveAsBtnSelected() {
-    const QPixmap* m = this->pixmap();
-    m->save(this->objectName(), "JPG");
+//    const QPixmap* m = this->pixmap();
+    QString filename = QFileDialog::getSaveFileName((QWidget*)this->parent(), "Save File", "", "jpg");
+    if (filename.trimmed() == "") {
+        return;
+    }
+
+    QPixmap m = this->getCurrentPixmap();
+    m.save(filename + ".jpg", "JPG");
 }
 
 void imglstitem::delectBtnSelected_slot() {

@@ -63,7 +63,7 @@ void resourcetreewidget::queryWormCatSuccess(const QJsonObject& cat) {
     }
 }
 
-void resourcetreewidget::currentWormSlot(QTreeWidgetItem * item, int col) {
+void resourcetreewidget::currentWormSlot(QTreeWidgetItem * item, int) {
     if (item->parent() != NULL) {
         QString worm_cat_name = item->parent()->data(0, 0).toString();
         QString worm_name = item->data(0, 0).toString();
