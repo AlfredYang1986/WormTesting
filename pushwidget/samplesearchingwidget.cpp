@@ -29,7 +29,7 @@ void samplesearchingwidget::setUpSubviews() {
               << QStringLiteral("样本编号")
               << QStringLiteral("样本类型")
               << QStringLiteral("送检医生")
-              << QStringLiteral("检测医生")
+              << QStringLiteral("开单科室")
               << QStringLiteral("日期");
         not_test_sample->setColumnCount(header.count());
         not_test_sample->setHorizontalHeaderLabels(header);
@@ -88,7 +88,7 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
           << QStringLiteral("样本编号")
           << QStringLiteral("样本类型")
           << QStringLiteral("送检医生")
-          << QStringLiteral("检测医生")
+          << QStringLiteral("开单科室")
           << QStringLiteral("日期");
     not_test_sample->setColumnCount(header.count());
     not_test_sample->setHorizontalHeaderLabels(header);
@@ -106,7 +106,7 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
         not_test_sample->setItem(index, 3, new QTableWidgetItem(tmp["sample_id"].toString()));
         not_test_sample->setItem(index, 4, new QTableWidgetItem(tmp["resource"].toString()));
         not_test_sample->setItem(index, 5, new QTableWidgetItem(tmp["query_doctor"].toString()));
-        not_test_sample->setItem(index, 6, new QTableWidgetItem(tmp["testing_doctor"].toString()));
+        not_test_sample->setItem(index, 6, new QTableWidgetItem(tmp["section"].toString()));
 
         qlonglong timespan = tmp["date"].toVariant().toLongLong() * 1000 * 24 * 60 * 60;
         QDateTime t;

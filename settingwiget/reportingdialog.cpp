@@ -166,10 +166,10 @@ void reportingdialog::saveWormchanges() {
 
         proxymanager::instance()->getWormProxy()->changeSetting(worm, worm_cat, selected);
     }
-    QTime dieTime = QTime::currentTime().addMSecs(1000);
+    this->reloadData();
+    QTime dieTime = QTime::currentTime().addMSecs(1500);
     while( QTime::currentTime() < dieTime )
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
-    this->reloadData();
 }
 
 void reportingdialog::checkBtnChanged(bool selected) {

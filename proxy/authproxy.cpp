@@ -145,3 +145,7 @@ void authproxy::networkError(QNetworkReply::NetworkError error) {
                          QMessageBox::Ok, QMessageBox::Ok);
     QObject::sender()->deleteLater();
 }
+
+void authproxy::currentAuthStatus() const {
+    return status;
+}

@@ -6,6 +6,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/sampleproxy.h"
 #include "proxy/patientproxy.h"
+#include "proxy/authproxy.h"
 #include "reportingdetailwidget.h"
 #include <QScrollArea>
 #include "commonwidget/commonimgpreviewwidget.h"
@@ -21,6 +22,7 @@
 #include <QTextDocument>
 #include "printpreviewdialog.h"
 #include <QApplication>
+#include <QMessageBox>
 
 reportingcontainer::reportingcontainer() {
     this->setUpSubviews();
@@ -460,6 +462,13 @@ void reportingcontainer::changeReportingStatusInService() {
 }
 
 void reportingcontainer::printPreview() {
-    printpreviewdialog* dlg = new printpreviewdialog(this);
-    dlg->exec();
+
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() < authproxy::AuthStatus::Auth_post_test_doctor) {
+        QMessageBox::warning(this, "Error",
+                             QStringLiteral("权限不够不能打印报告"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+    } else {
+        printpreviewdialog* dlg = new printpreviewdialog(this);
+        dlg->exec();
+    }
 }

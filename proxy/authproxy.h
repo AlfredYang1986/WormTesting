@@ -18,10 +18,10 @@ protected Q_SLOTS:
 
 public:
     enum AuthStatus {
-        Auth_testing_doctor,
-        Auth_post_test_doctor,
-        Auth_admin,
-        Auth_programer,
+        Auth_testing_doctor = 0,
+        Auth_post_test_doctor = 1,
+        Auth_programer = 3,
+        Auth_admin = 99,
     };
     Q_ENUM(AuthStatus);
 
@@ -35,6 +35,7 @@ public:
     void changeUserStatus(const QString& user_name, AuthStatus s);
     void changePassword(const QString& password);
 
+    AuthStatus currentAuthStatus() const;
 private:
     QString current_user_name;
     AuthStatus status;

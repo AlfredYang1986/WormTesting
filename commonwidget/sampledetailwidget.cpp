@@ -137,8 +137,8 @@ void sampledetailwidget::setUpSubviews() {
 //}
 
 void sampledetailwidget::didFinishEditPatientID_slot() {
-    QString patient_id = patient_id_edit->text();
-    emit didFinishEditPatientID(patient_id);
+//    QString patient_id = patient_id_edit->text();
+//    emit didFinishEditPatientID(patient_id);
 }
 
 void sampledetailwidget::didFinishEditSampleID_slot() {
@@ -221,7 +221,8 @@ void sampledetailwidget::sampleBtnClick() {
         }
 
         QJsonObject patient;
-        patient.insert("patient_id", patient_id_edit->text());
+//        patient.insert("patient_id", patient_id_edit->text());
+        patient.insert("patient_fake_id", patient_id_edit->text());
         patient.insert("patient_name", patient_name_edit->text());
         int patient_gender = patient_gender_box->currentIndex();
         int patient_age = patient_age_edit->text().toInt();
@@ -264,7 +265,8 @@ void sampledetailwidget::sampleCancelBtnClick() {
 
 void sampledetailwidget::queryPatientSuccess(const QJsonObject & patient) {
     if (!patient.isEmpty()) {
-        patient_id_edit->setText(patient["patient_id"].toString());
+//        patient_id_edit->setText(patient["patient_id"].toString());
+        patient_id_edit->setText(patient["patient_fake_id"].toString());
         patient_name_edit->setText(patient["patient_name"].toString());
 
         int n = patient["patient_gender"].toInt();
