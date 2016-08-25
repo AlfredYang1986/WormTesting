@@ -267,7 +267,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
         QJsonObject patient = tmp["patient"].toObject();
 
         {
-            QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_id"].toString());
+            QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_fake_id"].toString());
             if (tmp["status"].toInt() == 1)
                 item1->setForeground(QBrush(QColor(255, 0, 0)));
             else
@@ -366,7 +366,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QString patient_name = patient["patient_name"].toString();
         QString patient_gender = patient["patient_gender"].toInt() == 0 ? QStringLiteral("男") : QStringLiteral("女");
         QString patient_age = QString("%1").arg(patient["patient_age"].toInt());
-        QString patient_id = patient["patient_id"].toString();
+        QString patient_id = patient["patient_fake_id"].toString();
         QString sample_resource = current_sample["resource"].toString();
 
         QVector<QVariant> result = current_sample["result"].toArray().toVariantList().toVector();

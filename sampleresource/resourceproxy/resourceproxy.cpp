@@ -104,7 +104,11 @@ void resourceproxy::fetchResourcesAccImg(const QString& cat, const QString& name
             if (description.exists()) {
                 qDebug() << description.fileName() << endl;
                 if(description.open(QIODevice::ReadOnly | QIODevice::Text)) {
-                    QString str(description.readAll());
+                    QTextCodec::setCodecForLocale(QTextCodec::codecForName("gb2312"));//中文转码声明
+                    QByteArray arr = description.readAll();
+                    arr.replace(0x0B,0x0D);
+                    QString str = QString::fromLocal8Bit(arr, arr.length());//Window下的QByteArray转QString
+                    //QString str(description.readAll());
                     proxymanager::instance()->getWormProxy()->changeWromdescription(name, str);
                     description.close();
                 }

@@ -5,6 +5,7 @@
 #include <QJsonArray>
 class QLineEdit;
 class QVBoxLayout;
+class QComboBox;
 
 class addusersdialog : public QDialog {
     Q_OBJECT
@@ -29,6 +30,7 @@ private:
 
     QLineEdit* user_name_edit;
     QLineEdit* pwd_edit;
+    QComboBox* auth_box;
 
     QVector<QString> users_lst;
 };

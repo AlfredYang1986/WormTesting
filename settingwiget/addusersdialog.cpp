@@ -7,6 +7,7 @@
 #include "proxy/configproxy.h"
 #include "proxy/proxymanager.h"
 #include <QMessageBox>
+#include <QComboBox>
 
 addusersdialog::addusersdialog() {
     this->setUpSubviews();
@@ -26,10 +27,14 @@ void addusersdialog::setUpSubviews() {
     user_name_edit = new QLineEdit;
     pwd_edit = new QLineEdit;
     pwd_edit->setEchoMode(QLineEdit::Password);
+    auth_box = new QComboBox;
+    auth_box->addItem(QStringLiteral("普通医生"));
+    auth_box->addItem(QStringLiteral("检测医生"));
 
     QFormLayout* form = new QFormLayout;
     form->addRow(QStringLiteral("用户名:"), user_name_edit);
     form->addRow(QStringLiteral("密  码:"), pwd_edit);
+    form->addRow(QStringLiteral("权  限:"), auth_box);
 
     main_layout->addLayout(form);
 
@@ -69,9 +74,10 @@ void addusersdialog::queryLstDoctorsSuccess(const QJsonArray & lst) {
 void addusersdialog::saveBtnClicked() {
     QString user_name = user_name_edit->text();
     QString pwd = pwd_edit->text();
+    int status = auth_box->currentIndex();
     qDebug() << users_lst << endl;
     if (!user_name.isEmpty() && !users_lst.contains(user_name)) {
-        proxymanager::instance()->getConfigProxy()->pushUser(user_name, pwd);
+        proxymanager::instance()->getConfigProxy()->pushUser(user_name, pwd, status);
         this->close();
     } else {
         QMessageBox::information(this, "Error",

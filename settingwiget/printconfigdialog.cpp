@@ -1,4 +1,4 @@
-#include "printconfigdialog.h"
+﻿#include "printconfigdialog.h"
 #include <QVBoxLayout>
 #include <QLineEdit>
 #include <QHBoxLayout>
@@ -7,6 +7,7 @@
 #include <QApplication>
 #include <QFile>
 #include <QTextStream>
+#include <QLabel>
 
 printconfigdialog::printconfigdialog() {
     this->setupSubviews();
@@ -22,6 +23,10 @@ QSize printconfigdialog::sizeHint() const {
 
 void printconfigdialog::setupSubviews() {
     main_layout = new QVBoxLayout;
+
+    QLabel* title = new QLabel(QStringLiteral("更新医院名称："));
+    title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    main_layout->addWidget(title);
 
     hos_name_edit = new QLineEdit;
     main_layout->addWidget(hos_name_edit);
