@@ -15,6 +15,7 @@
 #include <QDateTime>
 #include <QDateEdit>
 #include <QDateTimeEdit>
+#include <proxy/authproxy.h>
 
 const QString date_format = "MM-dd-yyyy";
 const QString date_time_format = "MM-dd-yyyy hh:mm";
@@ -37,8 +38,9 @@ void sampledetailwidget::setUpSubviews() {
     sample_section_edit = new QLineEdit;
     sample_query_doctor_edit = new QLineEdit;
     sample_pre_test_doctor_edit = new QLineEdit;
-    sample_testing_doctor_edit = new QLineEdit;
-    sample_post_test_doctor_edit = new QLineEdit;
+    sample_testing_doctor_edit = new QComboBox;
+    sample_post_test_doctor_edit = new QComboBox;
+    sample_post_test_doctor_edit->setEnabled(false);
 
 //    sample_start_date_edit = new QLineEdit;
 //    sample_pre_test_date_edit = new QLineEdit;
@@ -130,6 +132,10 @@ void sampledetailwidget::setUpSubviews() {
                      this, SLOT(queryPatientTypeSuccess(QJsonArray)));
     QObject::connect(proxymanager::instance()->getConfigProxy(), SIGNAL(querySampleResourceTypeSuccess(QJsonArray)),
                      this, SLOT(querySampleResourceTypeSuccess(QJsonArray)));
+    QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryAdjustDoctorSuccess(QVector<QString>)),
+                     this, SLOT(queryAdjustDoctorSuccess(QVector<QString>)));
+    QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryNormalDoctorSuccess(QVector<QString>)),
+                     this, SLOT(queryNormalDoctorSuccess(QVector<QString>)));
 }
 
 //QSize sampledetailwidget::sizeHint() const {
@@ -163,8 +169,8 @@ void sampledetailwidget::sampleBtnClick() {
 
         json.insert("query_doctor", sample_query_doctor_edit->text());
         json.insert("pre_test_doctor", sample_pre_test_doctor_edit->text());
-        json.insert("testing_doctor", sample_testing_doctor_edit->text());
-        json.insert("post_test_doctor", sample_post_test_doctor_edit->text());
+        json.insert("testing_doctor", sample_testing_doctor_edit->currentText());
+        json.insert("post_test_doctor", sample_post_test_doctor_edit->currentText());
 
         json.insert("section", sample_section_edit->text());
         json.insert("index", sample_index_edit->text().toInt());
@@ -300,11 +306,11 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
 
         sample_query_doctor_edit->setText(sample["query_doctor"].toString());
         sample_pre_test_doctor_edit->setText(sample["pre_test_doctor"].toString());
-        sample_testing_doctor_edit->setText(sample["testing_doctor"].toString());
-        sample_post_test_doctor_edit->setText(sample["post_test_doctor"].toString());
+        sample_testing_doctor_edit->setCurrentText(sample["testing_doctor"].toString());
+        sample_post_test_doctor_edit->setCurrentText(sample["post_test_doctor"].toString());
 
         sample_section_edit->setText(sample["section"].toString());
-        sample_index_edit->setText(sample["index"].toString());
+        sample_index_edit->setText(sample["index_of_day"].toString());
 
         {
             qlonglong n = sample["start_date"].toVariant().toLongLong();
@@ -378,10 +384,28 @@ void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & resul
     }
 }
 
+void sampledetailwidget::queryAdjustDoctorSuccess(const QVector<QString>& vec) {
+    sample_testing_doctor_edit->clear();
+    QVector<QString>::const_iterator iter = vec.begin();
+    for(; iter != vec.end(); ++iter) {
+        sample_testing_doctor_edit->addItem(*iter);
+    }
+}
+
+void sampledetailwidget::queryNormalDoctorSuccess(const QVector<QString>& vec) {
+    sample_post_test_doctor_edit->clear();
+    QVector<QString>::const_iterator iter = vec.begin();
+    for(; iter != vec.end(); ++iter) {
+        sample_post_test_doctor_edit->addItem(*iter);
+    }
+}
+
 void sampledetailwidget::showEvent(QShowEvent *) {
     sample_id_edit->setFocus();
     proxymanager::instance()->getConfigProxy()->querySampleResourceType();
     proxymanager::instance()->getConfigProxy()->queryPatientType();
+    proxymanager::instance()->getAuthProxy()->lstNormalDoctorsRemote();
+    proxymanager::instance()->getAuthProxy()->lstTestedDoctorsRemote();
 }
 
 void sampledetailwidget::clearContents() {

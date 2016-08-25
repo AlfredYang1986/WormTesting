@@ -22,6 +22,9 @@ protected Q_SLOTS:
     void searchBtnClicked();
     void sampleConditionSearchSuccess(const QJsonArray&);
 
+    void queryNormalDoctorSuccess(const QVector<QString>&);
+    void queryAdjustDoctorSuccess(const QVector<QString>&);
+
 protected:
     virtual void showEvent(QShowEvent *);
     virtual void hideEvent(QHideEvent *);

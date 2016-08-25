@@ -37,7 +37,7 @@ void imgcomparepane::setUpSubviews() {
                      this, SLOT(changeCurrentCamera(int)));
     title_layout->addWidget(box);
 
-    QPushButton* title_take_photo = new QPushButton(tr("抓图"));
+    title_take_photo = new QPushButton(tr("抓图"));
     QObject::connect(title_take_photo, SIGNAL(released()), this, SLOT(takeImage()));
     title_take_photo->setObjectName("title_take_photo");
     title_take_photo->setStyleSheet("QPushButton#title_take_photo {"
@@ -73,11 +73,13 @@ void imgcomparepane::imageStream(const QImage& image) {
 }
 
 void imgcomparepane::takeImage() {
+    title_take_photo->setEnabled(false);
     QImage* pImg = cameraproxy::instance()->takeImage();
     if (pImg) {
         emit takeImageSuccess(*pImg);
         delete(pImg);
     }
+    title_take_photo->setEnabled(true);
 }
 
 void imgcomparepane::clearPane() {

@@ -1,9 +1,12 @@
 ﻿#include "authproxy.h"
 #include <QMessageBox>
 
-authproxy::authproxy() {
+authproxy::authproxy() : isNeedRemoteNormalDoctors(true), isNeedRemoteAdjustDoctors(true) {
     http_connect = new QNetworkAccessManager(this);
     QObject::connect(http_connect,SIGNAL(finished(QNetworkReply*)), this, SLOT(replayFinished(QNetworkReply*)));
+
+    normal_doctors.clear();
+    adjust_doctors.clear();
 }
 
 authproxy::~authproxy() {
@@ -110,6 +113,62 @@ void authproxy::changePassword(const QString &password) {
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
+void authproxy::lstNormalDoctorsRemote() {
+    if (this->isNeedRemoteNormalDoctors) {
+        QUrl url = QString("http://localhost:9000/auth/doctors/lst");
+
+        QNetworkRequest request(url);
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        QJsonObject json;
+        json.insert("auth", 0);
+
+        QJsonDocument document;
+        document.setObject(json);
+        QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+        QNetworkReply* http_replay = http_connect->post(request , arr);
+
+        QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                         this, SLOT(networkError(QNetworkReply::NetworkError)));
+    } else {
+        emit this->queryNormalDoctorSuccess(this->normal_doctors);
+    }
+}
+
+void authproxy::lstTestedDoctorsRemote() {
+    if (this->isNeedRemoteAdjustDoctors) {
+
+        QUrl url = QString("http://localhost:9000/auth/doctors/lst");
+
+        QNetworkRequest request(url);
+        request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+
+        QJsonObject json;
+        json.insert("auth", 1);
+
+        QJsonDocument document;
+        document.setObject(json);
+        QByteArray arr = document.toJson(QJsonDocument::Compact);
+
+        QNetworkReply* http_replay = http_connect->post(request , arr);
+
+        QObject::connect(http_replay, SIGNAL(error(QNetworkReply::NetworkError)),
+                     this, SLOT(networkError(QNetworkReply::NetworkError)));
+    } else {
+        emit this->queryAdjustDoctorSuccess(this->adjust_doctors);
+    }
+
+}
+
+QVector<QString> authproxy::lstNormalDoctors() {
+    return normal_doctors;
+}
+
+QVector<QString> authproxy::lstTestedDoctors() {
+    return adjust_doctors;
+}
+
 void authproxy::replayFinished(QNetworkReply * result) {
     if (result->error() == 0) {
         QByteArray data = result->readAll();
@@ -128,6 +187,27 @@ void authproxy::replayFinished(QNetworkReply * result) {
 
                 } else if (method_name =="queryPatientType") {
 
+                } else if (method_name == "lstDoctor") {
+//                    int auth = obj["auth"];
+                    if (obj["auth"] == 0) {
+                        this->isNeedRemoteNormalDoctors = false;
+                        normal_doctors.clear();
+                        QJsonArray arr = obj["result"].toArray();
+                        QJsonArray::iterator iter = arr.begin();
+                        for (; iter != arr.end(); ++iter) {
+                            QString tmp = (*iter).toString();
+                            normal_doctors.push_back(tmp);
+                        }
+                    } else {
+                        this->isNeedRemoteAdjustDoctors = false;
+                        adjust_doctors.clear();
+                        QJsonArray arr = obj["result"].toArray();
+                        QJsonArray::iterator iter = arr.begin();
+                        for (; iter != arr.end(); ++iter) {
+                            QString tmp = (*iter).toString();
+                            adjust_doctors.push_back(tmp);
+                        }
+                    }
                 }
             }
          }
@@ -146,6 +226,11 @@ void authproxy::networkError(QNetworkReply::NetworkError error) {
     QObject::sender()->deleteLater();
 }
 
-void authproxy::currentAuthStatus() const {
+authproxy::AuthStatus authproxy::currentAuthStatus() const {
     return status;
+}
+
+void authproxy::setNeedRemoteLstDectro(bool b) {
+    isNeedRemoteAdjustDoctors = b;
+    isNeedRemoteNormalDoctors = b;
 }

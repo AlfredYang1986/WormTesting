@@ -6,6 +6,7 @@
 class QVBoxLayout;
 class QLabel;
 class QComboBox;
+class QPushButton;
 
 class imgcomparepane : public QFrame {
     Q_OBJECT
@@ -37,6 +38,7 @@ private:
     QLabel* photo_preview;
 
     QComboBox* box;
+    QPushButton* title_take_photo;
 };
 
 #endif // IMGCOMPAREPANE_H

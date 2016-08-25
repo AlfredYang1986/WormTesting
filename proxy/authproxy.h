@@ -3,12 +3,15 @@
 
 #include <QObject>
 #include <QtNetwork>
+#include <QJsonObject>
 
 class authproxy : public QObject {
     Q_OBJECT
 
 Q_SIGNALS:
     void loginSuccess();
+    void queryNormalDoctorSuccess(const QVector<QString>&);
+    void queryAdjustDoctorSuccess(const QVector<QString>&);
 //    void pushUserSuccess();
 //    void popUserSuccess();
 
@@ -35,12 +38,26 @@ public:
     void changeUserStatus(const QString& user_name, AuthStatus s);
     void changePassword(const QString& password);
 
+    QVector<QString> lstNormalDoctors();
+    QVector<QString> lstTestedDoctors();
+
+    void lstNormalDoctorsRemote();
+    void lstTestedDoctorsRemote();
+
     AuthStatus currentAuthStatus() const;
+//    bool isNeedRemoteLstDector() const;
+    void setNeedRemoteLstDectro(bool);
 private:
     QString current_user_name;
     AuthStatus status;
 
     QNetworkAccessManager* http_connect;
+
+    QVector<QString> normal_doctors;
+    QVector<QString> adjust_doctors;
+
+    bool isNeedRemoteNormalDoctors;
+    bool isNeedRemoteAdjustDoctors;
 };
 
 #endif // AUTHPROXY_H

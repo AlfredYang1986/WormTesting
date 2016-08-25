@@ -15,6 +15,8 @@
 #include "sampleresource/resourceproxy/resourceimportdialog.h"
 #include <QMessageBox>
 #include "printconfigdialog.h"
+#include "proxy/authproxy.h"
+#include "proxy/proxymanager.h"
 
 #define BTN_WIDTH	80
 
@@ -265,8 +267,15 @@ void settingmainwidget::showDeleteWormImgDialog() {
 }
 
 void settingmainwidget::showUserAddDialog() {
-    addusersdialog* dlg = new addusersdialog;
-    dlg->exec();
+
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() < authproxy::AuthStatus::Auth_admin) {
+        QMessageBox::warning(this, "Error",
+                             QStringLiteral("只有admin用户才有这个权限"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+    } else {
+        addusersdialog* dlg = new addusersdialog;
+        dlg->exec();
+    }
 }
 
 void settingmainwidget::showUserDeleteDialog() {

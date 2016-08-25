@@ -8,6 +8,7 @@
 #include "proxy/proxymanager.h"
 #include "proxy/wormproxy.h"
 #include "proxy/sampleproxy.h"
+#include "proxy/authproxy.h"
 #include <QDateEdit>
 
 reportsearchconditionwidget::reportsearchconditionwidget() {
@@ -90,6 +91,11 @@ void reportsearchconditionwidget::setUpSubviews() {
                         "}");
 
     QObject::connect(search_btn, SIGNAL(released()), this, SLOT(searchBtnClicked()));
+
+    QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryNormalDoctorSuccess(QVector<QString>)),
+                     this, SLOT(queryNormalDoctorSuccess(QVector<QString>)));
+    QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryAdjustDoctorSuccess(QVector<QString>)),
+                     this, SLOT(queryAdjustDoctorSuccess(QVector<QString>)));
 }
 
 
@@ -137,8 +143,12 @@ void reportsearchconditionwidget::pushConditions(QJsonObject & conditions) {
         conditions.insert("time", l + 1);
     }
 
+    if (testing_doctor_box->currentIndex() > 0) {
+        conditions.insert("testing_doctor", testing_doctor_box->currentText());
+    }
+
     if (doctor_box->currentIndex() > 0) {
-        conditions.insert("testing_doctor", doctor_box->currentText());
+        conditions.insert("post_test_doctor", doctor_box->currentText());
     }
 
     if (worm_box->currentIndex() > 0) {
@@ -166,4 +176,24 @@ void reportsearchconditionwidget::pushConditions(QJsonObject & conditions) {
 void reportsearchconditionwidget::sampleConditionSearchSuccess(const QJsonArray & result) {
     qDebug() << result << endl;
     emit sampleConditionSearchSuccessSignal(result);
+}
+
+void reportsearchconditionwidget::queryNormalDoctorSuccess(const QVector<QString>& vec) {
+    testing_doctor_box->clear();
+    testing_doctor_box->addItem("--------------");
+
+    QVector<QString>::const_iterator iter = vec.begin();
+    for (; iter != vec.end(); ++iter) {
+        testing_doctor_box->addItem(*iter);
+    }
+}
+
+void reportsearchconditionwidget::queryAdjustDoctorSuccess(const QVector<QString>& vec) {
+    doctor_box->clear();
+    doctor_box->addItem("--------------");
+
+    QVector<QString>::const_iterator iter = vec.begin();
+    for (; iter != vec.end(); ++iter) {
+        doctor_box->addItem(*iter);
+    }
 }
