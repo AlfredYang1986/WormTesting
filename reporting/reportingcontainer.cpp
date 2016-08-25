@@ -348,6 +348,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
 
 void reportingcontainer::testedWidgetClicked(const QModelIndex& index) {
     QJsonObject sample = vec_sample_tested.at(index.row()).toObject();
+    this->setCurrentReportingSample(sample);
 }
 
 QString reportingcontainer::htmlContent(QTextDocument& document) {
