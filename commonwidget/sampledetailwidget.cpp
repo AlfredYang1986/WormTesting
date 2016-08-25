@@ -310,7 +310,7 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
         sample_post_test_doctor_edit->setCurrentText(sample["post_test_doctor"].toString());
 
         sample_section_edit->setText(sample["section"].toString());
-        sample_index_edit->setText(sample["index_of_day"].toString());
+        sample_index_edit->setText(QString("%1").arg(sample["index_of_day"].toInt()));
 
         {
             qlonglong n = sample["start_date"].toVariant().toLongLong();
