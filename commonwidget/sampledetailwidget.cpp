@@ -384,7 +384,7 @@ void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & resul
     }
 }
 
-void sampledetailwidget::queryAdjustDoctorSuccess(const QVector<QString>& vec) {
+void sampledetailwidget::queryNormalDoctorSuccess(const QVector<QString>& vec) {
     sample_testing_doctor_edit->clear();
     QVector<QString>::const_iterator iter = vec.begin();
     for(; iter != vec.end(); ++iter) {
@@ -392,7 +392,7 @@ void sampledetailwidget::queryAdjustDoctorSuccess(const QVector<QString>& vec) {
     }
 }
 
-void sampledetailwidget::queryNormalDoctorSuccess(const QVector<QString>& vec) {
+void sampledetailwidget::queryAdjustDoctorSuccess(const QVector<QString>& vec) {
     sample_post_test_doctor_edit->clear();
     QVector<QString>::const_iterator iter = vec.begin();
     for(; iter != vec.end(); ++iter) {

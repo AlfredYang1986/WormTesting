@@ -100,7 +100,7 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     for(; iter != samples.end(); ++iter) {
         QJsonObject tmp = (*iter).toObject();
         QJsonObject patient = tmp["patient"].toObject();
-        not_test_sample->setItem(index, 0, new QTableWidgetItem(patient["patient_id"].toString()));
+        not_test_sample->setItem(index, 0, new QTableWidgetItem(patient["patient_fake_id"].toString()));
         not_test_sample->setItem(index, 1, new QTableWidgetItem(patient["patient_name"].toString()));
         not_test_sample->setItem(index, 2, new QTableWidgetItem(QString("%1").arg(patient["patient_age"].toInt())));
         not_test_sample->setItem(index, 3, new QTableWidgetItem(tmp["sample_id"].toString()));
@@ -141,7 +141,7 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
         QJsonObject patient = tmp["patient"].toObject();
 
         {
-            QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_id"].toString());
+            QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_fake_id"].toString());
             if (tmp["status"].toInt() == 1)
                 item1->setForeground(QBrush(QColor(255, 0, 0)));
             else

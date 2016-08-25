@@ -94,10 +94,15 @@ void cameraproxy::readFarme() {
 
 QImage* cameraproxy::takeImage() {
     if (canTakePic) {
+        timer->stop();
+
         IplImage* frame = cvQueryFrame(p);
         uchar *data;
         QImage* reVal = IplImageToQImage(frame, &data);
         //free(data);
+
+        timer->start();
+
         return reVal;
     } else {
         return NULL;
