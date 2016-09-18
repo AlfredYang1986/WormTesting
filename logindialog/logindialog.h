@@ -23,6 +23,8 @@ public:
 protected:
     virtual QSize sizeHint() const;
     void setUpSubview();
+
+    virtual void showEvent(QShowEvent *);
 };
 
 #endif // LOGINDIALOG_H

@@ -274,7 +274,7 @@ void starttestingpage::hideEvent(QHideEvent *) {
                      this, SLOT(queryPatientSuccess(const QJsonObject&)));
     cameraproxy::instance()->endTesting();
 
-    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }
 

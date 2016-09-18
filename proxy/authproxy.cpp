@@ -13,6 +13,12 @@ authproxy::~authproxy() {
 
 }
 
+void authproxy::signOutCurrentUser() {
+    this->current_user_name = "";
+    this->status = Auth_no_body;
+    emit signoutSuccess();
+}
+
 void authproxy::login(const QString &user_name, const QString &password) {
     QUrl url = QString("http://localhost:9000/auth/login");
 

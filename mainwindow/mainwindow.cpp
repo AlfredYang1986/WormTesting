@@ -66,6 +66,9 @@ void MainWindow::setUpSubviews() {
     this->createPushWidget();
 
     center_widget->setLayout(main_container);
+
+    QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(signoutSuccess()),
+                     this, SLOT(signoutSuccessSlot()));
 }
 
 void MainWindow::changeMainContent(const QString &title) {
@@ -331,6 +334,11 @@ bool MainWindow::isReadyToChangeMainWidget() {
 void MainWindow::loginSuccesSlot() {
     this->show();
     dlg->close();
+}
+
+void MainWindow::signoutSuccessSlot() {
+    qDebug() << "test " << endl;
+    this->showLoginDialog();
 }
 
 void MainWindow::showLoginDialog() {

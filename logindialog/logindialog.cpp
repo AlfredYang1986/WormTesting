@@ -109,3 +109,9 @@ void logindialog::loginBtnClicked() {
     else
         proxymanager::instance()->getAuthProxy()->login(user_name, password);
 }
+
+void logindialog::showEvent(QShowEvent *) {
+    user_name_edit->clear();
+    password_edit->clear();
+    user_name_edit->setFocus();
+}

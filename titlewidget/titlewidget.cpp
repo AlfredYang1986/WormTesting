@@ -5,6 +5,8 @@
 #include <QObject>
 #include <QDesktopServices>
 #include <QUrl>
+#include "proxy/proxymanager.h"
+#include "proxy/authproxy.h"
 
 class pred_btn_creator {
 public:
@@ -104,7 +106,12 @@ void titlewidget::setUpSubViews() {
     help_btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
     QObject::connect(help_btn, SIGNAL(didSelectTitle(const QString&)), this, SLOT(help_btn_click(QString)));
 
+    titlepushbutton* sign_out_btn = new titlepushbutton("help.png", QStringLiteral("退出登陆"));
+    sign_out_btn->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Preferred);
+    QObject::connect(sign_out_btn, SIGNAL(didSelectTitle(const QString&)), this, SLOT(sign_out_btn_click(QString)));
+
     main_layout->addWidget(help_btn);
+    main_layout->addWidget(sign_out_btn);
 
     this->setLayout(main_layout);
 
@@ -128,4 +135,8 @@ void titlewidget::changeCurrentIndex(int index) {
     std::for_each(menu_lst.begin(), menu_lst.end(), pred_btn_click());
     titlepushbutton* iter = menu_lst.at(index);
     iter->setChecked(true);
+}
+
+void titlewidget::sign_out_btn_click(const QString &) {
+    proxymanager::instance()->getAuthProxy()->signOutCurrentUser();
 }

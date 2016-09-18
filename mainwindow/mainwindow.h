@@ -28,6 +28,7 @@ public slots:
     void startCompare(const QString&);
 
     void loginSuccesSlot();
+    void signoutSuccessSlot();
 
 protected:
     void setUpSubviews();

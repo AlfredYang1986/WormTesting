@@ -96,6 +96,9 @@ void reportsearchconditionwidget::setUpSubviews() {
                      this, SLOT(queryNormalDoctorSuccess(QVector<QString>)));
     QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryAdjustDoctorSuccess(QVector<QString>)),
                      this, SLOT(queryAdjustDoctorSuccess(QVector<QString>)));
+
+    proxymanager::instance()->getAuthProxy()->lstNormalDoctorsRemote();
+    proxymanager::instance()->getAuthProxy()->lstTestedDoctorsRemote();
 }
 
 
@@ -110,6 +113,9 @@ void reportsearchconditionwidget::showEvent(QShowEvent *) {
 void reportsearchconditionwidget::hideEvent(QHideEvent *) {
     QObject::disconnect(proxymanager::instance()->getWormProxy(), SIGNAL(queryWormCatSuccess(QJsonObject)),
                      this, SLOT(queryWormCatSuccess(QJsonObject)));
+
+    QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(sampleConditionSearchSuccess(QJsonArray)),
+                     this, SLOT(sampleConditionSearchSuccess(QJsonArray)));
 }
 
 void  reportsearchconditionwidget::queryWormCatSuccess(const QJsonObject & cats) {

@@ -10,6 +10,7 @@ class authproxy : public QObject {
 
 Q_SIGNALS:
     void loginSuccess();
+    void signoutSuccess();
     void queryNormalDoctorSuccess(const QVector<QString>&);
     void queryAdjustDoctorSuccess(const QVector<QString>&);
 //    void pushUserSuccess();
@@ -21,6 +22,7 @@ protected Q_SLOTS:
 
 public:
     enum AuthStatus {
+        Auth_no_body = -1,
         Auth_testing_doctor = 0,
         Auth_post_test_doctor = 1,
         Auth_programer = 3,
@@ -32,6 +34,7 @@ public:
     authproxy();
     ~authproxy();
 
+    void signOutCurrentUser();
     void login(const QString& user_name, const QString& password);
     void pushUser(const QString& user_name, const QString& password, AuthStatus s);
     void popUser(const QString& user_name);
