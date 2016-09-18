@@ -37,6 +37,9 @@ void printpreviewdialog::setUpSubviews() {
 
         document = new QTextDocument;
         QString html = ((reportingcontainer*)this->parent())->htmlContent(*document);
+        if (html == "") {
+            this->close();
+        }
         document->setHtml(html);
 
         browser->setDocument(document);

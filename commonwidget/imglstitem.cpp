@@ -3,9 +3,11 @@
 #include <QPixmap>
 #include <QLabel>
 #include <QFileDialog>
+#include <QDebug>
+#include <QMessageBox>
 
 imglstitem::imglstitem(bool w, bool v)
-    : isWormImgItem(w), isVer(v) {
+    : isWormImgItem(w), isVer(v), select_able(false), selected(false) {
     this->setUpSubviews();
 }
 
@@ -47,14 +49,33 @@ void imglstitem::setUpSubviews() {
         save_as_btn->setIconSize(QSize(50, 30));
     }
 
+    {
+        selected_label = new QLabel;
+        selected_label->setFixedSize(50, 50);
+        selected_label->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
+        selected_label->clearMask();
+        selected_label->setBackgroundRole(QPalette::Base);
+        QPixmap m;
+        m.load(":resource/tick.png");
+        selected_label->setPixmap(m.scaled(50, 50));
+        selected_label->setHidden(true);
+    }
+
     //pic_preview = new QLabel;
 
     //pic_preview->setGeometry(0, 0, 280, 200);
     delect_btn->setGeometry(0, 0, 50, 30);
     save_as_btn->setGeometry(0, 35, 50, 30);
 
+    if (isVer)
+        selected_label->setGeometry(115, 75, 50, 50);
+    else
+        selected_label->setGeometry(45, 25, 50, 50);
+
+
     delect_btn->setParent(this);
     save_as_btn->setParent(this);
+    selected_label->setParent(this);
     //pic_preview->setParent(this);
 
     if (isWormImgItem) {
@@ -69,6 +90,26 @@ void imglstitem::setUpSubviews() {
 
     QObject::connect(save_as_btn, SIGNAL(released()), this, SLOT(saveAsBtnSelected()));
     QObject::connect(delect_btn, SIGNAL(released()), this, SLOT(delectBtnSelected_slot()));
+}
+
+void imglstitem::mouseDoubleClickEvent(QMouseEvent *) {
+    if (select_able) {
+
+        bool can = true;
+        emit canSelected(&can);
+
+        if (selected) {
+            selected = false;
+            selected_label->setHidden(true);
+        } else if (can) {
+            selected = true;
+            selected_label->setHidden(false);
+        } else {
+            QMessageBox::warning(this, "Error",
+                                 "智能选择一张或者两张图进行打印",
+                                 QMessageBox::Ok, QMessageBox::Ok);
+        }
+    }
 }
 
 void imglstitem::saveAsBtnSelected() {
@@ -106,4 +147,20 @@ void imglstitem::setCurrentPixmap(const QPixmap & m) {
 
 QPixmap imglstitem::getCurrentPixmap() const {
     return current_pixmap;
+}
+
+bool imglstitem::isSelected() const {
+    return selected;
+}
+
+void imglstitem::setSelected(bool b) {
+    selected = b;
+}
+
+bool imglstitem::isSelectAble() const {
+    return select_able;
+}
+
+void imglstitem::setSelectAble(bool b) {
+    select_able = b;
 }

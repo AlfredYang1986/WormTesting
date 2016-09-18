@@ -36,5 +36,6 @@
         <file>resource/aboutus.png</file>
         <file>resource/declearation</file>
         <file>resource/login_bkg.png</file>
+        <file>resource/tick.png</file>
     </qresource>
 </RCC>

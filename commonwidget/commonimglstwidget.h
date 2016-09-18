@@ -22,6 +22,8 @@ protected Q_SLOTS:
 
     void changeCurrentImage(const QPixmap*);
 
+    void canSelectedMore(bool*);
+
 protected:
     virtual void showEvent (QShowEvent* event);
     virtual void hideEvent(QHideEvent *event);
@@ -37,15 +39,16 @@ private:
 
     const bool isWormSample;
     const bool isVer;
+    const bool select_able;
 
     void moveToNextImage();
     void clearLabels();
 public:
-    commonimglstwidget(bool w = false, bool v = true);
+    commonimglstwidget(bool w = false, bool v = true, bool s = false);
     ~commonimglstwidget();
 
     void setUpSubviews();
-    void setUpSubviews2();
+//    void setUpSubviews2();
 
     virtual QSize sizeHint() const;
 
@@ -59,6 +62,8 @@ public:
     bool showOptBtns() const;
 
     QVector<QImage> getCurrentImages() const;
+    QVector<QImage> getCurrentSelectedImages() const;
+    int getCurrentSelectedImageCount() const;
 };
 
 #endif // COMMONIMGLSTWIDGET_H

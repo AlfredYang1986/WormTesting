@@ -13,6 +13,7 @@ Q_SIGNALS:
     void delectBtnSelected(const QString&);
 //    void saveAsBtnSelected(const QString&);
     void imageSelected(const QPixmap*);
+    void canSelected(bool* result);
 
 protected Q_SLOTS:
     void saveAsBtnSelected();
@@ -24,6 +25,7 @@ protected:
 private:
     QPushButton* delect_btn;
     QPushButton* save_as_btn;
+    QLabel* selected_label;
 
     QPixmap current_pixmap;
 
@@ -31,6 +33,9 @@ private:
 
     const bool isWormImgItem;
     const bool isVer;
+
+    bool selected;
+    bool select_able;
 public:
     imglstitem(bool w = false, bool v = true);
     ~imglstitem();
@@ -43,6 +48,14 @@ public:
 
     void setCurrentPixmap(const QPixmap&);
     QPixmap getCurrentPixmap() const;
+
+    bool isSelected() const;
+    void setSelected(bool b);
+
+    bool isSelectAble() const;
+    void setSelectAble(bool b);
+
+    virtual void mouseDoubleClickEvent(QMouseEvent * event);
 };
 
 #endif // IMGLSTITEM_H

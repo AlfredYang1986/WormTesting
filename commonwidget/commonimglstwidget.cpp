@@ -26,8 +26,8 @@ private:
     QString _cur;
 };
 
-commonimglstwidget::commonimglstwidget(bool w, bool v)
-    : isWormSample(w), isVer(v) {
+commonimglstwidget::commonimglstwidget(bool w, bool v, bool s)
+    : isWormSample(w), isVer(v), select_able(s) {
         this->setUpSubviews();
 }
 
@@ -114,6 +114,11 @@ void commonimglstwidget::downloadFileSuccess(const QByteArray& data, const QStri
                      this, SLOT(changeCurrentImage(const QPixmap*)));
     QObject::connect(tmp, SIGNAL(delectBtnSelected(QString)),
                      this, SLOT(deleteImageStart(QString)));
+
+    if (select_able) {
+        tmp->setSelectAble(select_able);
+        QObject::connect(tmp, SIGNAL(canSelected(bool*)), this, SLOT(canSelectedMore(bool*)));
+    }
 
     main_layout->insertWidget(0, tmp);
 //    main_layout->addWidget(tmp);
@@ -245,4 +250,38 @@ QVector<QImage> commonimglstwidget::getCurrentImages() const {
     }
 
     return result;
+}
+
+QVector<QImage> commonimglstwidget::getCurrentSelectedImages() const {
+    QVector<QImage> result;
+
+    QVector<imglstitem*>::const_iterator iter = img_lst.begin();
+    for (; iter != img_lst.end(); ++iter) {
+        imglstitem* tmp = (*iter);
+        if (tmp->isSelected() && tmp->isSelectAble())
+            result.push_back(tmp->getCurrentPixmap().toImage());
+    }
+
+    return result;
+}
+
+int commonimglstwidget::getCurrentSelectedImageCount() const {
+    int result = 0;
+
+    QVector<imglstitem*>::const_iterator iter = img_lst.begin();
+    for (; iter != img_lst.end(); ++iter) {
+        imglstitem* tmp = (*iter);
+        if (tmp->isSelected() && tmp->isSelectAble())
+            ++result;
+    }
+
+    return result;
+}
+
+void commonimglstwidget::canSelectedMore(bool * result) {
+    int count = this->getCurrentSelectedImageCount();
+    if (count < 2)
+        *result = true;
+    else
+        *result = false;
 }

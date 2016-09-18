@@ -99,7 +99,7 @@ void reportingcontainer::setUpSubviews() {
     area->setMaximumHeight(100);
     area->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
-    img_lst = new commonimglstwidget(false, false);
+    img_lst = new commonimglstwidget(false, false, true);
     //img_lst->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
     area->setWidget(img_lst);
 
@@ -353,9 +353,6 @@ void reportingcontainer::testedWidgetClicked(const QModelIndex& index) {
 
 QString reportingcontainer::htmlContent(QTextDocument& document) {
 
-    if (current_sample.isEmpty())
-        return "";
-
     QFile f(":/resource/print");
     if (f.open(QIODevice::OpenModeFlag::ReadOnly)) {
         QString html = f.readAll();
@@ -411,7 +408,8 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QString img_preffix = "<td>";
         QString img_suffix = "</td>";
 
-        QVector<QImage> vec_img = img_lst->getCurrentImages();
+//        QVector<QImage> vec_img = img_lst->getCurrentImages();
+        QVector<QImage> vec_img = img_lst->getCurrentSelectedImages();
         QVector<QImage>::iterator vec_img_iter = vec_img.begin();
         int index = 0;
         for (; vec_img_iter != vec_img.end(); ++ vec_img_iter) {
@@ -463,6 +461,20 @@ void reportingcontainer::changeReportingStatusInService() {
 }
 
 void reportingcontainer::printPreview() {
+
+    if (current_sample.isEmpty()) {
+        QMessageBox::warning(this, "Error",
+                             QStringLiteral("请选择特定sample在进行打印操作"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+
+    if (img_lst->getCurrentSelectedImageCount() == 0) {
+        QMessageBox::warning(this, "Error",
+                             QStringLiteral("请选择一张或者两张图片在进行打印操作"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
 
     if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() < authproxy::AuthStatus::Auth_post_test_doctor) {
         QMessageBox::warning(this, "Error",
