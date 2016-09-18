@@ -30,7 +30,7 @@ public Q_SLOTS:
     void queryNormalDoctorSuccess(const QVector<QString>&);
 
 public:
-    sampledetailwidget();
+    sampledetailwidget(bool complusory = false);
     ~sampledetailwidget();
 
     void setUpSubviews();
@@ -81,6 +81,8 @@ private:
     QLineEdit* patient_section_bed_id_edit;
 
     QFormLayout* main_layout;
+
+    const bool _complusory;
 };
 
 #endif // SAMPLEDETAILWIDGET_H

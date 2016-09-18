@@ -37,7 +37,7 @@ void pushwidget::setUpSubviews() {
     QScrollArea* area = new QScrollArea;
     area->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
-    sample_detail_widget = new sampledetailwidget();
+    sample_detail_widget = new sampledetailwidget(true);
     sample_detail_widget->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
     area->setWidget(sample_detail_widget);

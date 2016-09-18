@@ -20,7 +20,7 @@
 const QString date_format = "MM-dd-yyyy";
 const QString date_time_format = "MM-dd-yyyy hh:mm";
 
-sampledetailwidget::sampledetailwidget() {
+sampledetailwidget::sampledetailwidget(bool c) : _complusory(c) {
     this->setUpSubviews();
 }
 
@@ -138,30 +138,7 @@ void sampledetailwidget::setUpSubviews() {
     QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryNormalDoctorSuccess(QVector<QString>)),
                      this, SLOT(queryNormalDoctorSuccess(QVector<QString>)));
 
-    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() == authproxy::AuthStatus::Auth_testing_doctor) {
-//        sample_id_edit->clear();
-        sample_resource_box->setEnabled(false);
-        sample_index_edit->setEnabled(false);
-        sample_section_edit->setEnabled(false);
-        sample_query_doctor_edit->setEnabled(false);
-        sample_pre_test_doctor_edit->setEnabled(false);
-        sample_testing_doctor_edit->setEnabled(false);
-        sample_post_test_doctor_edit->setEnabled(false);
-        sample_start_date_edit->setEnabled(false);
-        sample_end_date_edit->setEnabled(false);
-        sample_testing_date_edit->setEnabled(false);
-        sample_reporting_date_edit->setEnabled(false);
-        sample_pre_test_date_edit->setEnabled(false);
 
-        patient_id_edit->setEnabled(false);
-        patient_type->setEnabled(false);
-        patient_name_edit->setEnabled(false);
-        patient_gender_box->setEnabled(false);
-        patient_age_edit->setEnabled(false);
-        patient_section_edit->setEnabled(false);
-        patient_section_id_edit->setEnabled(false);
-        patient_section_bed_id_edit->setEnabled(false);
-    }
 }
 
 //QSize sampledetailwidget::sizeHint() const {
@@ -432,6 +409,33 @@ void sampledetailwidget::showEvent(QShowEvent *) {
     proxymanager::instance()->getConfigProxy()->queryPatientType();
     proxymanager::instance()->getAuthProxy()->lstNormalDoctorsRemote();
     proxymanager::instance()->getAuthProxy()->lstTestedDoctorsRemote();
+
+    qDebug() << proxymanager::instance()->getAuthProxy()->currentAuthStatus() << endl;
+
+    if (!_complusory && proxymanager::instance()->getAuthProxy()->currentAuthStatus() == authproxy::AuthStatus::Auth_testing_doctor) {
+//        sample_id_edit->clear();
+        sample_resource_box->setEnabled(false);
+        sample_index_edit->setEnabled(false);
+        sample_section_edit->setEnabled(false);
+        sample_query_doctor_edit->setEnabled(false);
+        sample_pre_test_doctor_edit->setEnabled(false);
+        sample_testing_doctor_edit->setEnabled(false);
+        sample_post_test_doctor_edit->setEnabled(false);
+        sample_start_date_edit->setEnabled(false);
+        sample_end_date_edit->setEnabled(false);
+        sample_testing_date_edit->setEnabled(false);
+        sample_reporting_date_edit->setEnabled(false);
+        sample_pre_test_date_edit->setEnabled(false);
+
+        patient_id_edit->setEnabled(false);
+        patient_type->setEnabled(false);
+        patient_name_edit->setEnabled(false);
+        patient_gender_box->setEnabled(false);
+        patient_age_edit->setEnabled(false);
+        patient_section_edit->setEnabled(false);
+        patient_section_id_edit->setEnabled(false);
+        patient_section_bed_id_edit->setEnabled(false);
+    }
 }
 
 void sampledetailwidget::clearContents() {

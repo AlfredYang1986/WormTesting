@@ -80,7 +80,7 @@ void authproxy::changeUserStatus(const QString &user_name, AuthStatus s) {
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-    json.insert("username_name", user_name);
+    json.insert("user_name", user_name);
     json.insert("auth", s);
 
     QJsonDocument document;
