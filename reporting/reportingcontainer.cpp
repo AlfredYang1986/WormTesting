@@ -502,7 +502,7 @@ void reportingcontainer::printPreview() {
 
 bool reportingcontainer::hasAuthToPrint() const {
     if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() > authproxy::AuthStatus::Auth_testing_doctor ||
-            current_sample["status"] > 1) {
+            current_sample["status"].toInt() > 1) {
         return true;
     } else {
         return false;
