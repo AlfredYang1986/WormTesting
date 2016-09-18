@@ -465,11 +465,13 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
 }
 
 void reportingcontainer::changeReportingStatusInService() {
+
     QJsonObject a;
     QDateTime reporting_time = QDateTime::currentDateTime();
     a.insert("reporting_date", reporting_time.toMSecsSinceEpoch());
     a.insert("status", 2);
     a.insert("sample_id", current_sample["sample_id"].toString());
+    a.insert("post_test_doctor", proxymanager::instance()->getAuthProxy()->current_user_name);
 
     proxymanager::instance()->getSampleProxy()->pushOrUpdateSample(a);
 }

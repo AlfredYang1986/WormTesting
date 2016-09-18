@@ -54,10 +54,10 @@ private:
     QLineEdit* sample_section_edit;
     QLineEdit* sample_query_doctor_edit;
     QLineEdit* sample_pre_test_doctor_edit;
-//    QLineEdit* sample_testing_doctor_edit;
-    QComboBox* sample_testing_doctor_edit;
-//    QLineEdit* sample_post_test_doctor_edit;
-    QComboBox* sample_post_test_doctor_edit;
+    QLineEdit* sample_testing_doctor_edit;
+//    QComboBox* sample_testing_doctor_edit;
+    QLineEdit* sample_post_test_doctor_edit;
+//    QComboBox* sample_post_test_doctor_edit;
 
 //    QLineEdit* sample_start_date_edit;
 //    QLineEdit* sample_end_date_edit;

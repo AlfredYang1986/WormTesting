@@ -47,8 +47,9 @@ public:
     AuthStatus currentAuthStatus() const;
 //    bool isNeedRemoteLstDector() const;
     void setNeedRemoteLstDectro(bool);
-private:
+
     QString current_user_name;
+private:
     AuthStatus status;
 
     QNetworkAccessManager* http_connect;

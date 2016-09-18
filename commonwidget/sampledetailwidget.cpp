@@ -38,8 +38,9 @@ void sampledetailwidget::setUpSubviews() {
     sample_section_edit = new QLineEdit;
     sample_query_doctor_edit = new QLineEdit;
     sample_pre_test_doctor_edit = new QLineEdit;
-    sample_testing_doctor_edit = new QComboBox;
-    sample_post_test_doctor_edit = new QComboBox;
+    sample_testing_doctor_edit = new QLineEdit;
+    sample_testing_doctor_edit->setEnabled(false);
+    sample_post_test_doctor_edit = new QLineEdit;
     sample_post_test_doctor_edit->setEnabled(false);
 
 //    sample_start_date_edit = new QLineEdit;
@@ -194,8 +195,8 @@ void sampledetailwidget::sampleBtnClick() {
 
         json.insert("query_doctor", sample_query_doctor_edit->text());
         json.insert("pre_test_doctor", sample_pre_test_doctor_edit->text());
-        json.insert("testing_doctor", sample_testing_doctor_edit->currentText());
-        json.insert("post_test_doctor", sample_post_test_doctor_edit->currentText());
+        json.insert("testing_doctor", sample_testing_doctor_edit->text());
+        json.insert("post_test_doctor", sample_post_test_doctor_edit->text());
 
         json.insert("section", sample_section_edit->text());
         json.insert("index", sample_index_edit->text().toInt());
@@ -331,8 +332,8 @@ void sampledetailwidget::querySampleSuccess(const QJsonObject& sample) {
 
         sample_query_doctor_edit->setText(sample["query_doctor"].toString());
         sample_pre_test_doctor_edit->setText(sample["pre_test_doctor"].toString());
-        sample_testing_doctor_edit->setCurrentText(sample["testing_doctor"].toString());
-        sample_post_test_doctor_edit->setCurrentText(sample["post_test_doctor"].toString());
+        sample_testing_doctor_edit->setText(sample["testing_doctor"].toString());
+        sample_post_test_doctor_edit->setText(sample["post_test_doctor"].toString());
 
         sample_section_edit->setText(sample["section"].toString());
         sample_index_edit->setText(QString("%1").arg(sample["index_of_day"].toInt()));
@@ -409,20 +410,20 @@ void sampledetailwidget::querySampleResourceTypeSuccess(const QJsonArray & resul
     }
 }
 
-void sampledetailwidget::queryNormalDoctorSuccess(const QVector<QString>& vec) {
-    sample_testing_doctor_edit->clear();
-    QVector<QString>::const_iterator iter = vec.begin();
-    for(; iter != vec.end(); ++iter) {
-        sample_testing_doctor_edit->addItem(*iter);
-    }
+void sampledetailwidget::queryNormalDoctorSuccess(const QVector<QString>& ) {
+//    sample_testing_doctor_edit->clear();
+//    QVector<QString>::const_iterator iter = vec.begin();
+//    for(; iter != vec.end(); ++iter) {
+//        sample_testing_doctor_edit->addItem(*iter);
+//    }
 }
 
-void sampledetailwidget::queryAdjustDoctorSuccess(const QVector<QString>& vec) {
-    sample_post_test_doctor_edit->clear();
-    QVector<QString>::const_iterator iter = vec.begin();
-    for(; iter != vec.end(); ++iter) {
-        sample_post_test_doctor_edit->addItem(*iter);
-    }
+void sampledetailwidget::queryAdjustDoctorSuccess(const QVector<QString>& ) {
+//    sample_post_test_doctor_edit->clear();
+//    QVector<QString>::const_iterator iter = vec.begin();
+//    for(; iter != vec.end(); ++iter) {
+//        sample_post_test_doctor_edit->addItem(*iter);
+//    }
 }
 
 void sampledetailwidget::showEvent(QShowEvent *) {

@@ -1,6 +1,7 @@
 ﻿#include "sampleproxy.h"
 #include "fileoptproxy.h"
 #include "proxymanager.h"
+#include "authproxy.h"
 #include <iostream>
 #include <QtGui>
 #include <QMessageBox>
@@ -57,7 +58,7 @@ void sampleproxy::updateSample(const QString& sample_id, const QString& patient_
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
-    json.insert("samplek_id", sample_id);
+    json.insert("sample_id", sample_id);
 
     if (!patient_id.isEmpty())
         json.insert("patient_id", patient_id);
@@ -118,8 +119,8 @@ void sampleproxy::pushSampleImage(const QString& sample_id, const QString& image
                      this, SLOT(networkError(QNetworkReply::NetworkError)));
 }
 
-void sampleproxy::selectSampleImage(const QString& sample_id, const QString& image_name) {
-    sample_id, image_name;
+void sampleproxy::selectSampleImage(const QString& , const QString& ) {
+
 }
 
 void sampleproxy::queryNotTestSample() {
@@ -188,7 +189,10 @@ void sampleproxy::sampleTestComplished(const QString &sample_id) {
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
 
     QJsonObject json;
+    QDateTime testing_date = QDateTime::currentDateTime();
+    json.insert("testing_date", testing_date.toMSecsSinceEpoch());
     json.insert("sample_id", sample_id);
+    json.insert("testing_doctor", proxymanager::instance()->getAuthProxy()->current_user_name);
 
     QJsonDocument document;
     document.setObject(json);
@@ -278,6 +282,9 @@ void sampleproxy::replayFinished(QNetworkReply* result) {
                 } else if (method_name == "sampleConditionSearch") {
                     QJsonArray arr = obj["result"].toArray();
                     emit sampleConditionSearchSuccess(arr);
+                } else if (method_name == "sampleTestComplished") {
+                    QJsonObject tmp = obj["result"].toObject();
+                    emit updateSampleSuccess(tmp);
                 }
              }
          }

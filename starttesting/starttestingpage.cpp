@@ -250,6 +250,9 @@ void starttestingpage::showEvent(QShowEvent *) {
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
     QObject::connect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
                      this, SLOT(queryPatientSuccess(const QJsonObject&)));
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }
 
 void starttestingpage::hideEvent(QHideEvent *) {
@@ -270,6 +273,9 @@ void starttestingpage::hideEvent(QHideEvent *) {
     QObject::disconnect(proxymanager::instance()->getPatientProxy(), SIGNAL(queryPatientSuccess(const QJsonObject&)),
                      this, SLOT(queryPatientSuccess(const QJsonObject&)));
     cameraproxy::instance()->endTesting();
+
+    QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
+                     this, SLOT(querySampleWithIDSuccess(QJsonObject)));
 }
 
 starttestingpage::TestStatus starttestingpage::currentStatus() const {
