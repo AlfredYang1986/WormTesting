@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include "proxy/configproxy.h"
 #include "proxy/proxymanager.h"
+#include "proxy/authproxy.h"
 #include <QMessageBox>
 #include <QComboBox>
 
@@ -28,8 +29,15 @@ void addusersdialog::setUpSubviews() {
     pwd_edit = new QLineEdit;
     pwd_edit->setEchoMode(QLineEdit::Password);
     auth_box = new QComboBox;
-    auth_box->addItem(QStringLiteral("普通医生"));
-    auth_box->addItem(QStringLiteral("检测医生"));
+
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() == authproxy::AuthStatus::Auth_post_test_doctor) {
+        auth_box->addItem(QStringLiteral("普通医生"));
+        auth_box->setEnabled(false);
+
+    } else if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() > authproxy::AuthStatus::Auth_post_test_doctor) {
+        auth_box->addItem(QStringLiteral("普通医生"));
+        auth_box->addItem(QStringLiteral("检测医生"));
+    }
 
     QFormLayout* form = new QFormLayout;
     form->addRow(QStringLiteral("用户名:"), user_name_edit);

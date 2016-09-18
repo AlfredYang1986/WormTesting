@@ -62,7 +62,11 @@ void reportingcontainer::setUpSubviews() {
 
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
-    QPushButton* save_btn = new QPushButton(QStringLiteral("保存"));
+    QPushButton* post_test_btn = new QPushButton(QStringLiteral("审核"));
+    QObject::connect(post_test_btn, SIGNAL(released()), this, SLOT(postTestResult()));
+    btn_layout->addWidget(post_test_btn);
+
+    QPushButton* save_btn = new QPushButton(QStringLiteral("修改"));
     QObject::connect(save_btn, SIGNAL(released()), this, SLOT(saveTestResult()));
     btn_layout->addWidget(save_btn);
 
@@ -85,7 +89,6 @@ void reportingcontainer::setUpSubviews() {
 //    reporting_img = new reportingimgpane;
 //    reporting_img->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
 //	main_layout->addWidget(reporting_img);
-
 
     QVBoxLayout* right_layout = new QVBoxLayout;
 
@@ -151,6 +154,7 @@ void reportingcontainer::setUpSubviews() {
                             "border: 1px solid #1bd7ff;"
                             "margin-bottom: 8px;"
                         "}");
+
 }
 
 QSize reportingcontainer::sizeHint() const {
@@ -242,6 +246,16 @@ void reportingcontainer::saveTestResult() {
     QString sample_id = sample_detail->queryCurrentSampleId();
     QVector<QString> result = reporting_detail->getTestItemResults();
     proxymanager::instance()->getSampleProxy()->pushReportingTestResult(sample_id, result);
+}
+
+void reportingcontainer::postTestResult() {
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() == authproxy::AuthStatus::Auth_testing_doctor) {
+        QMessageBox::warning(this, "Error",
+                             QStringLiteral("普通测试医生没有这个权限"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+    } else {
+        this->changeReportingStatusInService();
+    }
 }
 
 void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
@@ -483,5 +497,14 @@ void reportingcontainer::printPreview() {
     } else {
         printpreviewdialog* dlg = new printpreviewdialog(this);
         dlg->exec();
+    }
+}
+
+bool reportingcontainer::hasAuthToPrint() const {
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() > authproxy::AuthStatus::Auth_testing_doctor ||
+            current_sample["status"] > 1) {
+        return true;
+    } else {
+        return false;
     }
 }

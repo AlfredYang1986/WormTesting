@@ -268,9 +268,10 @@ void settingmainwidget::showDeleteWormImgDialog() {
 
 void settingmainwidget::showUserAddDialog() {
 
-    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() < authproxy::AuthStatus::Auth_admin) {
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() == authproxy::AuthStatus::Auth_testing_doctor) {
+//    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() < authproxy::AuthStatus::Auth_admin) {
         QMessageBox::warning(this, "Error",
-                             QStringLiteral("只有admin用户才有这个权限"),
+                             QStringLiteral("普通测试医生没有这个权限"),
                              QMessageBox::Ok, QMessageBox::Ok);
     } else {
         addusersdialog* dlg = new addusersdialog;

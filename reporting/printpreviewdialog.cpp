@@ -68,43 +68,59 @@ void printpreviewdialog::setUpSubviews() {
 
 void printpreviewdialog::printReport() {
 
-    QPrinterInfo printerInfo = QPrinterInfo::defaultPrinter();
+    if (((reportingcontainer*)this->parent())->hasAuthToPrint()) {
 
-    QPrinter * pPrinter = 0;
-    if ( !printerInfo.isNull() )
-        pPrinter = new QPrinter(printerInfo, QPrinter::ScreenResolution);
-    else {
+        QPrinterInfo printerInfo = QPrinterInfo::defaultPrinter();
+
+        QPrinter * pPrinter = 0;
+        if ( !printerInfo.isNull() )
+            pPrinter = new QPrinter(printerInfo, QPrinter::ScreenResolution);
+        else {
+            QMessageBox::warning(this, "error",
+                                 QStringLiteral("没有有效的打印机"),
+                                 QMessageBox::Ok, QMessageBox::Ok);
+            return;
+        }
+
+        if ( pPrinter && pPrinter->isValid() ) {
+           QPrintDialog dlg(pPrinter);
+           dlg.setOptions(QAbstractPrintDialog::None);
+
+           document->print(pPrinter);
+           ((reportingcontainer*)this->parent())->changeReportingStatusInService();
+           delete pPrinter;
+       }
+    } else {
         QMessageBox::warning(this, "error",
-                             QStringLiteral("没有有效的打印机"),
-                             QMessageBox::Ok, QMessageBox::Ok);
-        return;
-    }
+                            QStringLiteral("没有权限执行打印操作"),
+                            QMessageBox::Ok, QMessageBox::Ok);
 
-    if ( pPrinter && pPrinter->isValid() ) {
-        QPrintDialog dlg(pPrinter);
-        dlg.setOptions(QAbstractPrintDialog::None);
-
-        document->print(pPrinter);
-        ((reportingcontainer*)this->parent())->changeReportingStatusInService();
-        delete pPrinter;
     }
 }
 
 void printpreviewdialog::printReportPDF() {
-    QString filename = QFileDialog::getSaveFileName((QWidget*)this->parent(), "Save File", "", "Adobe PDF Files (*.pdf)");
-    if (filename.trimmed() == "") {
-        return;
+
+    if (((reportingcontainer*)this->parent())->hasAuthToPrint()) {
+        QString filename = QFileDialog::getSaveFileName((QWidget*)this->parent(), "Save File", "", "Adobe PDF Files (*.pdf)");
+        if (filename.trimmed() == "") {
+            return;
+        }
+
+        QPrinter  printer;
+        printer.setPageSize(QPrinter::A4);
+        printer.setOutputFormat(QPrinter::PdfFormat);
+        printer.setOutputFileName(filename);
+
+    //    QTextDocument textDocument;
+    //    QString html = ((reportingcontainer*)this->parent())->htmlContent(document);
+    //    textDocument.setHtml(html);
+    //    textDocument.print(&printer);
+        document->print(&printer);
+        ((reportingcontainer*)this->parent())->changeReportingStatusInService();
+
+    } else {
+        QMessageBox::warning(this, "error",
+                            QStringLiteral("没有权限执行打印操作"),
+                            QMessageBox::Ok, QMessageBox::Ok);
     }
-
-    QPrinter  printer;
-    printer.setPageSize(QPrinter::A4);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName(filename);
-
-//    QTextDocument textDocument;
-//    QString html = ((reportingcontainer*)this->parent())->htmlContent(document);
-//    textDocument.setHtml(html);
-//    textDocument.print(&printer);
-    document->print(&printer);
-    ((reportingcontainer*)this->parent())->changeReportingStatusInService();
 }

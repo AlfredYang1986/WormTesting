@@ -240,6 +240,14 @@ void MainWindow::changeMainContent(const QString &title) {
  }
 
 void MainWindow::createSettingWidget() {
+
+    if (proxymanager::instance()->getAuthProxy()->currentAuthStatus() == authproxy::AuthStatus::Auth_testing_doctor) {
+        QMessageBox::warning(this, "Error",
+                             QStringLiteral("普通测试医生没有这个权限"),
+                             QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+
     map<QString, QFrame*>::iterator iter = contents.begin();
     for (; iter != contents.end(); ++iter) {
         QFrame* tmp = (*iter).second;
@@ -248,6 +256,7 @@ void MainWindow::createSettingWidget() {
     }
 
     QFrame* tmp = contents[QStringLiteral("系统设置")];
+
     if (tmp == NULL) {
         QFrame* content_widget = new settingmainwidget;
         content_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);

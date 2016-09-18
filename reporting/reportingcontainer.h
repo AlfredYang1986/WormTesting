@@ -29,6 +29,7 @@ protected Q_SLOTS:
     void querySampleWithIDSuccess(const QJsonObject&);
 
     void saveTestResult();
+    void postTestResult();
 
     void testedWidgetClicked(const QModelIndex&);
     void queryTesetedSamples(const QJsonArray&);
@@ -51,6 +52,7 @@ public:
 
     QString htmlContent(QTextDocument& document);
     void changeReportingStatusInService();
+    bool hasAuthToPrint() const;
 protected:
     void setUpSubviews();
 
