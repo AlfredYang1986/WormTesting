@@ -1,4 +1,4 @@
-#include "mainwindow/mainwindow.h"
+﻿#include "mainwindow/mainwindow.h"
 #include <QApplication>
 #include <QSplashScreen>
 #include <QTime>
@@ -9,7 +9,7 @@
 #include <QDebug>
 #include <QMessageBox>
 
-bool startService(const QProcess&, const QString&);
+bool startService(QProcess&, const QString&);
 
 int main(int argc, char *argv[])
 {
@@ -27,6 +27,8 @@ int main(int argc, char *argv[])
     libpath << BKE_CURRENT_DIR;
     libpath << QApplication::libraryPaths();
     QApplication::setLibraryPaths(libpath) ;
+
+    QString service_dir = BKE_CURRENT_DIR + QString::fromLocal8Bit("/WormTestService");
     //=========================
 
     QApplication a(argc, argv);
@@ -45,7 +47,7 @@ int main(int argc, char *argv[])
 //    logindialog* dlg = new logindialog;
 //    splash->finish(dlg);
 
-    if (startService(BKE_CURRENT_DIR)) {
+    if (startService(proc, service_dir)) {
         MainWindow w;
         w.showLoginDialog();
     //    dlg->show();
@@ -57,19 +59,25 @@ int main(int argc, char *argv[])
     }
 }
 
-bool startService(const QProcess& proc, const QString& dir) {
+bool startService(QProcess& proc, const QString& dir) {
     QStringList arguments;
 
-    qDebug() << dir + "/a.sh" << endl;
-    arguments << dir + "/a.sh";
+    qDebug() << dir << endl;
+    QString tmp = dir;
+    std::replace(tmp.begin(), tmp.end(), '/', '\\');
+    qDebug() << tmp << endl;
+//    proc.setWorkingDirectory("C:\\Users\\Alfred Yang\\Desktop\\WormTestService");
+    proc.setWorkingDirectory(tmp);
+    arguments << "/C" << "a.bat";
+//    arguments << "play" << "start";
 //    proc.start("/usr/local/play/play", arguments);
-    proc.start("sh", arguments);
+    proc.start("cmd.exe", arguments);
 
     // 等待进程启动
     if (!proc.waitForStarted()) {
-        qDebug() << "启动失败\n";
+        qDebug() << QStringLiteral("启动失败\n");
         QMessageBox::warning(NULL, "Error",
-                             QStringLiteral(""),
+                             QStringLiteral("启动失败"),
                              QMessageBox::Ok, QMessageBox::Ok);
         return false;
     }
