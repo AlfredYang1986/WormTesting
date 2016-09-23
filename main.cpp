@@ -5,9 +5,15 @@
 #include "logindialog/logindialog.h"
 #include <QTextCodec>
 #include <QFileInfo>
+#include <QProcess>
+#include <QDebug>
+#include <QMessageBox>
+
+bool startService(const QProcess&, const QString&);
 
 int main(int argc, char *argv[])
 {
+    QProcess proc;
 
     //path ============info@seatrix.com
     QTextCodec *xcodec = QTextCodec::codecForLocale();
@@ -39,11 +45,48 @@ int main(int argc, char *argv[])
 //    logindialog* dlg = new logindialog;
 //    splash->finish(dlg);
 
-    MainWindow w;
-    w.showLoginDialog();
-//    dlg->show();
-//    w.show();
-    splash->finish(&w);
+    if (startService(BKE_CURRENT_DIR)) {
+        MainWindow w;
+        w.showLoginDialog();
+    //    dlg->show();
+    //    w.show();
+        splash->finish(&w);
+        return a.exec();
+    } else {
+        exit(-1);
+    }
+}
 
-    return a.exec();
+bool startService(const QProcess& proc, const QString& dir) {
+    QStringList arguments;
+
+    qDebug() << dir + "/a.sh" << endl;
+    arguments << dir + "/a.sh";
+//    proc.start("/usr/local/play/play", arguments);
+    proc.start("sh", arguments);
+
+    // 等待进程启动
+    if (!proc.waitForStarted()) {
+        qDebug() << "启动失败\n";
+        QMessageBox::warning(NULL, "Error",
+                             QStringLiteral(""),
+                             QMessageBox::Ok, QMessageBox::Ok);
+        return false;
+    }
+
+    // 关闭写通道,因为没有向进程写数据,没用到
+    proc.closeWriteChannel();
+
+    // 用于保存进程的控制台输出
+    QByteArray procOutput;
+    // 等待进程结束
+    while (false == proc.waitForFinished()) {
+        ;
+    }
+
+    // 读取进程输出到控制台的数据
+    procOutput = proc.readAll();
+    // 输出读到的数据
+    qDebug() << procOutput.data() << endl;
+    return true;
 }

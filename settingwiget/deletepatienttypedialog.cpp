@@ -24,7 +24,7 @@ void deletepatienttypedialog::setUpSubviews() {
     patient_box = new QComboBox;
 
     QFormLayout* content_layout = new QFormLayout;
-    content_layout->addRow("删除病人来源", patient_box);
+    content_layout->addRow("删除病人类型", patient_box);
 
     QHBoxLayout* btns_layout = new QHBoxLayout;
     btns_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));

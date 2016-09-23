@@ -25,7 +25,7 @@ void addpatienttypedialog::setUpSubviews() {
     patient_edit = new QLineEdit;
 
     QFormLayout* content_layout = new QFormLayout;
-    content_layout->addRow(QStringLiteral("添加病人来源"), patient_edit);
+    content_layout->addRow(QStringLiteral("添加病人类型"), patient_edit);
 
     QHBoxLayout* btns_layout = new QHBoxLayout;
     btns_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));

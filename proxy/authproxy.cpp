@@ -1,7 +1,7 @@
 ﻿#include "authproxy.h"
 #include <QMessageBox>
 
-authproxy::authproxy() : isNeedRemoteNormalDoctors(true), isNeedRemoteAdjustDoctors(true) {
+authproxy::authproxy() : isNeedRemoteNormalDoctors(true), isNeedRemoteAdjustDoctors(true), status(Auth_no_body), current_user_name("") {
     http_connect = new QNetworkAccessManager(this);
     QObject::connect(http_connect,SIGNAL(finished(QNetworkReply*)), this, SLOT(replayFinished(QNetworkReply*)));
 

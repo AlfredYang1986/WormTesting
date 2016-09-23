@@ -25,7 +25,7 @@ void addsampleresourcedialog::setUpSubviews() {
     resource_edit = new QLineEdit;
 
     QFormLayout* content_layout = new QFormLayout;
-    content_layout->addRow(QStringLiteral("添加样本来源"), resource_edit);
+    content_layout->addRow(QStringLiteral("添加样本类型"), resource_edit);
 
     QHBoxLayout* btns_layout = new QHBoxLayout;
     btns_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));

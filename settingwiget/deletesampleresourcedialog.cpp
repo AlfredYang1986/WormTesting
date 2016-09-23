@@ -24,7 +24,7 @@ void deletesampleresourcedialog::setUpSubviews() {
     resource_box = new QComboBox;
 
     QFormLayout* content_layout = new QFormLayout;
-    content_layout->addRow("删除样本来源", resource_box);
+    content_layout->addRow("删除样本类型", resource_box);
 
     QHBoxLayout* btns_layout = new QHBoxLayout;
     btns_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
