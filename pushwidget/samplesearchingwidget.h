@@ -25,6 +25,7 @@ protected Q_SLOTS:
 
 protected:
     virtual void showEvent(QShowEvent *);
+    void setColorForItem(QTableWidgetItem* item, const int s);
 
 private:
     QVBoxLayout*  main_layout;

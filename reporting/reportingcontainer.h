@@ -51,7 +51,8 @@ public:
     void setCurrentReportingSample(const QJsonObject& sample);
 
     QString htmlContent(QTextDocument& document);
-    void changeReportingStatusInService();
+    void changeReportingStatusToPrinted();
+    void changeReportingStatusToAdjusted();
     bool hasAuthToPrint() const;
 protected:
     void setUpSubviews();

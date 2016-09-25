@@ -118,6 +118,23 @@ void samplesearchingwidget::queryNotTestSamples(const QJsonArray& samples) {
     vec_sample_not_test = samples;
 }
 
+void samplesearchingwidget::setColorForItem(QTableWidgetItem* item, const int s) {
+
+    switch (s) {
+    case 1:
+        item1->setForeground(QBrush(QColor(255, 0, 0)));
+        break;
+    case 2:
+        break;
+        item1->setForeground(QBrush(QColor(0, 0, 255)));
+    case 3:
+        break;
+        item1->setForeground(QBrush(QColor(0, 255, 0)));
+    default:
+        break;
+    }
+}
+
 void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
     tested_sample->clear();
     QStringList header;
@@ -142,64 +159,43 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_fake_id"].toString());
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 0, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_name"].toString());
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 1, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(QString("%1").arg(patient["patient_age"].toInt()));
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 2, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 3, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["resource"].toString());
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 4, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["query_doctor"].toString());
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 5, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["testing_doctor"].toString());
-            if (tmp["status"].toInt() == 1)
-                item1->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item1->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item1, tmp["status"].toInt);
             tested_sample->setItem(index, 6, item1);
         }
 
@@ -209,10 +205,7 @@ void samplesearchingwidget::queryTesetedSamples(const QJsonArray& samples) {
             t.setMSecsSinceEpoch(timespan);
             QString format = "MM-dd-yyyy";
             QTableWidgetItem* item2 = new QTableWidgetItem(t.toString(format));
-            if (tmp["status"].toInt() == 1)
-                item2->setForeground(QBrush(QColor(255, 0, 0)));
-            else
-                item2->setForeground(QBrush(QColor(0, 0, 255)));
+            setColorForItem(item2, tmp["status"].toInt);
             tested_sample->setItem(index, 7, item2);
         }
         ++index;

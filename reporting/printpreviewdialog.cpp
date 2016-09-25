@@ -87,7 +87,7 @@ void printpreviewdialog::printReport() {
            dlg.setOptions(QAbstractPrintDialog::None);
 
            document->print(pPrinter);
-           ((reportingcontainer*)this->parent())->changeReportingStatusInService();
+           ((reportingcontainer*)this->parent())->changeReportingStatusToPrinted();
            delete pPrinter;
        }
     } else {
@@ -116,7 +116,7 @@ void printpreviewdialog::printReportPDF() {
     //    textDocument.setHtml(html);
     //    textDocument.print(&printer);
         document->print(&printer);
-        ((reportingcontainer*)this->parent())->changeReportingStatusInService();
+        ((reportingcontainer*)this->parent())->changeReportingStatusToPrinted();
 
     } else {
         QMessageBox::warning(this, "error",
