@@ -31,12 +31,16 @@ void imgcomparepane::setUpSubviews() {
 
     box = new QComboBox;
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
-    foreach (const QCameraInfo &cameraInfo, cameras) {
-        QString item = cameraInfo.description();
-        if (item.count() == 0) {
-            item = cameraInfo.deviceName();
-        }
-        box->addItem(item);
+    if (cameras.size() == 0) {
+        foreach (const QCameraInfo &cameraInfo, cameras) {
+           QString item = cameraInfo.description();
+           if (item.count() == 0) {
+               item = cameraInfo.deviceName();
+           }
+           box->addItem(item);
+       }
+    } else {
+        box->addItem(tr("摄像头1"));
     }
     QObject::connect(box, SIGNAL(currentIndexChanged(int)),
                      this, SLOT(changeCurrentCamera(int)));

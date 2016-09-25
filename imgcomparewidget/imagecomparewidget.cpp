@@ -175,6 +175,7 @@ void imagecomparewidget::currentBoxTextChanged(const QString & cur) {
 void imagecomparewidget::didFinishEditSampleID_slot() {
     QString sample_id = sample_id_edit->text();
     if (!sample_id.isEmpty()) {
+        sample_id_edit->setText(sample_id);
         proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
     }
 }
