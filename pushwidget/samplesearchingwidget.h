@@ -7,6 +7,7 @@
 
 class QVBoxLayout;
 class QTableWidget;
+class QTableWidgetItem;
 
 class samplesearchingwidget : public QFrame {
     Q_OBJECT

@@ -271,14 +271,14 @@ void reportingcontainer::setColorForItem(QTableWidgetItem* item, const int s) {
 
     switch (s) {
     case 1:
-        item1->setForeground(QBrush(QColor(255, 0, 0)));
+        item->setForeground(QBrush(QColor(255, 0, 0)));
         break;
     case 2:
         break;
-        item1->setForeground(QBrush(QColor(0, 0, 255)));
+        item->setForeground(QBrush(QColor(0, 0, 255)));
     case 3:
         break;
-        item1->setForeground(QBrush(QColor(0, 255, 0)));
+        item->setForeground(QBrush(QColor(0, 255, 0)));
     default:
         break;
     }
@@ -308,43 +308,43 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_fake_id"].toString());
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 0, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(patient["patient_name"].toString());
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 1, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(QString("%1").arg(patient["patient_age"].toInt()));
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 2, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["sample_id"].toString());
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 3, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["resource"].toString());
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 4, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["query_doctor"].toString());
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 5, item1);
         }
 
         {
             QTableWidgetItem* item1 = new QTableWidgetItem(tmp["testing_doctor"].toString());
-            setColorForItem(item1, tmp["status"].toInt);
+            setColorForItem(item1, tmp["status"].toInt());
             tested_sample->setItem(index, 6, item1);
         }
 
@@ -354,7 +354,7 @@ void reportingcontainer::queryTesetedSamples(const QJsonArray& samples) {
             t.setMSecsSinceEpoch(timespan);
             QString format = "MM-dd-yyyy HH:mm:ss";
             QTableWidgetItem* item2 = new QTableWidgetItem(t.toString(format));
-            setColorForItem(item2, tmp["status"].toInt);
+            setColorForItem(item2, tmp["status"].toInt());
             tested_sample->setItem(index, 7, item2);
         }
         ++index;

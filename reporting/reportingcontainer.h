@@ -13,6 +13,7 @@ class reportingdetailwidget;
 class commonimgpreviewwidget;
 class QTableWidget;
 class QTextDocument;
+class QTableWidgetItem;
 
 class reportingcontainer : public QFrame {
     Q_OBJECT
@@ -56,6 +57,7 @@ public:
     bool hasAuthToPrint() const;
 protected:
     void setUpSubviews();
+    void setColorForItem(QTableWidgetItem* item, const int s);
 
 private:
     QHBoxLayout* main_layout;

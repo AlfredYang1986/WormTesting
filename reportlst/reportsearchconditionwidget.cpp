@@ -30,6 +30,11 @@ void reportsearchconditionwidget::setUpSubviews() {
    time_box = new QDateEdit;
    time_box->setDisplayFormat("MM-dd-yyyy");
    time_box->setDate(QDate::currentDate());
+
+   time_box_end = new QDateEdit;
+   time_box_end->setDisplayFormat("MM-dd-yyyy");
+   time_box_end->setDate(QDate::currentDate());
+
 //    time_box->addItem("--------------");
 //    time_box->addItem(QStringLiteral("当天"));
 //    time_box->addItem(QStringLiteral("当周"));
@@ -147,6 +152,16 @@ void reportsearchconditionwidget::pushConditions(QJsonObject & conditions) {
         qlonglong l = t.toMSecsSinceEpoch();
 //        conditions.insert("date", (qlonglong)(l / 24 * 60 * 60 * 1000));
         conditions.insert("time", l + 1);
+    }
+
+    if (!time_box_end->text().isEmpty()) {
+//        conditions
+        QString date = time_box->text();
+        QString format = "MM-dd-yyyy";
+        QDateTime t = QDateTime::fromString(date, format);
+        qlonglong l = t.toMSecsSinceEpoch();
+//        conditions.insert("date", (qlonglong)(l / 24 * 60 * 60 * 1000));
+        conditions.insert("time_end", l + 1);
     }
 
     if (testing_doctor_box->currentIndex() > 0) {

@@ -35,6 +35,7 @@ private:
 
 //    QComboBox* time_box;
     QDateEdit* time_box;
+    QDateEdit* time_box_end;
 
     QComboBox* testing_doctor_box;
     QComboBox* doctor_box;
