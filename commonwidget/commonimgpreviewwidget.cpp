@@ -46,9 +46,11 @@ float commonimgpreviewwidget::layoutContent() {
 void commonimgpreviewwidget::showEvent(QShowEvent *) {
     QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(QByteArray,QString)),
                      this, SLOT(downloadFileSuccess(QByteArray,QString)));
+    content->setPixmap(QPixmap());
 }
 
 void commonimgpreviewwidget::hideEvent(QHideEvent *) {
     QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(QByteArray,QString)),
                      this, SLOT(downloadFileSuccess(QByteArray,QString)));
+    content->setPixmap(QPixmap());
 }
