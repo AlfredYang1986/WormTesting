@@ -19,6 +19,7 @@ protected Q_SLOTS:
 
     void deleteImageStart(const QString&);
     void deleteImageSuccess(const QString &, const QString &);
+    void deleteImageFailed();
 
     void changeCurrentImage(const QPixmap*);
 

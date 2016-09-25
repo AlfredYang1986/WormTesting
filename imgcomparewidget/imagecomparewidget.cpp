@@ -94,7 +94,7 @@ void imagecomparewidget::setUpSubviews() {
     QObject::connect(sample_id_edit, SIGNAL(editingFinished()),
                      this, SLOT(didFinishEditSampleID_slot()));
 
-    proxymanager::instance()->getWormProxy()->queryWormCat();
+//    proxymanager::instance()->getWormProxy()->queryWormCat();
 }
 
 void imagecomparewidget::showEvent(QShowEvent *) {
@@ -110,6 +110,8 @@ void imagecomparewidget::showEvent(QShowEvent *) {
                      worm_preview, SLOT(setPreviewImage(QPixmap)));
     QObject::connect(sample_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
                      sample_preview, SLOT(setPreviewImage(QPixmap)));
+
+    proxymanager::instance()->getWormProxy()->queryWormCat();
 }
 
 void imagecomparewidget::hideEvent(QHideEvent *) {

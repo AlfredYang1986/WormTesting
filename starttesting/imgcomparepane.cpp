@@ -7,6 +7,7 @@
 #include <QDebug>
 #include <QCamera>
 #include <QCameraInfo>
+#include <QMessageBox>
 
 imgcomparepane::imgcomparepane() {
     this->setUpSubviews();
@@ -31,7 +32,11 @@ void imgcomparepane::setUpSubviews() {
     box = new QComboBox;
     QList<QCameraInfo> cameras = QCameraInfo::availableCameras();
     foreach (const QCameraInfo &cameraInfo, cameras) {
-        box->addItem(cameraInfo.description());
+        QString item = cameraInfo.description();
+        if (item.count() == 0) {
+            item = cameraInfo.deviceName();
+        }
+        box->addItem(item);
     }
     QObject::connect(box, SIGNAL(currentIndexChanged(int)),
                      this, SLOT(changeCurrentCamera(int)));
@@ -95,5 +100,7 @@ void imgcomparepane::startTesting(bool bTesting) {
 }
 
 int imgcomparepane::currentCameraIndex() const {
-    return box->currentIndex();
+    if (box->count() > 0)
+        return box->currentIndex();
+    else return 0;
 }

@@ -8,6 +8,13 @@
 #include "proxy/proxymanager.h"
 #include "reportingdetailitem.h"
 
+class pred_reset_items {
+public:
+    void operator()(reportingdetailitem* item) {
+        item->setCurrentSelected(false);
+    }
+};
+
 class pred_remove_empty_string {
 public:
     bool operator()(const QString& lhs) {
@@ -27,7 +34,7 @@ private:
     QString _str;
 };
 
-reportingdetailwidget::reportingdetailwidget() : content_widget(0) {
+reportingdetailwidget::reportingdetailwidget() : content_widget(0), isModified(false) {
     this->setUpSubviews();
 }
 
@@ -46,7 +53,7 @@ void reportingdetailwidget::setUpSubviews() {
 
     this->setLayout(main_layout);
 
-    proxymanager::instance()->getWormProxy()->queryReportingWorm();
+//    proxymanager::instance()->getWormProxy()->queryReportingWorm();
 }
 
 QSize reportingdetailwidget::sizeHint() const {
@@ -56,6 +63,8 @@ QSize reportingdetailwidget::sizeHint() const {
 void reportingdetailwidget::showEvent(QShowEvent *) {
     QObject::connect(proxymanager::instance()->getWormProxy(), SIGNAL(queryReportingWormSuccess(QJsonObject)),
                      this, SLOT(queryReportingWormSuccess(QJsonObject)));
+
+    proxymanager::instance()->getWormProxy()->queryReportingWorm();
 }
 
 void reportingdetailwidget::hideEvent(QHideEvent *) {
@@ -135,6 +144,9 @@ QVector<QString> reportingdetailwidget::getTestItemResults() const {
 }
 
 void reportingdetailwidget::setSampleDefaultResult(const QJsonObject &sample) {
+
+    std::for_each(items.begin(), items.end(), pred_reset_items());
+
     current_sample = sample;
     QJsonArray result = sample["result"].toArray();
     QJsonArray::iterator iter = result.begin();

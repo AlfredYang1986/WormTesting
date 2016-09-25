@@ -49,7 +49,7 @@ void pushwidget::setUpSubviews() {
     sample_button->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QObject::connect(sample_button, SIGNAL(released()), this, SLOT(sampleBtnClick()));
     bottom_layout->addWidget(sample_button);
-    QPushButton* sample_cancel = new QPushButton(QStringLiteral("取消样本"));
+    QPushButton* sample_cancel = new QPushButton(QStringLiteral("新建样本"));
     sample_cancel->setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Fixed);
     QObject::connect(sample_cancel, SIGNAL(released()), sample_detail_widget, SLOT(sampleCancelBtnClick()));
     bottom_layout->addWidget(sample_cancel);

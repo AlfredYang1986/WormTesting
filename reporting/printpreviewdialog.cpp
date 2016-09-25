@@ -55,7 +55,7 @@ void printpreviewdialog::setUpSubviews() {
     QObject::connect(preview_btn, SIGNAL(released()), this, SLOT(printReport()));
     btn_layout->addWidget(preview_btn);
 
-    QPushButton* preview_pdf_btn = new QPushButton("导出PTF");
+    QPushButton* preview_pdf_btn = new QPushButton("导出PDF");
     QObject::connect(preview_pdf_btn, SIGNAL(released()), this, SLOT(printReportPDF()));
     btn_layout->addWidget(preview_pdf_btn);
 

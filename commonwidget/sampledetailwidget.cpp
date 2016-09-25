@@ -49,20 +49,26 @@ void sampledetailwidget::setUpSubviews() {
 //    sample_testing_date_edit = new QLineEdit;
 //    sample_reporting_date_edit = new QLineEdit;
 
+    QDate d = QDate::currentDate();
     sample_start_date_edit = new QDateEdit;
     sample_start_date_edit->setDisplayFormat(date_format);
+    sample_start_date_edit->setDate(d);
 
     sample_pre_test_date_edit = new QDateEdit;
     sample_pre_test_date_edit->setDisplayFormat(date_format);
+    sample_pre_test_date_edit->setDate(d);
 
     sample_end_date_edit = new QDateEdit;
     sample_end_date_edit->setDisplayFormat(date_format);
+    sample_end_date_edit->setDate(d);
 
     sample_testing_date_edit = new QDateTimeEdit;
     sample_testing_date_edit->setDisplayFormat(date_time_format);
+    sample_testing_date_edit->setDate(d);
 
     sample_reporting_date_edit = new QDateTimeEdit;
     sample_reporting_date_edit->setDisplayFormat(date_time_format);
+    sample_reporting_date_edit->setDate(d);
 
     sample_testing_date_edit->setEnabled(false);
     sample_reporting_date_edit->setEnabled(false);
@@ -137,8 +143,6 @@ void sampledetailwidget::setUpSubviews() {
                      this, SLOT(queryAdjustDoctorSuccess(QVector<QString>)));
     QObject::connect(proxymanager::instance()->getAuthProxy(), SIGNAL(queryNormalDoctorSuccess(QVector<QString>)),
                      this, SLOT(queryNormalDoctorSuccess(QVector<QString>)));
-
-
 }
 
 //QSize sampledetailwidget::sizeHint() const {
@@ -185,7 +189,7 @@ void sampledetailwidget::sampleBtnClick() {
             time = QDateTime::fromString(str_num, date_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("start_date", n);
-            start = time;
+            //start = time;
         }
 
         {
@@ -196,6 +200,16 @@ void sampledetailwidget::sampleBtnClick() {
             json.insert("end_date", n);
             end = time;
         }
+
+        {
+            QString str_num = sample_pre_test_date_edit->text();
+            QDateTime time;
+            time = QDateTime::fromString(str_num, date_format);
+            long long n = time.toMSecsSinceEpoch();
+            json.insert("pre_test_date", n);
+            start = time;
+        }
+
         if (start.toMSecsSinceEpoch() > end.toMSecsSinceEpoch()) {
             QMessageBox::warning(this, "Error",
                                  QStringLiteral("送检时间应该小于取样时间"),
@@ -204,22 +218,12 @@ void sampledetailwidget::sampleBtnClick() {
         }
 
         {
-            QString str_num = sample_pre_test_date_edit->text();
-            QDateTime time;
-            time = QDateTime::fromString(str_num, date_format);
-            long long n = time.toMSecsSinceEpoch();
-            json.insert("pre_test_date", n);
-        }
-
-
-        {
             QString str_num = sample_testing_date_edit->text();
             QDateTime time;
             time = QDateTime::fromString(str_num, date_time_format);
             long long n = time.toMSecsSinceEpoch();
             json.insert("testing_date", n);
         }
-
 
         {
             QString str_num = sample_reporting_date_edit->text();
@@ -270,6 +274,13 @@ void sampledetailwidget::sampleCancelBtnClick() {
     patient_section_edit->clear();
     patient_section_id_edit->clear();
     patient_section_bed_id_edit->clear();
+
+    QDate d = QDate::currentDate();
+    sample_start_date_edit->setDate(d);
+    sample_pre_test_date_edit->setDate(d);
+    sample_end_date_edit->setDate(d);
+    sample_testing_date_edit->setDate(d);
+    sample_reporting_date_edit->setDate(d);
 }
 
 void sampledetailwidget::queryPatientSuccess(const QJsonObject & patient) {
@@ -435,6 +446,13 @@ void sampledetailwidget::showEvent(QShowEvent *) {
         patient_section_edit->setEnabled(false);
         patient_section_id_edit->setEnabled(false);
         patient_section_bed_id_edit->setEnabled(false);
+
+        QDate d = QDate::currentDate();
+        sample_start_date_edit->setDate(d);
+        sample_pre_test_date_edit->setDate(d);
+        sample_end_date_edit->setDate(d);
+        sample_testing_date_edit->setDate(d);
+        sample_reporting_date_edit->setDate(d);
     }
 }
 
@@ -459,4 +477,11 @@ void sampledetailwidget::clearContents() {
     patient_section_edit->clear();
     patient_section_id_edit->clear();
     patient_section_bed_id_edit->clear();
+
+    QDate d = QDate::currentDate();
+    sample_start_date_edit->setDate(d);
+    sample_pre_test_date_edit->setDate(d);
+    sample_end_date_edit->setDate(d);
+    sample_testing_date_edit->setDate(d);
+    sample_reporting_date_edit->setDate(d);
 }

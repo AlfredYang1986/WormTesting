@@ -197,6 +197,10 @@ void starttestingpage::startReportingBtnClicked() {
 }
 
 void starttestingpage::startComparingBtnClicked() {
+    if (status == TestStatus_testing) {
+        this->endTestingBtnClicked();
+    }
+
     QString sample_id = sample_detail->queryCurrentSampleId();
     if (!sample_id.isEmpty()) {
         emit startComparing(sample_id);

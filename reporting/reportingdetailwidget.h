@@ -32,6 +32,8 @@ private:
     QVector<reportingdetailitem*> items;
 
     QJsonObject current_sample;
+
+    bool isModified;
 public:
     reportingdetailwidget();
     ~reportingdetailwidget();

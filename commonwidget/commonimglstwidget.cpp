@@ -43,14 +43,17 @@ QSize commonimglstwidget::sizeHint() const {
 }
 
 void commonimglstwidget::setUpSubviews() {
-    if (isVer)
+    if (isVer) {
         main_layout = new QVBoxLayout;
-    else
+        main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+    } else {
         main_layout = new QHBoxLayout;
+        main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    }
 
     main_layout->setContentsMargins(8,8,8,8);
 
-    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+//    main_layout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Minimum, QSizePolicy::Expanding));
     this->setLayout(main_layout);
 }
 
@@ -170,6 +173,8 @@ void commonimglstwidget::showEvent(QShowEvent *) {
     this->clearLabels();
     QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileSuccess(const QByteArray&, const QString&)),
                      this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
+    QObject::connect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileFailed()),
+                     this, SLOT(deleteImageFailed()));
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
                      this, SLOT(deleteImageSuccess(QString,QString)));
 }
@@ -179,6 +184,8 @@ void commonimglstwidget::hideEvent(QHideEvent *) {
                      this, SLOT(downloadFileSuccess(const QByteArray&, const QString&)));
     QObject::disconnect(proxymanager::instance()->getSampleProxy(), SIGNAL(popSampleImageSuccess(QString,QString)),
                      this, SLOT(deleteImageSuccess(QString,QString)));
+    QObject::disconnect(proxymanager::instance()->getFileProxy(), SIGNAL(downloadFileFailed()),
+                     this, SLOT(deleteImageFailed()));
     this->clearLabels();
 }
 
@@ -284,4 +291,9 @@ void commonimglstwidget::canSelectedMore(bool * result) {
         *result = true;
     else
         *result = false;
+}
+
+void commonimglstwidget::deleteImageFailed() {
+    qDebug() << "failed" << endl;
+    this->moveToNextImage();
 }

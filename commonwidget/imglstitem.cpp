@@ -106,7 +106,7 @@ void imglstitem::mouseDoubleClickEvent(QMouseEvent *) {
             selected_label->setHidden(false);
         } else {
             QMessageBox::warning(this, "Error",
-                                 "智能选择一张或者两张图进行打印",
+                                 QStringLiteral("只能选择一张或者两张图进行打印"),
                                  QMessageBox::Ok, QMessageBox::Ok);
         }
     }

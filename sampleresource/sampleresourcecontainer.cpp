@@ -111,6 +111,8 @@ void sampleresourcecontainer::queryWormDetailSuccess(const QJsonObject& detail) 
 void sampleresourcecontainer::showEvent(QShowEvent *) {
     QObject::connect(img_lst, SIGNAL(changeCurrentImageSignal(QPixmap)),
                      img_preview, SLOT(setPreviewImage(QPixmap)));
+
+    proxymanager::instance()->getWormProxy()->queryWormCat();
 }
 
 void sampleresourcecontainer::hideEvent(QHideEvent *) {

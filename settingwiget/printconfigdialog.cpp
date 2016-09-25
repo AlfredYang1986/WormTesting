@@ -24,6 +24,7 @@ QSize printconfigdialog::sizeHint() const {
 void printconfigdialog::setupSubviews() {
     main_layout = new QVBoxLayout;
 
+    {
     QLabel* title = new QLabel(QStringLiteral("更新医院名称："));
     title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
     main_layout->addWidget(title);
@@ -33,8 +34,39 @@ void printconfigdialog::setupSubviews() {
 
     QFile f(QApplication::applicationDirPath() + "/config");
     if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        hos_name_edit->setText(QString(f.readAll()));
+        hos_name_edit->setText(QString::fromLocal8Bit(f.readAll()));
         f.close();
+    }
+    }
+
+    {
+    QLabel* title = new QLabel(QStringLiteral("更新医院科室："));
+    title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    main_layout->addWidget(title);
+
+    hos_section_edit = new QLineEdit;
+    main_layout->addWidget(hos_section_edit);
+
+    QFile f(QApplication::applicationDirPath() + "/config_section");
+    if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        hos_section_edit->setText(QString::fromLocal8Bit(f.readAll()));
+        f.close();
+    }
+    }
+
+    {
+    QLabel* title = new QLabel(QStringLiteral("更新医院电话："));
+    title->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Fixed);
+    main_layout->addWidget(title);
+
+    hos_phone_edit = new QLineEdit;
+    main_layout->addWidget(hos_phone_edit);
+
+    QFile f(QApplication::applicationDirPath() + "/config_phone");
+    if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        hos_phone_edit->setText(QString::fromLocal8Bit(f.readAll()));
+        f.close();
+    }
     }
 
     QHBoxLayout* btn_layout = new QHBoxLayout;
@@ -66,13 +98,40 @@ void printconfigdialog::setupSubviews() {
 
 void printconfigdialog::saveBtnClicked() {
 
+    {
     QString str = hos_name_edit->text();
     QFile f(QApplication::applicationDirPath() + "/config");
     if (f.open(QIODevice::WriteOnly | QIODevice::Text)) {
         f.reset();
         QTextStream s(&f);
         s << str;
+        f.flush();
         f.close();
+    }
+    }
+
+    {
+    QString str = hos_section_edit->text();
+    QFile f(QApplication::applicationDirPath() + "/config_section");
+    if (f.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        f.reset();
+        QTextStream s(&f);
+        s << str;
+        f.flush();
+        f.close();
+    }
+    }
+
+    {
+    QString str = hos_phone_edit->text();
+    QFile f(QApplication::applicationDirPath() + "/config_phone");
+    if (f.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        f.reset();
+        QTextStream s(&f);
+        s << str;
+        f.flush();
+        f.close();
+    }
     }
 
     this->close();

@@ -26,6 +26,8 @@ protected:
 private:
     QVBoxLayout* main_layout;
     QLineEdit* hos_name_edit;
+    QLineEdit* hos_section_edit;
+    QLineEdit* hos_phone_edit;
 };
 
 #endif // PRINTCONFIGDIALOG_H

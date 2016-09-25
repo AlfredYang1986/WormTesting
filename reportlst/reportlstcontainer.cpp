@@ -36,7 +36,6 @@ QSize reportlstcontainer::sizeHint() const {
     return QSize(300, 300);
 }
 
-
 void reportlstcontainer::showEvent(QShowEvent *) {
     QObject::connect(condition_widget, SIGNAL(sampleConditionSearchSuccessSignal(QJsonArray)),
                      search_result, SLOT(changeSearchResult(QJsonArray)));

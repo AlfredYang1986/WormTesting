@@ -101,4 +101,14 @@ void fileoptproxy::replayFinished(QNetworkReply* result) {
 
 void fileoptproxy::networkError(QNetworkReply::NetworkError error) {
     qDebug() << error;
+    if (isDownLoading) {
+// 		QString succ = download_lst.first();
+        download_lst.pop_front();
+        if (!download_lst.isEmpty())
+            this->downloadFileImpl(download_lst.first());
+        else
+            isDownLoading = false;
+
+        emit downloadFileFailed();
+    }
 }

@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
     // Qt::Alignment topRight = Qt::AlignRight | Qt::AlignTop;
     // splash->showMessage(QStringLiteral("Setting Database ..."));
 
-    QTime dieTime = QTime::currentTime().addMSecs(3000);
+    QTime dieTime = QTime::currentTime().addMSecs(1500);
     while( QTime::currentTime() < dieTime )
         QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 

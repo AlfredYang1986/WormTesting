@@ -18,6 +18,7 @@ private:
 Q_SIGNALS:
     void uploadSampleImageSuccess(const QString& sample_id, const QString& image_name);
     void downloadFileSuccess(const QByteArray&, const QString&);
+    void downloadFileFailed();
 
 protected Q_SLOTS:
     void replayFinished(QNetworkReply*);

@@ -75,9 +75,9 @@ void reportingcontainer::setUpSubviews() {
                      this, SLOT(printPreview()));
     btn_layout->addWidget(print_preview_btn);
 
-    QPushButton* cancel_btn = new QPushButton(QStringLiteral("取消"));
+//    QPushButton* cancel_btn = new QPushButton(QStringLiteral("取消"));
 //    QObject::connect(save_btn, SIGNAL(released()), this, SLOT()
-    btn_layout->addWidget(cancel_btn);
+//    btn_layout->addWidget(cancel_btn);
 
     btn_layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
@@ -222,6 +222,9 @@ void reportingcontainer::showEvent(QShowEvent *) {
 
     QObject::connect(proxymanager::instance()->getSampleProxy(), SIGNAL(updateSampleSuccess(QJsonObject)),
                      this, SLOT(querySampleWithIDSuccess(QJsonObject)));
+
+    QString sample_id = this->current_sample["sample_id"].toString();
+    proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
 }
 
 void reportingcontainer::hideEvent(QHideEvent *) {
@@ -246,6 +249,12 @@ void reportingcontainer::saveTestResult() {
     QString sample_id = sample_detail->queryCurrentSampleId();
     QVector<QString> result = reporting_detail->getTestItemResults();
     proxymanager::instance()->getSampleProxy()->pushReportingTestResult(sample_id, result);
+
+    QTime dieTime = QTime::currentTime().addMSecs(1000);
+    while( QTime::currentTime() < dieTime )
+        QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+
+    proxymanager::instance()->getSampleProxy()->querySampleWithID(sample_id);
 }
 
 void reportingcontainer::postTestResult() {
@@ -379,6 +388,9 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QString patient_age = QString("%1").arg(patient["patient_age"].toInt());
         QString patient_id = patient["patient_fake_id"].toString();
         QString sample_resource = current_sample["resource"].toString();
+        QString patient_section = patient["patient_section"].toString();
+        QString patient_section_no = patient["patient_section_no"].toString();
+        QString patient_bed_no = patient["patient_bed_no"].toString();
 
         QVector<QVariant> result = current_sample["result"].toArray().toVariantList().toVector();
         QStringList str_result;
@@ -391,18 +403,31 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QString presuffix = "<tr>";
         QString suffix = "</tr>";
         QStringList str_reVal = reporting_detail->getAllReportingField();
-        QStringList::iterator i = str_reVal.begin();
-        for (; i != str_reVal.end(); ++i) {
-            QString tmp = *i;
+        //QStringList::iterator i = str_reVal.begin();
+        int i = 0;
+        for (; i != std::min(str_reVal.size(), 17); ++i) {
             contents += presuffix;
-            contents += "<td>" + tmp + "</td>";
-            if (str_result.contains(tmp)) {
-                contents += "<td>" + QString(QStringLiteral("已检出")) + "</td>";
-            } else {
-                contents += "<td>" + QString(QStringLiteral("未检出")) + "</td>";
+            {
+                QString tmp = str_reVal.at(i);
+                contents += "<td>" + tmp + "</td>";
+                if (str_result.contains(tmp)) {
+                    contents += "<td style='text-align:center; border-right: 2px solid #000;'>" + QString(QStringLiteral("已检出")) + "</td>";
+                } else {
+                    contents += "<td style='text-align:center; border-right: 2px solid #000;'>" + QString(QStringLiteral("未检出")) + "</td>";
+                }
             }
-            contents += "<td></td>";
-            contents += "<td></td>";
+
+            {
+                if (i + 17 < str_reVal.size()) {
+                    QString tmp = str_reVal.at(i + 17);
+                    contents += "<td>" + tmp + "</td>";
+                    if (str_result.contains(tmp)) {
+                        contents += "<td style='text-align:center'>" + QString(QStringLiteral("已检出")) + "</td>";
+                    } else {
+                        contents += "<td style='text-align:center'>" + QString(QStringLiteral("未检出")) + "</td>";
+                    }
+                }
+            }
             contents += suffix;
         }
 
@@ -419,7 +444,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QString post_test_doctor = current_sample["post_test_doctor"].toString();
 
         QString images = "";
-        QString img_preffix = "<td>";
+        QString img_preffix = "<td style='text-align:center; margin-top: 10px;'>";
         QString img_suffix = "</td>";
 
 //        QVector<QImage> vec_img = img_lst->getCurrentImages();
@@ -427,7 +452,7 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         QVector<QImage>::iterator vec_img_iter = vec_img.begin();
         int index = 0;
         for (; vec_img_iter != vec_img.end(); ++ vec_img_iter) {
-            QImage t = (*vec_img_iter).scaledToWidth(120);
+            QImage t = (*vec_img_iter).scaledToWidth(300);
             QUrl url;
             url.setUrl(QString("tmp%1").arg(index));
             document.addResource(QTextDocument::ImageResource, url, QVariant(t));
@@ -440,10 +465,33 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
         }
 
         QString hos_name;
+
+        {
         QFile f(QApplication::applicationDirPath() + "/config");
         if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            hos_name = QString(f.readAll());
+            hos_name = QString::fromLocal8Bit(f.readAll());
             f.close();
+        }
+        }
+
+        QString hos_section;
+
+        {
+        QFile f(QApplication::applicationDirPath() + "/config_section");
+        if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            hos_section = QString::fromLocal8Bit(f.readAll());
+            f.close();
+        }
+        }
+
+        QString hos_phone;
+
+        {
+        QFile f(QApplication::applicationDirPath() + "/config_phone");
+        if (f.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            hos_phone = QString::fromLocal8Bit(f.readAll());
+            f.close();
+        }
         }
 
         return html.arg(sample_id)
@@ -458,7 +506,12 @@ QString reportingcontainer::htmlContent(QTextDocument& document) {
                 .arg(testing_doctor)
                 .arg(post_test_doctor)
                 .arg(images)
-                .arg(hos_name);
+                .arg(hos_name)
+                .arg(patient_section)
+                .arg(patient_section_no)
+                .arg(patient_bed_no)
+                .arg(hos_section)
+                .arg(hos_phone);
     } else {
         return "";
     }
@@ -497,8 +550,16 @@ void reportingcontainer::printPreview() {
                              QStringLiteral("权限不够不能打印报告"),
                              QMessageBox::Ok, QMessageBox::Ok);
     } else {
-        printpreviewdialog* dlg = new printpreviewdialog(this);
-        dlg->exec();
+
+        int result = QMessageBox::warning(this, "Warning",
+                                          QStringLiteral("打印将基于用户已经保存的数剧，你没有保存的数据将会丢失。您是否继续？"),
+                                          QMessageBox::Cancel | QMessageBox::Ok,
+                                          QMessageBox::Ok);
+
+        if (result == QMessageBox::Ok) {
+            printpreviewdialog* dlg = new printpreviewdialog(this);
+            dlg->exec();
+        }
     }
 }
 
